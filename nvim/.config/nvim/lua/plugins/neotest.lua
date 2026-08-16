@@ -26,6 +26,30 @@ return {
 			},
 		},
 		config = function()
+			-- neotest-java warns "Make sure Tree-sitter parser for 'java' is
+			-- up-to-date" unconditionally (its health.lua), on the line right after
+			-- the OK saying the parser is installed, so :TSUpdate java never clears
+			-- it. Its health module reads vim.health at call time, so wrapping check
+			-- is enough; anything else it reports still comes through.
+			local ok_java_health, java_health = pcall(require, "neotest-java.health")
+			if ok_java_health then
+				local check = java_health.check
+				java_health.check = function(...)
+					local warn = vim.health.warn
+					vim.health.warn = function(msg, ...)
+						if type(msg) == "string" and msg:match("^Make sure Tree%-sitter parser for 'java'") then
+							return
+						end
+						return warn(msg, ...)
+					end
+					local ok, err = pcall(check, ...)
+					vim.health.warn = warn
+					if not ok then
+						error(err)
+					end
+				end
+			end
+
 			require("neotest").setup({
 				adapters = {
 					require("neotest-golang")({ recursive_run = true }), -- Registration
