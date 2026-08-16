@@ -1,7 +1,21 @@
 local is_mac = vim.fn.has("mac") == 1
+
+-- Loading this outside an Xcode/SPM project only costs startup time and fills
+-- :checkhealth with "no buildServer.json / did you run this from the project root?".
+-- Everything it does (keymaps, the dap swift config, the project_manager hooks that
+-- watch file creation) is wanted eagerly inside such a project, so gate on the tree
+-- instead of lazy-loading on a swift buffer.
+local function in_xcode_project()
+    local markers = vim.fs.find(function(name)
+        return name:match("%.xcodeproj$") or name:match("%.xcworkspace$") or name == "Package.swift"
+    end, { upward = true, path = vim.fn.getcwd(), limit = 1 })
+    return #markers > 0
+end
+
 return {
     "wojciech-kulik/xcodebuild.nvim",
     enabled = is_mac,
+    cond = in_xcode_project,
     dependencies = {
         "ibhagwan/fzf-lua",
         "MunifTanjim/nui.nvim",

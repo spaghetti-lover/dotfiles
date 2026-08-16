@@ -8,10 +8,7 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			{
 				"fredrikaverpil/neotest-golang",
-				-- :checkhealth reports v2+ requires nvim-treesitter's 'main' branch while
-				-- we sit on 'master'. It only reaches for nvim-treesitter in the testify
-				-- feature, and testify_enabled defaults to false here, so the error is
-				-- cosmetic. Revisit if testify is ever turned on, or on the move to main.
+				-- v2+ wants nvim-treesitter on 'main', which treesitter.lua now uses.
 				version = "*",
 				dependencies = { "leoluz/nvim-dap-go" },
 			},
