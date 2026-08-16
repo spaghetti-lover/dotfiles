@@ -1,0 +1,116 @@
+#!/usr/bin/env node
+
+const { existsSync } = require("fs");
+const { mkdirSync } = require("fs");
+const { writeFileSync } = require("fs");
+const { join } = require("path");
+const { Readability } = require('@mozilla/readability');
+const JSDOM = require('jsdom').JSDOM;
+const { messageError, open } = require("qutejs");
+
+const now = new Date();
+const slugify = (s) =>
+    s
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "")
+        .substring(0, 80);
+
+const saveDir = join(process.env.HOME, "Documents/readability");
+const scriptsDir =
+    process.env.QUTE_DATA_DIR ||
+    join(process.env.HOME, ".local/share/qutebrowser/userscripts");
+
+function buildHtml({ title, content, url, siteName }) {
+    return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${title}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/gruvbox-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    body {
+      margin: 30px auto;
+      max-width: 700px;
+      line-height: 1.6;
+      padding: 0 10px;
+      background: #282828;
+      color: #ebdbb2;
+      font-family: sans-serif;
+    }
+    h1, h2, h3 { color: #fabd2f; }
+    a { color: #83a598; }
+    code, pre {
+      background: #3c3836;
+      color: #ebdbb2;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+    }
+    blockquote {
+      border-left: 3px solid #928374;
+      padding-left: 10px;
+      margin-left: 20px;
+      color: #a89984;
+    }
+    img { max-width: 100%; height: auto; display: block; margin: 1em auto; }
+  </style>
+</head>
+<body>
+  <h1>${title}</h1>
+  <div><em>From <a href="${url}">${siteName}</a></em></div>
+  <hr />
+  ${content}
+</body>
+</html>`;
+}
+
+async function main() {
+    if (!existsSync(saveDir)) mkdirSync(saveDir, { recursive: true });
+
+    const isHint = process.env.QUTE_MODE === "hints";
+    const source = isHint ? process.env.QUTE_URL : process.env.QUTE_HTML;
+    const url = process.env.QUTE_URL;
+    const loadDom = isHint ? JSDOM.fromURL : JSDOM.fromFile;
+    const options = isHint
+        ? {}
+        : { url: url, contentType: "text/html; charset=utf-8" };
+
+    try {
+        const dom = await loadDom(source, options);
+        const reader = new Readability(dom.window.document);
+        const article = reader.parse();
+        if (!article || !article.content) {
+            messageError(["can not read content"]);
+            return;
+        }
+
+        const title = article.title || "untitled";
+        const siteName =
+            article.siteName || new URL(url).hostname.replace(/^www\./, "");
+        const slug = slugify(title);
+        const timestamp = now.toISOString().split("T")[0];
+
+        const htmlContent = buildHtml({
+            title,
+            content: article.content,
+            url,
+            siteName,
+        });
+
+        const htmlFile = join(saveDir, `${timestamp}_${slug}.html`);
+        const tmpFile = join(scriptsDir, "readability.html");
+
+        writeFileSync(htmlFile, htmlContent);
+        writeFileSync(tmpFile, htmlContent);
+
+        open(["-t", "-r", tmpFile]);
+    } catch (err) {
+        messageError([`error: ${err.message}`]);
+    }
+}
+
+main();
+

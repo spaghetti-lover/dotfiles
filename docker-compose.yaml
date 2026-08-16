@@ -1,0 +1,29 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    ports:
+      - 8080:8080
+    environment:
+      UID: 1000
+      PID: 1000
+      # OLLAMA_BASE_URL: http://ollama:11434 this is for ollama container
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      WEBUI_SECRET_KEY:
+    volumes:
+      - ./data/webui:/app/backend/data
+    # depends_on:
+    # - ollama
+
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama
+  #   environment:
+  #     UID: 1000
+  #     PID: 1000
+  #   ports:
+  #     - 11434:11434/tcp
+  #   volumes:
+  #     - ./data/ollama/ollama:/root/.ollama
