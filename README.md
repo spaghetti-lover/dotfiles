@@ -3,6 +3,8 @@
 Every day I am using vim, and I feel like I can learn new things every day.
 So please don't wonder or judge why this repo has many commits.
 
+This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and added some personal config
+
 ### Main tools
 
 - homebrew (pkgs manager)
