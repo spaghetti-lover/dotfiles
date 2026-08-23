@@ -169,11 +169,19 @@ run = ['layout tiling', 'move-node-to-workspace B']
 
 #which work space is on which monitor
 [workspace-to-monitor-force-assignment]
-W = 1 
-C = 'secondary'
-X = 'secondary'
+A = 'main'
+B = 'main'
+C = 'main'
 D = 'main'
+G = 'main'
+M = 'main'
+N = 'main'
+R = 'main'
 S = 'main'
+T = 'main'
+V = 'main'
+W = 'main'
+X = 'main'
 
 #join 
 # alt-shift-; for service mode

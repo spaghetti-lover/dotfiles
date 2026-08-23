@@ -49,6 +49,7 @@ alias os='nvim ~/.zshrc'
 alias ss='source ~/.zshrc'
 alias k='kubectl'
 alias gr=./gradlew
+alias lzg='lazygit'
 # source tmux
 alias stm='tmux source-file ~/.tmux.conf \;'
 # confirm before remove something... fk.
