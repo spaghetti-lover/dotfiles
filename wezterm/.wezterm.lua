@@ -51,10 +51,13 @@ config.window_padding = {
 
 config.color_scheme = "Tokyo Night"
 config.font = wezterm.font("Inconsolata Nerd Font Mono", { weight = "Medium", stretch = "Expanded" })
-config.font_size = 22
+config.font_size = 18
 
 config.window_decorations = "RESIZE"
 config.enable_tab_bar = false
+
+-- never ask for confirmation when closing a window/tab/pane
+config.window_close_confirmation = "NeverPrompt"
 
 config.window_frame = {
     -- border_left_width = "0.18cell",
@@ -118,6 +121,21 @@ config.keys = {
                 window_background_image = bg_image,
             })
         end),
+    },
+    {
+        key = "w",
+        mods = "CMD",
+        action = wezterm.action.CloseCurrentTab({ confirm = false }),
+    },
+    {
+        key = "w",
+        mods = "CTRL|SHIFT",
+        action = wezterm.action.CloseCurrentTab({ confirm = false }),
+    },
+    {
+        key = "w",
+        mods = "CMD|SHIFT",
+        action = wezterm.action.CloseCurrentPane({ confirm = false }),
     },
 }
 

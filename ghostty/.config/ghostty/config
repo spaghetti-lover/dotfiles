@@ -1,6 +1,6 @@
 # theme = "rose-pine"
 font-family = "Inconsolata Nerd Font Mono Bold"
-font-size = 22
+font-size = 16
 background-opacity = 0.98
 background-blur-radius = 0
 macos-titlebar-proxy-icon = hidden
@@ -8,3 +8,6 @@ macos-titlebar-style = hidden
 title = ""
 cursor-opacity = 0.90 
 adjust-cursor-thickness = 1
+
+# don't ask for confirmation when closing a tab/split/window
+confirm-close-surface = false

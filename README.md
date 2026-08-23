@@ -14,6 +14,10 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 - aerospace is a window manager for macos (i3 like)
 - zshell
 - GNU stow is a symlink management tool
+- zoxide (smarter `cd`: `z <part-of-path>` jumps, `zi` picks with fzf)
+- mise (per-project runtime versions, replaces SDKMAN here)
+- btop (resource monitor), fastfetch (system info)
+- glab (GitLab CLI, needs a one-time `glab auth login`)
 
 _Note_: Some tools I also recommend: lazydocker, bat, fzf, autocompletion, ... (can be installed with brew)
 
@@ -123,6 +127,16 @@ Linux
 ```shell
 brew bundle check --file=Brewfile
 sed -i '/cask /d' Brewfile
+```
+
+### Docker compose
+
+Homebrew installs compose as a CLI plugin, but Docker does not scan its directory by default.
+To make `docker compose ...` work (not just the standalone `docker-compose`), add this to
+`~/.docker/config.json`:
+
+```json
+"cliPluginsExtraDirs": ["/opt/homebrew/lib/docker/cli-plugins"]
 ```
 
 ### Nvim setup
