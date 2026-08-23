@@ -1,3 +1,34 @@
+# Attach to tmux for interactive terminals. Must stay above the p10k instant
+# prompt block, since the exec takes over the console. NO_TMUX=1 opts out.
+if [[ -o interactive && -t 1 && -z $TMUX && -z $NVIM && -z $NO_TMUX ]] \
+  && [[ $TERM_PROGRAM != vscode && $TERM != dumb ]] \
+  && command -v tmux &>/dev/null; then
+  # Namespace sessions per terminal app, so ghostty windows only ever reclaim
+  # ghostty sessions and wezterm only wezterm. tmux forbids '.' and ':' in
+  # names, so reduce whatever TERM_PROGRAM holds to bare alphanumerics:
+  # ghostty -> ghostty, WezTerm -> wezterm, iTerm.app -> itermapp.
+  term_tag=${${TERM_PROGRAM:-term}:l}
+  term_tag=${term_tag//[^a-z0-9]/}
+
+  # most recently used session of THIS terminal that no client is on, so a new
+  # window continues where you left off without mirroring a live one
+  free_session=$(tmux list-sessions \
+      -F '#{session_last_attached} #{session_attached} #{session_name}' 2>/dev/null \
+    | sort -rn \
+    | awk -v tag="$term_tag" '$2 == 0 && $3 ~ "^" tag "-[0-9]+$" { print $3; exit }')
+
+  if [[ -n $free_session ]]; then
+    exec tmux attach-session -t "=$free_session"
+  else
+    # lowest unused suffix, e.g. ghostty-1, ghostty-2
+    term_n=1
+    while tmux has-session -t "=$term_tag-$term_n" 2>/dev/null; do
+      term_n=$((term_n + 1))
+    done
+    exec tmux new-session -s "$term_tag-$term_n"
+  fi
+fi
+
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
