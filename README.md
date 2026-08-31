@@ -95,6 +95,20 @@ brew install ripgrep
 brew install wget
 ```
 
+## Keybindings
+
+Window management, terminal and tmux follow an
+[Omarchy](https://omarchy.org/manual/navigation)-style keyboard layer, with **⌘ as Super**.
+Full cheat sheet: [docs/keybindings.md](./docs/keybindings.md).
+
+Because AeroSpace grabs ⌘ combos globally, the macOS menu commands it displaces (Find, New Tab,
+Open Location, Zoom, ...) are re-bound onto plain Ctrl. Run this once per machine:
+
+```shell
+cd ~/dotfiles/others
+make macos-shortcuts        # make macos-shortcuts-reset to undo
+```
+
 ### Backup pkgs by brew
 
 Use the Makefile in `others/` for easy management:
