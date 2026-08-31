@@ -1,4 +1,4 @@
-.PHONY: brew-update brew-install brew-check brew-clean
+.PHONY: brew-update brew-install brew-check brew-clean macos-shortcuts macos-shortcuts-list macos-shortcuts-reset
 
 BREWFILE := $(dir $(lastword $(MAKEFILE_LIST)))Brewfile
 
@@ -20,6 +20,15 @@ brew-check: ## Check if packages match Brewfile
 brew-clean: ## Remove packages not in Brewfile
 	@echo "Removing packages not in Brewfile..."
 	brew bundle cleanup --force --file=$(BREWFILE)
+
+macos-shortcuts: ## Restore macOS menu commands AeroSpace took over (ctrl-F, ctrl-T, ...)
+	@bash $(dir $(lastword $(MAKEFILE_LIST)))macos-app-shortcuts.sh
+
+macos-shortcuts-list: ## Show which menu shortcuts are currently overridden
+	@bash $(dir $(lastword $(MAKEFILE_LIST)))macos-app-shortcuts.sh --list
+
+macos-shortcuts-reset: ## Undo macos-shortcuts
+	@bash $(dir $(lastword $(MAKEFILE_LIST)))macos-app-shortcuts.sh --reset
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
