@@ -17,7 +17,9 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 
 accordion-padding = 30
 
-default-root-container-layout = 'tiles'
+# New windows stack full-size instead of splitting the screen side by side.
+# Press cmd-l on any workspace to flip that workspace back to a tiled split.
+default-root-container-layout = 'accordion'
 default-root-container-orientation = 'auto'
 
 # Omarchy: "switch focus and move the cursor to the center of the new application"

@@ -39,7 +39,7 @@ AeroSpace grabs ⌘ combos globally. See [What ⌘ costs](#what--costs) below.
 | `⌘⇧⌥ ←↓↑→`           | Move whole workspace to another monitor                               |
 | `⌘ T`                | Toggle tiled / floating                                               |
 | `⌘ J`                | Toggle window position                                                |
-| `⌘ L`                | Toggle layout (tiles / accordion)                                     |
+| `⌘ L`                | Toggle layout (accordion / tiles) — flips this workspace to a split   |
 | `⌘ F`                | Full screen                                                           |
 | `⌘⌥ F`               | Full width                                                            |
 | `⌘⌃ F`               | macOS native full screen                                              |
@@ -53,6 +53,11 @@ AeroSpace grabs ⌘ combos globally. See [What ⌘ costs](#what--costs) below.
 | `⌘⌃ -` / `⌘⌃ =`      | Big-step resize                                                       |
 | `⌃⌥ Delete`          | Close all windows but current                                         |
 | `⌥⇧ ;`               | Service mode (`esc` reload, `r` flatten, `f` float, `⌫` close others) |
+
+Workspaces default to the **accordion** layout: a new window takes the full screen and the
+others collapse to slivers at the edges, rather than splitting the screen side by side.
+`⌘L` flips the current workspace to a tiled split and back; the default only applies to a
+workspace's root container when it is first created.
 
 Focus is arrow-based, as in Omarchy. There are no `⌘hjkl` aliases because `⌘J` and `⌘L` are
 Omarchy's window-position and layout toggles.
