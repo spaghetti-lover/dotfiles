@@ -56,6 +56,11 @@ config.font_size = 18
 config.window_decorations = "RESIZE"
 config.enable_tab_bar = false
 
+-- Option must arrive as Meta so tmux sees Alt+Enter / Alt+1-9 (Omarchy's
+-- terminal layer). Without this the whole Alt layer in .tmux.conf is dead.
+config.send_composed_key_when_left_alt_is_pressed = false
+config.send_composed_key_when_right_alt_is_pressed = false
+
 -- never ask for confirmation when closing a window/tab/pane
 config.window_close_confirmation = "NeverPrompt"
 
@@ -136,6 +141,12 @@ config.keys = {
         key = "w",
         mods = "CMD|SHIFT",
         action = wezterm.action.CloseCurrentPane({ confirm = false }),
+    },
+    -- AeroSpace owns CMD+t now (toggle float), so New Tab moves here.
+    {
+        key = "t",
+        mods = "CTRL|SHIFT",
+        action = wezterm.action.SpawnTab("CurrentPaneDomain"),
     },
 }
 
