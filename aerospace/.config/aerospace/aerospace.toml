@@ -166,7 +166,7 @@ cmd-shift-x     = 'exec-and-forget open -na "Brave Browser" --args --app=https:/
 # -------------------------------------------------------- system panels
 cmd-ctrl-a     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Sound-Settings.extension"'
 cmd-ctrl-b     = 'exec-and-forget open "x-apple.systempreferences:com.apple.BluetoothSettings"'
-cmd-ctrl-w     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Network-Settings.extension"'
+cmd-ctrl-w     = 'exec-and-forget open "x-apple.systempreferences:com.apple.wifi-settings-extension"'
 cmd-ctrl-d     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Displays-Settings.extension"'
 cmd-ctrl-p     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Battery-Settings.extension"'
 cmd-ctrl-t     = 'exec-and-forget open -a "Activity Monitor"'
