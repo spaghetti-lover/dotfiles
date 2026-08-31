@@ -191,12 +191,10 @@ alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
 # ============================================================ workspaces
-# 1 Coding  2 Notes  3 Browser  4 Work/chat  5 Files
-# 6 Reading 7 Media  8 Tools    9 VM         0 Scratchpad
+# 1 Coding   2 Terminal  3 Browser  4 Work/chat  5 Files
+# 6 Reading & notes      7 Media    8 Tools      9 VM     0 Scratchpad
 
-[[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
-run = 'move-node-to-workspace 1'
+# ---- 1  coding
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode'
@@ -206,21 +204,21 @@ run = 'move-node-to-workspace 1'
 if.app-id = 'com.apple.dt.Xcode'
 run = 'move-node-to-workspace 1'
 
+# ---- 2  terminal
+
 [[on-window-detected]]
-if.app-id = 'com.apple.Notes'
+if.app-id = 'com.github.wez.wezterm'
 run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
-if.app-id = 'md.obsidian'
+if.app-id = 'com.mitchellh.ghostty'
 run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
-if.app-id = 'notion.id'
+if.app-id = 'com.googlecode.iterm2'
 run = 'move-node-to-workspace 2'
 
-[[on-window-detected]]
-if.app-id = 'net.ankiweb.anki'
-run = 'move-node-to-workspace 2'
+# ---- 3  browser
 
 [[on-window-detected]]
 if.app-id = 'com.brave.Browser'
@@ -238,6 +236,8 @@ run = 'move-node-to-workspace 3'
 if.app-id = 'org.qutebrowser.qutebrowser'
 run = ['layout tiling', 'move-node-to-workspace 3']
 
+# ---- 4  work / chat
+
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = 'move-node-to-workspace 4'
@@ -246,9 +246,13 @@ run = 'move-node-to-workspace 4'
 if.app-id = 'com.hnc.Discord'
 run = 'move-node-to-workspace 4'
 
+# ---- 5  files
+
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
 run = 'move-node-to-workspace 5'
+
+# ---- 6  reading & notes
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Preview'
@@ -267,6 +271,24 @@ if.app-id = 'net.kovidgoyal.calibre'
 run = 'move-node-to-workspace 6'
 
 [[on-window-detected]]
+if.app-id = 'com.apple.Notes'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'notion.id'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'net.ankiweb.anki'
+run = 'move-node-to-workspace 6'
+
+# ---- 7  media
+
+[[on-window-detected]]
 if.app-id = 'com.obsproject.obs-studio'
 run = 'move-node-to-workspace 7'
 
@@ -278,13 +300,7 @@ run = 'move-node-to-workspace 7'
 if.app-id = 'com.spotify.client'
 run = 'move-node-to-workspace 7'
 
-[[on-window-detected]]
-if.app-id = 'com.mitchellh.ghostty'
-run = 'move-node-to-workspace 8'
-
-[[on-window-detected]]
-if.app-id = 'com.googlecode.iterm2'
-run = 'move-node-to-workspace 8'
+# ---- 8  tools
 
 [[on-window-detected]]
 if.app-id = 'com.postmanlabs.mac'
@@ -293,6 +309,8 @@ run = 'move-node-to-workspace 8'
 [[on-window-detected]]
 if.app-id = 'com.docker.docker'
 run = 'move-node-to-workspace 8'
+
+# ---- 9  vm
 
 [[on-window-detected]]
 if.app-id = 'com.vmware.fusion'

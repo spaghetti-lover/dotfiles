@@ -64,10 +64,18 @@ Omarchy's window-position and layout toggles.
 
 ## Workspaces
 
-|           |         |           |               |              |
-| --------- | ------- | --------- | ------------- | ------------ |
-| 1 Coding  | 2 Notes | 3 Browser | 4 Work / chat | 5 Files      |
-| 6 Reading | 7 Media | 8 Tools   | 9 VM          | 0 Scratchpad |
+| Workspace         | Apps                                                           |
+| ----------------- | -------------------------------------------------------------- |
+| 1 Coding          | VS Code, Xcode                                                 |
+| 2 Terminal        | WezTerm, Ghostty, iTerm2                                       |
+| 3 Browser         | Brave, Chrome, Firefox, qutebrowser                            |
+| 4 Work / chat     | Slack, Discord                                                 |
+| 5 Files           | Finder                                                         |
+| 6 Reading & notes | Preview, sioyek, Books, calibre, Notes, Obsidian, Notion, Anki |
+| 7 Media           | OBS, DaVinci Resolve, Spotify                                  |
+| 8 Tools           | Postman, Docker                                                |
+| 9 VM              | VMware Fusion                                                  |
+| 0 Scratchpad      | —                                                              |
 
 Apps auto-assign on launch — see `[[on-window-detected]]` in
 `aerospace/.config/aerospace/aerospace.toml`.
