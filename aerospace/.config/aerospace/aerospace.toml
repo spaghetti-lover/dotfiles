@@ -1,3 +1,12 @@
+# Omarchy-style navigation for macOS.
+#
+# Modifier map:  Super -> cmd,  Alt -> alt,  Ctrl -> ctrl,  Shift -> shift
+# Every binding below mirrors https://omarchy.org/manual/hotkeys
+#
+# AeroSpace grabs cmd-* globally. The macOS menu commands this displaces
+# (Find, New Tab, Open Location, Zoom, ...) are restored on plain ctrl by
+# others/macos-app-shortcuts.sh. See docs/keybindings.md.
+
 after-login-command = []
 after-startup-command = []
 
@@ -11,8 +20,9 @@ accordion-padding = 30
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
+# Omarchy: "switch focus and move the cursor to the center of the new application"
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-on-focus-changed = 'move-mouse monitor-lazy-center' 
+on-focus-changed = 'move-mouse monitor-lazy-center'
 
 automatically-unhide-macos-hidden-apps = false
 
@@ -29,160 +39,271 @@ outer.right = [{monitor."Built-in Retina Display" = 15}, {monitor.secondary = 25
 
 [mode.main.binding]
 
-alt-slash = 'layout tiles horizontal vertical'
-alt-comma = 'layout accordion horizontal vertical'
+# ---------------------------------------------------------------- focus
+# Super + Arrow = move focus   (hjkl retained alongside)
+cmd-left  = 'focus left'
+cmd-down  = 'focus down'
+cmd-up    = 'focus up'
+cmd-right = 'focus right'
 
-alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
-alt-l = 'focus right'
+# NB: no cmd-hjkl focus aliases -- Omarchy is arrow-based for focus, and
+# cmd-j / cmd-l are its window-position and layout toggles (see below).
 
-alt-shift-h = 'move left'
-alt-shift-j = 'move down'
-alt-shift-k = 'move up'
-alt-shift-l = 'move right'
+# Super + Shift + Arrow = swap window
+cmd-shift-left  = 'swap left'
+cmd-shift-down  = 'swap down'
+cmd-shift-up    = 'swap up'
+cmd-shift-right = 'swap right'
 
-alt-shift-minus = 'resize smart -50'
-alt-shift-equal = 'resize smart +50'
+# Alt + Tab = cycle windows   /   Ctrl + Alt + Tab = cycle monitors
+alt-tab            = 'focus --wrap-around dfs-next'
+alt-shift-tab      = 'focus --wrap-around dfs-prev'
+ctrl-alt-tab       = 'focus-monitor --wrap-around next'
+ctrl-alt-shift-tab = 'focus-monitor --wrap-around prev'
 
-alt-a = 'workspace A' # Any: Docker, Postman,... 
-alt-b = 'workspace B' # Browser
-alt-c = 'workspace C' # Coding
-alt-d = 'workspace D' # Document/Finder
-alt-g = 'workspace G' # Game
-alt-m = 'workspace M' # Music
-alt-n = 'workspace N' # NOTE
-alt-r = 'workspace R' # Reading
-alt-s = 'workspace S' # Setting
-alt-t = 'workspace T' # Terminal
-alt-v = 'workspace V' # Edit Video
-alt-w = 'workspace W' # Work: Slack, ggmeet, discord,...
-alt-x = 'workspace X' # VM - enjoy
+# --------------------------------------------------------------- resize
+cmd-minus       = 'resize width -50'
+cmd-equal       = 'resize width +50'
+cmd-shift-minus = 'resize height -50'
+cmd-shift-equal = 'resize height +50'
+cmd-alt-minus   = 'resize smart -10'
+cmd-alt-equal   = 'resize smart +10'
+cmd-ctrl-minus  = 'resize smart -100'
+cmd-ctrl-equal  = 'resize smart +100'
 
-alt-shift-a = 'move-node-to-workspace --focus-follows-window A'
-alt-shift-b = 'move-node-to-workspace --focus-follows-window B'
-alt-shift-c = 'move-node-to-workspace --focus-follows-window C'
-alt-shift-d = 'move-node-to-workspace --focus-follows-window D'
-alt-shift-g = 'move-node-to-workspace --focus-follows-window G'
-alt-shift-m = 'move-node-to-workspace --focus-follows-window M'
-alt-shift-n = 'move-node-to-workspace --focus-follows-window N'
-alt-shift-r = 'move-node-to-workspace --focus-follows-window R'
-alt-shift-s = 'move-node-to-workspace --focus-follows-window S'
-alt-shift-t = 'move-node-to-workspace --focus-follows-window T'
-alt-shift-v = 'move-node-to-workspace --focus-follows-window V'
-alt-shift-w = 'move-node-to-workspace --focus-follows-window W'
-alt-shift-x = 'move-node-to-workspace --focus-follows-window X'
+# ----------------------------------------------------------- workspaces
+cmd-1 = 'workspace 1'
+cmd-2 = 'workspace 2'
+cmd-3 = 'workspace 3'
+cmd-4 = 'workspace 4'
+cmd-5 = 'workspace 5'
+cmd-6 = 'workspace 6'
+cmd-7 = 'workspace 7'
+cmd-8 = 'workspace 8'
+cmd-9 = 'workspace 9'
 
-alt-shift-f = 'fullscreen'
-alt-tab = 'workspace-back-and-forth'
-alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+cmd-tab       = 'workspace --wrap-around next'
+cmd-shift-tab = 'workspace --wrap-around prev'
+cmd-ctrl-tab  = 'workspace-back-and-forth'
 
+# Super + Shift + N = move window to workspace and follow it
+cmd-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
+cmd-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
+cmd-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
+cmd-shift-4 = 'move-node-to-workspace --focus-follows-window 4'
+cmd-shift-5 = 'move-node-to-workspace --focus-follows-window 5'
+cmd-shift-6 = 'move-node-to-workspace --focus-follows-window 6'
+cmd-shift-7 = 'move-node-to-workspace --focus-follows-window 7'
+cmd-shift-8 = 'move-node-to-workspace --focus-follows-window 8'
+cmd-shift-9 = 'move-node-to-workspace --focus-follows-window 9'
+
+# Super + Shift + Alt + N = move window there without following
+cmd-shift-alt-1 = 'move-node-to-workspace 1'
+cmd-shift-alt-2 = 'move-node-to-workspace 2'
+cmd-shift-alt-3 = 'move-node-to-workspace 3'
+cmd-shift-alt-4 = 'move-node-to-workspace 4'
+cmd-shift-alt-5 = 'move-node-to-workspace 5'
+cmd-shift-alt-6 = 'move-node-to-workspace 6'
+cmd-shift-alt-7 = 'move-node-to-workspace 7'
+cmd-shift-alt-8 = 'move-node-to-workspace 8'
+cmd-shift-alt-9 = 'move-node-to-workspace 9'
+
+# Scratchpad = workspace 0. Press again to go back where you came from.
+# (Omarchy also offers Super+S for this; cmd-s is left alone so Save works.)
+cmd-backtick       = 'workspace --auto-back-and-forth 0'
+cmd-shift-backtick = 'move-node-to-workspace 0'
+
+# Super + Shift + Alt + Arrow = move whole workspace to another monitor
+cmd-shift-alt-left  = 'move-workspace-to-monitor left'
+cmd-shift-alt-down  = 'move-workspace-to-monitor down'
+cmd-shift-alt-up    = 'move-workspace-to-monitor up'
+cmd-shift-alt-right = 'move-workspace-to-monitor right'
+
+# --------------------------------------------------- layout / window state
+cmd-t      = 'layout floating tiling'      # toggle tiled <-> floating
+cmd-j      = 'layout horizontal vertical'  # toggle window position
+cmd-l      = 'layout tiles accordion'      # toggle layout
+cmd-f      = 'fullscreen'
+cmd-alt-f  = 'fullscreen --no-outer-gaps'  # "full width"
+cmd-ctrl-f = 'macos-native-fullscreen'
+
+# Grouping. AeroSpace has no window groups; accordion is the nearest analogue.
+cmd-g            = 'layout accordion tiles'
+cmd-alt-tab      = 'focus --wrap-around dfs-next'
+cmd-alt-shift-tab = 'focus --wrap-around dfs-prev'
+cmd-ctrl-left    = 'focus dfs-prev'
+cmd-ctrl-right   = 'focus dfs-next'
+
+# Super + Alt + Arrow = move window into a group in that direction
+cmd-alt-left  = 'join-with left'
+cmd-alt-down  = 'join-with down'
+cmd-alt-up    = 'join-with up'
+cmd-alt-right = 'join-with right'
+
+ctrl-alt-backspace = 'close-all-windows-but-current'
+
+# ------------------------------------------------------- launching apps
+cmd-enter       = 'exec-and-forget open -na WezTerm'
+cmd-alt-enter   = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/tmux new-session -A -s main'
+cmd-shift-enter = 'exec-and-forget open -na "Brave Browser"'
+cmd-shift-alt-b = 'exec-and-forget open -na "Brave Browser" --args --incognito'
+cmd-shift-f     = 'exec-and-forget open -a Finder'
+cmd-shift-n     = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/nvim'
+cmd-shift-d     = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/lazydocker'
+cmd-shift-g     = 'exec-and-forget open -a Discord'
+cmd-shift-a     = 'exec-and-forget open -a Gemini'
+cmd-shift-c     = 'exec-and-forget open -a Calendar'
+cmd-shift-e     = 'exec-and-forget open -a Mail'
+cmd-shift-y     = 'exec-and-forget open -na "Brave Browser" --args --app=https://youtube.com'
+cmd-shift-x     = 'exec-and-forget open -na "Brave Browser" --args --app=https://x.com'
+
+# Not installed on this machine -- uncomment once they are:
+# cmd-shift-m       = 'exec-and-forget open -a Spotify'
+# cmd-shift-o       = 'exec-and-forget open -a Obsidian'
+# cmd-shift-slash   = 'exec-and-forget open -a "1Password"'
+# cmd-shift-alt-g   = 'exec-and-forget open -a WhatsApp'
+
+# -------------------------------------------------------- system panels
+cmd-ctrl-a     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Sound-Settings.extension"'
+cmd-ctrl-b     = 'exec-and-forget open "x-apple.systempreferences:com.apple.BluetoothSettings"'
+cmd-ctrl-w     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Network-Settings.extension"'
+cmd-ctrl-d     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Displays-Settings.extension"'
+cmd-ctrl-p     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Battery-Settings.extension"'
+cmd-ctrl-t     = 'exec-and-forget open -a "Activity Monitor"'
+cmd-ctrl-q     = 'exec-and-forget open -a Calculator'
+cmd-ctrl-l     = 'exec-and-forget pmset displaysleepnow'
+cmd-ctrl-alt-d = 'exec-and-forget open -a Calendar'
+
+# ---------------------------------------------------------- service mode
 alt-shift-semicolon = 'mode service'
 
 [mode.service.binding]
-esc = ['reload-config', 'mode main']
-r = ['flatten-workspace-tree', 'mode main'] 
-f = ['layout floating tiling', 'mode main'] 
+esc       = ['reload-config', 'mode main']
+r         = ['flatten-workspace-tree', 'mode main']
+f         = ['layout floating tiling', 'mode main']
 backspace = ['close-all-windows-but-current', 'mode main']
-
 
 alt-shift-h = ['join-with left', 'mode main']
 alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
+# ============================================================ workspaces
+# 1 Coding  2 Notes  3 Browser  4 Work/chat  5 Files
+# 6 Reading 7 Media  8 Tools    9 VM         0 Scratchpad
+
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
-run = "move-node-to-workspace S"
+run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-if.app-id ='com.mitchellh.ghostty'
-run = "move-node-to-workspace C"
-
-# [[on-window-detected]]
-# if.app-id = 'com.github.wez.wezterm'
-# run = 'layout floating'
+if.app-id = 'com.microsoft.VSCode'
+run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-if.app-id = 'com.google.Chrome'
-run = "move-node-to-workspace B"
-
-[[on-window-detected]]
-if.app-id = 'org.mozilla.firefox'
-run = "move-node-to-workspace B"
-
-[[on-window-detected]]
-if.app-id = 'com.apple.finder'
-run = "move-node-to-workspace D"
-
-[[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = "move-node-to-workspace W"
-
-[[on-window-detected]]
-if.app-id = 'com.apple.Preview'
-run = "move-node-to-workspace R"
-
-[[on-window-detected]]
-if.app-id = 'com.apple.iBooksX'
-run = "move-node-to-workspace R"
-
-[[on-window-detected]]
-if.app-id = 'info.sioyek.sioyek'
-run = "move-node-to-workspace R"
- 
-[[on-window-detected]]
-if.app-id = 'notion.id'
-run = "move-node-to-workspace N"
+if.app-id = 'com.apple.dt.Xcode'
+run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Notes'
-run = "move-node-to-workspace N"
+run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
-run = "move-node-to-workspace N"
+run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
-if.app-id = 'com.googlecode.iterm2'
-run = 'move-node-to-workspace S'
+if.app-id = 'notion.id'
+run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
-if.app-id = 'com.hnc.Discord'
-run = 'move-node-to-workspace W'
+if.app-id = 'net.ankiweb.anki'
+run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
-if.app-id = 'com.blackmagic-design.DaVinciResolveLite'
-run = 'move-node-to-workspace V'
+if.app-id = 'com.brave.Browser'
+run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
-if.app-id = 'com.obsproject.obs-studio'
-run = 'move-node-to-workspace V'
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
-if.app-id = 'com.vmware.fusion'
-run = 'move-node-to-workspace X'
+if.app-id = 'org.mozilla.firefox'
+run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
 if.app-id = 'org.qutebrowser.qutebrowser'
-run = ['layout tiling', 'move-node-to-workspace B']
+run = ['layout tiling', 'move-node-to-workspace 3']
 
-#which work space is on which monitor
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'move-node-to-workspace 5'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Preview'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'info.sioyek.sioyek'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.iBooksX'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'net.kovidgoyal.calibre'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'com.obsproject.obs-studio'
+run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'com.blackmagic-design.DaVinciResolveLite'
+run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'com.spotify.client'
+run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+if.app-id = 'com.googlecode.iterm2'
+run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+if.app-id = 'com.postmanlabs.mac'
+run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+if.app-id = 'com.docker.docker'
+run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+if.app-id = 'com.vmware.fusion'
+run = 'move-node-to-workspace 9'
+
 [workspace-to-monitor-force-assignment]
-A = 'main'
-B = 'main'
-C = 'main'
-D = 'main'
-G = 'main'
-M = 'main'
-N = 'main'
-R = 'main'
-S = 'main'
-T = 'main'
-V = 'main'
-W = 'main'
-X = 'main'
-
-#join 
-# alt-shift-; for service mode
-# alt-shift -> L or H,.... to merge ...
+1 = 'main'
+2 = 'main'
+3 = 'main'
+4 = 'main'
+5 = 'main'
+6 = 'main'
+7 = 'main'
+8 = 'main'
+9 = 'main'
+0 = 'main'
