@@ -91,20 +91,20 @@ Apps auto-assign on launch — see `[[on-window-detected]]` in
 | `⌥ N`           | nvim                            |
 | `⌥ D`           | lazydocker                      |
 | `⌥ G`           | Discord                         |
+| `⌥ C`           | Calendar                        |
 | `⌘⇧ F`          | Finder                          |
-| `⌘⇧ C` / `⌘⇧ E` | Calendar / Mail                 |
+| `⌘⇧ E`          | Mail                            |
 | `⌘⇧ Y` / `⌘⇧ X` | YouTube / X                     |
 
-Three launchers sit on `⌥`+letter rather than `⌘⇧`+letter, because every `⌘⇧` combination
-shadows a menu command in the focused app. `⌥` is free: tmux binds only `⌥`+digit, `⌥`+arrow,
-`⌥⏎` and `⌥⎋`; zsh runs vi mode; nvim has no `⌥` maps. The cost is that `⌥N` `⌥D` `⌥G` no
-longer type `˜` `∂` `©`.
+Four launchers sit on `⌥`+letter rather than `⌘⇧`+letter, because every `⌘⇧` combination
+shadows a menu command in the focused app. `⌥` is otherwise free: tmux binds only `⌥`+digit,
+`⌥`+arrow, `⌥⏎` and `⌥⎋`; zsh runs vi mode; nvim has no `⌥` maps. Two costs:
 
-`⌥C` is **not** used — it is fzf's `ALT-C` (`fzf-cd-widget`). Calendar therefore stays on
-`⌘⇧C`, which costs Chrome's Inspect Element.
+- `⌥C` `⌥D` `⌥G` `⌥N` no longer type `ç` `∂` `©` `˜`.
+- fzf's `ALT-C` (`fzf-cd-widget`) is given up; `.zshrc` unbinds it so it is not a dead key.
 
-`⌘⇧A` is deliberately unbound so Chrome keeps Search Tabs. Gemini has no launcher; `⌥A` is
-free if you want one.
+`⌘⇧A` and `⌘⇧C` are deliberately unbound so the browser keeps Search Tabs and Inspect Element.
+Gemini has no launcher; `⌥A` is free if you want one.
 
 ## System panels
 

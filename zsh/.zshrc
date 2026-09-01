@@ -116,6 +116,11 @@ qss() {
 bindkey -v
 bindkey ^F autosuggest-accept
 
+# AeroSpace grabs alt-c globally as the Calendar launcher, so fzf's ALT-C
+# (fzf-cd-widget) can never fire. Unbind it rather than leave a dead key.
+bindkey -M viins -r '^[c'
+bindkey -M vicmd -r '^[c'
+
 export MANPAGER="nvim +Man!"
 
 # go.nvim reports GOBIN as unset otherwise; matches the default GOPATH/bin

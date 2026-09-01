@@ -158,12 +158,10 @@ cmd-shift-f     = 'exec-and-forget open -a Finder'
 alt-n           = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/nvim'
 alt-d           = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/lazydocker'
 alt-g           = 'exec-and-forget open -a Discord'
+alt-c           = 'exec-and-forget open -a Calendar'
 
-# alt-c is NOT used: it is fzf's ALT-C (fzf-cd-widget) in zsh. Calendar stays
-# on cmd-shift-c, which costs Chrome's Inspect Element.
-cmd-shift-c     = 'exec-and-forget open -a Calendar'
-
-# cmd-shift-a is deliberately unbound -- it is Chrome's Search Tabs.
+# cmd-shift-a and cmd-shift-c are deliberately unbound: they are the browser's
+# Search Tabs and Inspect Element.
 cmd-shift-e     = 'exec-and-forget open -a Mail'
 cmd-shift-y     = 'exec-and-forget open -na "Brave Browser" --args --app=https://youtube.com'
 cmd-shift-x     = 'exec-and-forget open -na "Brave Browser" --args --app=https://x.com'
