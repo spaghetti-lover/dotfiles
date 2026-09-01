@@ -150,11 +150,20 @@ cmd-alt-enter   = 'exec-and-forget open -na WezTerm --args start -- /opt/homebre
 cmd-shift-enter = 'exec-and-forget open -na "Brave Browser"'
 cmd-shift-alt-b = 'exec-and-forget open -na "Brave Browser" --args --incognito'
 cmd-shift-f     = 'exec-and-forget open -a Finder'
-cmd-shift-n     = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/nvim'
-cmd-shift-d     = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/lazydocker'
-cmd-shift-g     = 'exec-and-forget open -a Discord'
-cmd-shift-a     = 'exec-and-forget open -a Gemini'
+
+# Moved off cmd-shift so the apps keep their own cmd-shift-<letter> commands
+# (Chrome's incognito window, find-previous, bookmark-all-tabs). alt-<letter>
+# is free here: tmux binds only alt-digit / alt-arrow / alt-enter / alt-escape,
+# zsh runs vi mode, and nvim has no alt maps.
+alt-n           = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/nvim'
+alt-d           = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/lazydocker'
+alt-g           = 'exec-and-forget open -a Discord'
+
+# alt-c is NOT used: it is fzf's ALT-C (fzf-cd-widget) in zsh. Calendar stays
+# on cmd-shift-c, which costs Chrome's Inspect Element.
 cmd-shift-c     = 'exec-and-forget open -a Calendar'
+
+# cmd-shift-a is deliberately unbound -- it is Chrome's Search Tabs.
 cmd-shift-e     = 'exec-and-forget open -a Mail'
 cmd-shift-y     = 'exec-and-forget open -na "Brave Browser" --args --app=https://youtube.com'
 cmd-shift-x     = 'exec-and-forget open -na "Brave Browser" --args --app=https://x.com'

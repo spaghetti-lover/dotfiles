@@ -88,13 +88,23 @@ Apps auto-assign on launch — see `[[on-window-detected]]` in
 | `⌘⌥ ⏎`          | WezTerm + tmux (`main` session) |
 | `⌘⇧ ⏎`          | Brave                           |
 | `⌘⇧⌥ B`         | Brave (incognito)               |
-| `⌘⇧ N`          | nvim                            |
-| `⌘⇧ D`          | lazydocker                      |
+| `⌥ N`           | nvim                            |
+| `⌥ D`           | lazydocker                      |
+| `⌥ G`           | Discord                         |
 | `⌘⇧ F`          | Finder                          |
-| `⌘⇧ G`          | Discord                         |
-| `⌘⇧ A`          | Gemini                          |
 | `⌘⇧ C` / `⌘⇧ E` | Calendar / Mail                 |
 | `⌘⇧ Y` / `⌘⇧ X` | YouTube / X                     |
+
+Three launchers sit on `⌥`+letter rather than `⌘⇧`+letter, because every `⌘⇧` combination
+shadows a menu command in the focused app. `⌥` is free: tmux binds only `⌥`+digit, `⌥`+arrow,
+`⌥⏎` and `⌥⎋`; zsh runs vi mode; nvim has no `⌥` maps. The cost is that `⌥N` `⌥D` `⌥G` no
+longer type `˜` `∂` `©`.
+
+`⌥C` is **not** used — it is fzf's `ALT-C` (`fzf-cd-widget`). Calendar therefore stays on
+`⌘⇧C`, which costs Chrome's Inspect Element.
+
+`⌘⇧A` is deliberately unbound so Chrome keeps Search Tabs. Gemini has no launcher; `⌥A` is
+free if you want one.
 
 ## System panels
 

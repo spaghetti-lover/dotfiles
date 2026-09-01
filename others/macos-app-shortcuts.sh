@@ -69,10 +69,6 @@ BINDINGS=(
   'Print...|^p'
   'Zoom In|^='
   'Zoom Out|^-'
-  # cmd-shift-A is AeroSpace's Gemini launcher, so Chrome's tab search is
-  # displaced too. Browsers only; harmless no-op everywhere else.
-  'Search Tabs…|^$a'
-  'Search Tabs...|^$a'
 )
 
 case "${1:-apply}" in
