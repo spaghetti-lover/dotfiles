@@ -37,9 +37,9 @@ AeroSpace grabs ⌘ combos globally. See [What ⌘ costs](#what--costs) below.
 | `` ⌘ ` ``            | Toggle scratchpad (workspace 0)                                       |
 | `` ⌘⇧ ` ``           | Move window to scratchpad                                             |
 | `⌘⇧⌥ ←↓↑→`           | Move whole workspace to another monitor                               |
-| `⌘ T`                | Toggle tiled / floating                                               |
+| `⌥ T`                | Toggle tiled / floating                                               |
 | `⌘ J`                | Toggle window position                                                |
-| `⌘ L`                | Toggle layout (accordion / tiles) — flips this workspace to a split   |
+| `⌥ L`                | Toggle layout (accordion / tiles) — flips this workspace to a split   |
 | `⌘ F`                | Full screen                                                           |
 | `⌘⌥ F`               | Full width                                                            |
 | `⌘⌃ F`               | macOS native full screen                                              |
@@ -56,10 +56,10 @@ AeroSpace grabs ⌘ combos globally. See [What ⌘ costs](#what--costs) below.
 
 Workspaces default to the **accordion** layout: a new window takes the full screen and the
 others collapse to slivers at the edges, rather than splitting the screen side by side.
-`⌘L` flips the current workspace to a tiled split and back; the default only applies to a
+`⌥L` flips the current workspace to a tiled split and back; the default only applies to a
 workspace's root container when it is first created.
 
-Focus is arrow-based, as in Omarchy. There are no `⌘hjkl` aliases because `⌘J` and `⌘L` are
+Focus is arrow-based, as in Omarchy. There are no `⌘hjkl` aliases because `⌘J` is
 Omarchy's window-position and layout toggles.
 
 ## Workspaces
@@ -149,13 +149,13 @@ here because it is nvim's cmp completion trigger.
 
 Both terminals send Option as Meta so the tmux Alt layer works.
 
-| Keys            | Action                            |
-| --------------- | --------------------------------- |
-| `⌃⇧ T`          | New tab (⌘T belongs to AeroSpace) |
-| `⌃⇧ ← →`        | Move tab                          |
-| `⌃⇧ E` / `⌃⇧ O` | Split down / right _(Ghostty)_    |
-| `⌃⌥ ←↓↑→`       | Move between splits _(Ghostty)_   |
-| `⌘⌃⇧ ←↓↑→`      | Resize split _(Ghostty)_          |
+| Keys            | Action                          |
+| --------------- | ------------------------------- |
+| `⌃⇧ T`          | New tab                         |
+| `⌃⇧ ← →`        | Move tab                        |
+| `⌃⇧ E` / `⌃⇧ O` | Split down / right _(Ghostty)_  |
+| `⌃⌥ ←↓↑→`       | Move between splits _(Ghostty)_ |
+| `⌘⌃⇧ ←↓↑→`      | Resize split _(Ghostty)_        |
 
 `⌥1-9` is deliberately unbound in Ghostty so those keys reach tmux.
 
@@ -170,19 +170,20 @@ AeroSpace's ⌘ bindings are global, so the macOS commands they displace are re-
 cd others && make macos-shortcuts     # make macos-shortcuts-reset to undo
 ```
 
-| Was                | Now                              |
-| ------------------ | -------------------------------- |
-| `⌘F` Find          | `⌃F`                             |
-| `⌘G` Find Next     | `⌃G`                             |
-| `⌘T` New Tab       | `⌃T`                             |
-| `⌘L` Open Location | `⌃L` (F6 also works in browsers) |
-| `⌘O` Open          | `⌃O`                             |
-| `⌘P` Print         | `⌃P`                             |
-| `⌘J` Downloads     | `⌃J`                             |
-| `⌘-` `⌘=` Zoom     | `⌃-` `⌃=`                        |
+| Was            | Now       |
+| -------------- | --------- |
+| `⌘F` Find      | `⌃F`      |
+| `⌘G` Find Next | `⌃G`      |
+| `⌘O` Open      | `⌃O`      |
+| `⌘P` Print     | `⌃P`      |
+| `⌘J` Downloads | `⌃J`      |
+| `⌘-` `⌘=` Zoom | `⌃-` `⌃=` |
 
 These are per-app menu rebinds, never global — `⌃F` stays zsh `autosuggest-accept` and `⌃L` `⌃J`
 `⌃K` stay vim-tmux-navigator inside terminals.
+
+`⌘T` and `⌘L` are **not** in that table: AeroSpace's layout toggles moved to `⌥T` / `⌥L`, so
+New Tab and Open Location work natively again.
 
 **Not recoverable:** `⌘1`…`⌘9` for browser tab selection — browsers expose no menu item for
 "switch to tab N". Use `⌃Tab` / `⌃⇧Tab`, which cycle tabs natively.

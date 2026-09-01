@@ -3,7 +3,7 @@
 # Restore the macOS menu commands that AeroSpace's Omarchy bindings take over.
 #
 # AeroSpace grabs cmd-* globally (see aerospace/.config/aerospace/aerospace.toml),
-# so cmd-F, cmd-T, cmd-L, cmd-O, cmd-G, cmd-P and cmd-+/- never reach an app.
+# so cmd-F, cmd-O, cmd-G, cmd-P and cmd-+/- never reach an app.
 # This puts those commands back on plain ctrl -- the Linux convention, which is
 # what Omarchy users expect anyway.
 #
@@ -57,13 +57,10 @@ BINDINGS=(
   'Find…|^f'
   'Find...|^f'
   'Find Next|^g'
-  'New Tab|^t'
   'Open…|^o'
   'Open...|^o'
   'Open File…|^o'
   'Open File...|^o'
-  'Open Location…|^l'
-  'Open Location...|^l'
   'Downloads|^j'
   'Print…|^p'
   'Print...|^p'

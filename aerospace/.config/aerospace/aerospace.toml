@@ -122,9 +122,10 @@ cmd-shift-alt-up    = 'move-workspace-to-monitor up'
 cmd-shift-alt-right = 'move-workspace-to-monitor right'
 
 # --------------------------------------------------- layout / window state
-cmd-t      = 'layout floating tiling'      # toggle tiled <-> floating
+# On alt, not cmd: cmd-t and cmd-l are the browser's New Tab and Open Location.
+alt-t      = 'layout floating tiling'      # toggle tiled <-> floating
 cmd-j      = 'layout horizontal vertical'  # toggle window position
-cmd-l      = 'layout tiles accordion'      # toggle layout
+alt-l      = 'layout accordion tiles'      # toggle layout
 cmd-f      = 'fullscreen'
 cmd-alt-f  = 'fullscreen --no-outer-gaps'  # "full width"
 cmd-ctrl-f = 'macos-native-fullscreen'
