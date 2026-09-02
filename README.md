@@ -15,6 +15,7 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 - zshell
 - GNU stow is a symlink management tool
 - zoxide (smarter `cd`: `z <part-of-path>` jumps, `zi` picks with fzf)
+- eza (better `ls`: icons and git status; aliased to `ls`, `lsa`, `lt`, `lta`)
 - mise (per-project runtime versions, replaces SDKMAN here)
 - btop (resource monitor), fastfetch (system info)
 - glab (GitLab CLI, needs a one-time `glab auth login`)
@@ -74,6 +75,7 @@ stow aerospace
 stow tmux
 stow wezterm
 stow ghostty
+stow karabiner
 ```
 
 for more information about gnustow: [link](https://www.gnu.org/software/stow/)
@@ -102,12 +104,21 @@ Window management, terminal and tmux follow an
 Full cheat sheet: [docs/keybindings.md](./docs/keybindings.md).
 
 Because AeroSpace grabs ⌘ combos globally, the macOS menu commands it displaces (Find, Open,
-Print, Zoom, ...) are re-bound onto plain Ctrl. Run this once per machine:
+Save, Print, Zoom, ...) are re-bound onto plain Ctrl. Run this once per machine —
+it is not optional, since ⌘S is the scratchpad toggle and Save has nowhere else to go:
 
 ```shell
 cd ~/dotfiles/others
 make macos-shortcuts        # make macos-shortcuts-reset to undo
 ```
+
+Apps are listed by bundle ID in `others/macos-app-shortcuts.sh`; add yours there as you install
+them, or they keep no Save shortcut at all.
+
+⌘1…⌘9 are workspace switches, so browser tabs move to ⌥1…⌥9. That one binding needs
+Karabiner-Elements: launch it once and grant Input Monitoring, and the stowed
+`karabiner/.config/karabiner/karabiner.json` does the rest. macOS will also ask once to let it
+control your browser.
 
 ### Backup pkgs by brew
 

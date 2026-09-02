@@ -43,15 +43,15 @@ config.window_background_image = bg_image
 config.window_background_opacity = 0.90
 config.macos_window_background_blur = 85
 config.window_padding = {
-    left = 0,
-    right = 0,
-    top = 0,
-    bottom = 0,
+    left = 18,
+    right = 18,
+    top = 12,
+    bottom = 12,
 }
 
 config.color_scheme = "Tokyo Night"
 config.font = wezterm.font("Inconsolata Nerd Font Mono", { weight = "Medium", stretch = "Expanded" })
-config.font_size = 18
+config.font_size = 20
 
 config.window_decorations = "RESIZE"
 config.enable_tab_bar = false

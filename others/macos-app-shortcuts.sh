@@ -3,9 +3,14 @@
 # Restore the macOS menu commands that AeroSpace's Omarchy bindings take over.
 #
 # AeroSpace grabs cmd-* globally (see aerospace/.config/aerospace/aerospace.toml),
-# so cmd-F, cmd-O, cmd-G, cmd-P and cmd-+/- never reach an app.
+# so cmd-O, cmd-G, cmd-S, cmd-P and cmd-+/- never reach an app. (cmd-F is not
+# among them any more -- nothing is bound to it, so Find works natively.)
 # This puts those commands back on plain ctrl -- the Linux convention, which is
 # what Omarchy users expect anyway.
+#
+# Running this is NOT optional. cmd-S is the scratchpad toggle now, so any app
+# missing from APPS below has no Save shortcut at all -- only File > Save in its
+# own menu. Add apps here as you install them.
 #
 # Mechanism: NSUserKeyEquivalents rebinds a menu item by its exact title. It
 # works at the AppKit menu layer, NOT the key-event layer, which is why it can
@@ -14,6 +19,7 @@
 # IMPORTANT: this is deliberately PER-APP, never `defaults write -g`.
 #   ctrl-F  is zsh autosuggest-accept
 #   ctrl-L / ctrl-J / ctrl-K are vim-tmux-navigator motions
+#   ctrl-S  is XOFF, which freezes the terminal
 # A global write would steal those inside WezTerm and Ghostty, so terminal
 # bundle IDs are deliberately absent from APPS below.
 #
@@ -47,6 +53,15 @@ APPS=(
   net.ankiweb.anki
   com.postmanlabs.mac
   com.hnc.Discord
+  com.google.GeminiMacOS
+  com.microsoft.VSCode
+  com.apple.dt.Xcode
+  com.apple.Pages
+  com.apple.Numbers
+  com.apple.Keynote
+  com.apple.iMovieApp
+  com.apple.garageband10
+  com.obsproject.obs-studio
 )
 
 # "Menu item title|shortcut". Titles must match the menu bar EXACTLY, so the
@@ -54,13 +69,14 @@ APPS=(
 # periods, since apps are inconsistent. Writing a title an app does not have
 # is a harmless no-op.
 BINDINGS=(
-  'Find…|^f'
-  'Find...|^f'
   'Find Next|^g'
   'Open…|^o'
   'Open...|^o'
   'Open File…|^o'
   'Open File...|^o'
+  'Save|^s'
+  'Save…|^s'
+  'Save...|^s'
   'Downloads|^j'
   'Print…|^p'
   'Print...|^p'

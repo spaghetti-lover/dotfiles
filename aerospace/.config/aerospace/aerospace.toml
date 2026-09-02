@@ -4,23 +4,35 @@
 # Every binding below mirrors https://omarchy.org/manual/hotkeys
 #
 # AeroSpace grabs cmd-* globally. The macOS menu commands this displaces
-# (Find, New Tab, Open Location, Zoom, ...) are restored on plain ctrl by
-# others/macos-app-shortcuts.sh. See docs/keybindings.md.
+# (Open, Save, Print, Zoom, ...) are restored on plain ctrl by
+# others/macos-app-shortcuts.sh -- running it is not optional now that cmd-s
+# is taken. See docs/keybindings.md.
 
 after-login-command = []
-after-startup-command = []
+
+# A pin does not survive a restart of AeroSpace; drop the stale window id.
+after-startup-command = ['exec-and-forget /Users/ducannh/dotfiles/others/aerospace-pin.sh clear']
+
+# Omarchy's Super+O. AeroSpace has no sticky windows, so the pinned window is
+# dragged onto each workspace as we arrive. See others/aerospace-pin.sh.
+exec-on-workspace-change = ['/bin/bash', '-c',
+                            '/Users/ducannh/dotfiles/others/aerospace-pin.sh follow']
 
 start-at-login = true
 
-enable-normalization-flatten-containers = true
-enable-normalization-opposite-orientation-for-nested-containers = true
+# i3-style manual splits: containers are never flattened and never re-oriented
+# behind our back, so the split-opposite rule at the bottom of this file has
+# full control of the tree.
+enable-normalization-flatten-containers = false
+enable-normalization-opposite-orientation-for-nested-containers = false
 
 accordion-padding = 30
 
-# New windows stack full-size instead of splitting the screen side by side.
-# Press cmd-l on any workspace to flip that workspace back to a tiled split.
-default-root-container-layout = 'accordion'
-default-root-container-orientation = 'auto'
+# New windows spiral: right, then down, then right, ... (dwindle). The root
+# starts vertical so the first window's `split opposite` flips it to horizontal
+# and the first split therefore goes right.
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'vertical'
 
 # Omarchy: "switch focus and move the cursor to the center of the new application"
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
@@ -49,7 +61,7 @@ cmd-up    = 'focus up'
 cmd-right = 'focus right'
 
 # NB: no cmd-hjkl focus aliases -- Omarchy is arrow-based for focus, and
-# cmd-j / cmd-l are its window-position and layout toggles (see below).
+# cmd-j is its window-position toggle (see below).
 
 # Super + Shift + Arrow = swap window
 cmd-shift-left  = 'swap left'
@@ -88,7 +100,9 @@ cmd-tab       = 'workspace --wrap-around next'
 cmd-shift-tab = 'workspace --wrap-around prev'
 cmd-ctrl-tab  = 'workspace-back-and-forth'
 
-# Super + Shift + N = move window to workspace and follow it
+# Super + Shift + N = move window to workspace and follow it.
+# 3, 4 and 5 displace macOS's screenshot and screen-record hotkeys; AeroSpace
+# wins the grab, and that is deliberate -- use the Screenshot app instead.
 cmd-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
 cmd-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
 cmd-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
@@ -111,9 +125,12 @@ cmd-shift-alt-8 = 'move-node-to-workspace 8'
 cmd-shift-alt-9 = 'move-node-to-workspace 9'
 
 # Scratchpad = workspace 0. Press again to go back where you came from.
-# (Omarchy also offers Super+S for this; cmd-s is left alone so Save works.)
+# Omarchy binds both Super+Grave and Super+S, so both are here. cmd-s costs
+# Save everywhere -- macos-app-shortcuts.sh puts it back on ctrl-s.
 cmd-backtick       = 'workspace --auto-back-and-forth 0'
+cmd-s              = 'workspace --auto-back-and-forth 0'
 cmd-shift-backtick = 'move-node-to-workspace 0'
+cmd-alt-s          = 'move-node-to-workspace 0'
 
 # Super + Shift + Alt + Arrow = move whole workspace to another monitor
 cmd-shift-alt-left  = 'move-workspace-to-monitor left'
@@ -122,13 +139,20 @@ cmd-shift-alt-up    = 'move-workspace-to-monitor up'
 cmd-shift-alt-right = 'move-workspace-to-monitor right'
 
 # --------------------------------------------------- layout / window state
-# On alt, not cmd: cmd-t and cmd-l are the browser's New Tab and Open Location.
+# On alt, not cmd: cmd-t is the browser's New Tab. There is no separate layout
+# toggle -- cmd-g already flips a workspace between dwindle and accordion.
 alt-t      = 'layout floating tiling'      # toggle tiled <-> floating
-cmd-j      = 'layout horizontal vertical'  # toggle window position
-alt-l      = 'layout accordion tiles'      # toggle layout
-cmd-f      = 'fullscreen'
-cmd-alt-f  = 'fullscreen --no-outer-gaps'  # "full width"
-cmd-ctrl-f = 'macos-native-fullscreen'
+
+# Omarchy's Super+O: pop this window out of the tiling tree and have it follow
+# you from workspace to workspace. Press again to put it back.
+cmd-o      = 'exec-and-forget /Users/ducannh/dotfiles/others/aerospace-pin.sh toggle'
+
+# Toggle window position: side by side <-> stacked. --root is what makes this
+# work at all -- the split-opposite rule wraps each new window in a container
+# of its own, so the focused window's parent usually has a single child and
+# re-orienting it changes nothing on screen. The workspace root always has the
+# real top-level split. Nested dwindle splits keep their own orientation.
+cmd-j      = 'layout --root horizontal vertical'
 
 # Grouping. AeroSpace has no window groups; accordion is the nearest analogue.
 cmd-g            = 'layout accordion tiles'
@@ -143,13 +167,36 @@ cmd-alt-down  = 'join-with down'
 cmd-alt-up    = 'join-with up'
 cmd-alt-right = 'join-with right'
 
+# Super + Alt + N = jump straight to the Nth window. The index is a depth-first
+# walk of the whole workspace (top to bottom, left to right), which is the order
+# a group shows its windows in.
+cmd-alt-1 = 'focus --dfs-index 0'
+cmd-alt-2 = 'focus --dfs-index 1'
+cmd-alt-3 = 'focus --dfs-index 2'
+cmd-alt-4 = 'focus --dfs-index 3'
+cmd-alt-5 = 'focus --dfs-index 4'
+cmd-alt-6 = 'focus --dfs-index 5'
+cmd-alt-7 = 'focus --dfs-index 6'
+cmd-alt-8 = 'focus --dfs-index 7'
+cmd-alt-9 = 'focus --dfs-index 8'
+
+# Super + Alt + G = eject this window from its group -- the inverse of join-with
+# above. A window leaves its container when it moves perpendicular to it, so the
+# direction comes from the container's own orientation.
+cmd-alt-g = 'test %{window-layout} ~= ^h_ && move up || move left'
+
+# Omarchy's killactive. Plain `close`, not --quit-if-last-window, so the app
+# survives: closing its window on workspace 2 leaves its window on 3 alone.
+# There is deliberately no quit-app binding -- quit from the app's own menu.
+cmd-q = 'close'
+
 ctrl-alt-backspace = 'close-all-windows-but-current'
 
 # ------------------------------------------------------- launching apps
 cmd-enter       = 'exec-and-forget open -na WezTerm'
 cmd-alt-enter   = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/tmux new-session -A -s main'
-cmd-shift-enter = 'exec-and-forget open -na "Brave Browser"'
-cmd-shift-alt-b = 'exec-and-forget open -na "Brave Browser" --args --incognito'
+cmd-shift-enter = 'exec-and-forget open -na "Google Chrome"'
+cmd-shift-alt-b = 'exec-and-forget open -na "Google Chrome" --args --incognito'
 cmd-shift-f     = 'exec-and-forget open -a Finder'
 
 # Moved off cmd-shift so the apps keep their own cmd-shift-<letter> commands
@@ -164,8 +211,8 @@ alt-c           = 'exec-and-forget open -a Calendar'
 # cmd-shift-a and cmd-shift-c are deliberately unbound: they are the browser's
 # Search Tabs and Inspect Element.
 cmd-shift-e     = 'exec-and-forget open -a Mail'
-cmd-shift-y     = 'exec-and-forget open -na "Brave Browser" --args --app=https://youtube.com'
-cmd-shift-x     = 'exec-and-forget open -na "Brave Browser" --args --app=https://x.com'
+cmd-shift-y     = 'exec-and-forget open -na "Google Chrome" --args --app=https://youtube.com'
+cmd-shift-x     = 'exec-and-forget open -na "Google Chrome" --args --app=https://x.com'
 
 # Not installed on this machine -- uncomment once they are:
 # cmd-shift-m       = 'exec-and-forget open -a Spotify'
@@ -198,131 +245,33 @@ alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
-# ============================================================ workspaces
-# 1 Coding   2 Terminal  3 Browser  4 Work/chat  5 Files
-# 6 Reading & notes      7 Media    8 Tools      9 VM     0 Scratchpad
+# =========================================================== window rules
+# There is no app-to-workspace assignment: a window opens on whatever workspace
+# is focused. Use cmd-shift-<n> to move it somewhere else.
+#
+# Every rule ends in `fullscreen --no-outer-gaps`: a new window opens edge to
+# edge, covering the workspace. Its place in the tiling tree is unchanged --
+# only the drawn frame is. AeroSpace unfullscreens the focused window when the
+# next window is created, so the newest window is the one filling the screen.
 
-# ---- 1  coding
-
-[[on-window-detected]]
-if.app-id = 'com.microsoft.VSCode'
-run = 'move-node-to-workspace 1'
-
-[[on-window-detected]]
-if.app-id = 'com.apple.dt.Xcode'
-run = 'move-node-to-workspace 1'
-
-# ---- 2  terminal
-
-[[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
-run = 'move-node-to-workspace 2'
-
-[[on-window-detected]]
-if.app-id = 'com.mitchellh.ghostty'
-run = 'move-node-to-workspace 2'
-
-[[on-window-detected]]
-if.app-id = 'com.googlecode.iterm2'
-run = 'move-node-to-workspace 2'
-
-# ---- 3  browser
-
-[[on-window-detected]]
-if.app-id = 'com.brave.Browser'
-run = 'move-node-to-workspace 3'
-
-[[on-window-detected]]
-if.app-id = 'com.google.Chrome'
-run = 'move-node-to-workspace 3'
-
-[[on-window-detected]]
-if.app-id = 'org.mozilla.firefox'
-run = 'move-node-to-workspace 3'
-
+# qutebrowser is detected as floating; force it into the tiling tree.
 [[on-window-detected]]
 if.app-id = 'org.qutebrowser.qutebrowser'
-run = ['layout tiling', 'move-node-to-workspace 3']
+run = ['layout tiling', 'split opposite', 'fullscreen --no-outer-gaps']
 
-# ---- 4  work / chat
-
+# Omarchy: "every window you start while the group is active belongs to the
+# group". A window that lands inside an accordion joins it, so skip the dwindle
+# split that would otherwise pull it out into a container of its own.
 [[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'move-node-to-workspace 4'
+if = 'test %{window-parent-container-layout} ~= accordion'
+run = 'fullscreen --no-outer-gaps'
 
+# Dwindle: each new window is wrapped in a container perpendicular to its
+# parent, so the *next* window opens perpendicular to this one -- right, down,
+# right, down. Only the first matching rule runs, so this catch-all stays last.
 [[on-window-detected]]
-if.app-id = 'com.hnc.Discord'
-run = 'move-node-to-workspace 4'
-
-# ---- 5  files
-
-[[on-window-detected]]
-if.app-id = 'com.apple.finder'
-run = 'move-node-to-workspace 5'
-
-# ---- 6  reading & notes
-
-[[on-window-detected]]
-if.app-id = 'com.apple.Preview'
-run = 'move-node-to-workspace 6'
-
-[[on-window-detected]]
-if.app-id = 'info.sioyek.sioyek'
-run = 'move-node-to-workspace 6'
-
-[[on-window-detected]]
-if.app-id = 'com.apple.iBooksX'
-run = 'move-node-to-workspace 6'
-
-[[on-window-detected]]
-if.app-id = 'net.kovidgoyal.calibre'
-run = 'move-node-to-workspace 6'
-
-[[on-window-detected]]
-if.app-id = 'com.apple.Notes'
-run = 'move-node-to-workspace 6'
-
-[[on-window-detected]]
-if.app-id = 'md.obsidian'
-run = 'move-node-to-workspace 6'
-
-[[on-window-detected]]
-if.app-id = 'notion.id'
-run = 'move-node-to-workspace 6'
-
-[[on-window-detected]]
-if.app-id = 'net.ankiweb.anki'
-run = 'move-node-to-workspace 6'
-
-# ---- 7  media
-
-[[on-window-detected]]
-if.app-id = 'com.obsproject.obs-studio'
-run = 'move-node-to-workspace 7'
-
-[[on-window-detected]]
-if.app-id = 'com.blackmagic-design.DaVinciResolveLite'
-run = 'move-node-to-workspace 7'
-
-[[on-window-detected]]
-if.app-id = 'com.spotify.client'
-run = 'move-node-to-workspace 7'
-
-# ---- 8  tools
-
-[[on-window-detected]]
-if.app-id = 'com.postmanlabs.mac'
-run = 'move-node-to-workspace 8'
-
-[[on-window-detected]]
-if.app-id = 'com.docker.docker'
-run = 'move-node-to-workspace 8'
-
-# ---- 9  vm
-
-[[on-window-detected]]
-if.app-id = 'com.vmware.fusion'
-run = 'move-node-to-workspace 9'
+if = 'true'
+run = ['split opposite', 'fullscreen --no-outer-gaps']
 
 [workspace-to-monitor-force-assignment]
 1 = 'main'

@@ -42,6 +42,12 @@ alias fv='nvim $(fzf -m --preview="bat --color=always {}")'
 # zoxide: `z <part-of-path>` jumps to a directory you have visited, `zi` picks one with fzf
 eval "$(zoxide init zsh)"
 
+# eza: ls replacement with icons, colors and git status. `man eza` for the manual.
+alias ls='eza -lh --group-directories-first --icons=auto'
+alias lsa='ls -a'
+alias lt='eza --tree --level=2 --long --icons --git'
+alias lta='lt -a'
+
 # my alias for an easier life
 alias v=nvim
 alias vim=nvim

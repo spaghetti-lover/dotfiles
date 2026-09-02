@@ -1,0 +1,15 @@
+https://omarchy.org/manual/
+https://omarchy.org/manual/getting-started/
+https://omarchy.org/manual/coming-from-mac-or-windows/
+https://omarchy.org/manual/navigation/
+https://omarchy.org/manual/the-top-bar/
+https://omarchy.org/manual/themes/
+https://omarchy.org/manual/hotkeys/
+https://omarchy.org/manual/unified-clipboard-history/
+https://omarchy.org/manual/reminders/
+https://omarchy.org/manual/notices/
+https://omarchy.org/manual/text-extraction-dictation/
+https://omarchy.org/manual/screenshots-recording/
+https://omarchy.org/manual/toggles-idle-screensaver/
+https://omarchy.org/manual/omarchy-cli/
+https://omarchy.org/manual/terminal/

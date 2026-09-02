@@ -34,50 +34,96 @@ AeroSpace grabs ⌘ combos globally. See [What ⌘ costs](#what--costs) below.
 | `⌘⌃ Tab`             | Former workspace                                                      |
 | `⌘⇧ 1`…`9`           | Move window to workspace and follow                                   |
 | `⌘⇧⌥ 1`…`9`          | Move window there without following                                   |
-| `` ⌘ ` ``            | Toggle scratchpad (workspace 0)                                       |
-| `` ⌘⇧ ` ``           | Move window to scratchpad                                             |
+| `` ⌘ ` `` / `⌘ S`    | Toggle scratchpad (workspace 0)                                       |
+| `` ⌘⇧ ` `` / `⌘⌥ S`  | Move window to scratchpad                                             |
 | `⌘⇧⌥ ←↓↑→`           | Move whole workspace to another monitor                               |
 | `⌥ T`                | Toggle tiled / floating                                               |
-| `⌘ J`                | Toggle window position                                                |
-| `⌥ L`                | Toggle layout (accordion / tiles) — flips this workspace to a split   |
-| `⌘ F`                | Full screen                                                           |
-| `⌘⌥ F`               | Full width                                                            |
-| `⌘⌃ F`               | macOS native full screen                                              |
-| `⌘ G`                | Toggle grouping (accordion)                                           |
+| `⌘ O`                | Pop window out — floats it and it follows you across workspaces       |
+| `⌘ J`                | Toggle window position — this workspace's split, columns ↔ rows       |
+| `⌘ G`                | Toggle grouping (accordion) — press again to disassemble              |
 | `⌘⌥ Tab` / `⌘⌥⇧ Tab` | Cycle within group                                                    |
-| `⌘⌃ ← →`             | Move between windows                                                  |
-| `⌘⌥ ←↓↑→`            | Move window into a group                                              |
+| `⌘⌃ ← →`             | Move between grouped windows                                          |
+| `⌘⌥ 1`…`9`           | Jump straight to the *n*th window                                     |
+| `⌥ 1`…`9`            | Select browser tab — tmux window everywhere else                      |
+| `⌘⌥ ←↓↑→`            | Move a window into the group in that direction                        |
+| `⌘⌥ G`               | Move the focused window back out of its group                         |
 | `⌘ -` / `⌘ =`        | Shrink / expand width                                                 |
 | `⌘⇧ -` / `⌘⇧ =`      | Shrink / expand height                                                |
 | `⌘⌥ -` / `⌘⌥ =`      | Small-step resize                                                     |
 | `⌘⌃ -` / `⌘⌃ =`      | Big-step resize                                                       |
+| `⌘ Q`                | Close this window (the app keeps running — see What ⌘ costs)          |
 | `⌃⌥ Delete`          | Close all windows but current                                         |
 | `⌥⇧ ;`               | Service mode (`esc` reload, `r` flatten, `f` float, `⌫` close others) |
 
-Workspaces default to the **accordion** layout: a new window takes the full screen and the
-others collapse to slivers at the edges, rather than splitting the screen side by side.
-`⌥L` flips the current workspace to a tiled split and back; the default only applies to a
-workspace's root container when it is first created.
+Workspaces default to **tiles**, and new windows spiral (dwindle): the second window opens to
+the right of the first, the third below the second, the fourth to the right of the third, and
+so on.
 
-Focus is arrow-based, as in Omarchy. There are no `⌘hjkl` aliases because `⌘J` is
-Omarchy's window-position and layout toggles.
+```
+┌──────────┬─────────┐
+│          │    2    │
+│    1     ├────┬────┤
+│          │ 3  │ 4  │
+└──────────┴────┴────┘
+```
+
+New windows open **full screen, edge to edge** (`fullscreen --no-outer-gaps`) rather than
+appearing as a tile you then have to enlarge. The tile is still allotted underneath — only the
+drawn frame covers the workspace — and AeroSpace drops the focused window out of full screen
+when the next one is created, so it is always the newest window filling the screen. There is no
+full-screen keybinding: `⌘F`, `⌘⌥F` and `⌘⌃F` belong to the app (Find, and friends).
+
+`⌘J` flips the workspace's top-level split: two windows go from side by side to stacked and
+back. It targets the workspace root, so nested dwindle splits keep their own orientation —
+in the tree above, `⌘J` puts 1 on top of the 2/3/4 block without disturbing that block.
+
+There is no separate layout toggle: `⌘G` already flips a workspace between dwindle and accordion
+(one full-screen window, the rest collapsed to slivers at the edges), which is the nearest thing
+macOS has to Omarchy's scrolling layout. The choice is per workspace, so workspace 1 can stay
+dwindle while workspace 2 is accordion. If a tree gets tangled, service mode `⌥⇧;` then `r`
+flattens it.
+
+Focus is arrow-based, as in Omarchy. There is no `⌘hjkl` alias because `⌘J` is
+Omarchy's window-position toggle.
+
+### Grouping
+
+AeroSpace has no window groups, so an **accordion container** stands in for one: `⌘G` collapses
+the focused container into a stack of slivers with one window open, and `⌘G` again spreads it back
+out. As in Omarchy, a window you open while focus is inside a group joins that group instead of
+splitting off on its own.
+
+`⌘⌥1`…`9` jump straight to the *n*th window. The index is a depth-first walk of the workspace —
+top to bottom, left to right — which is the order the group lays its windows out in.
+
+`⌘⌥←↓↑→` pulls the neighbour in that direction into a shared container with the focused window —
+tiled, so follow it with `⌘G` if you want them stacked as a group. `⌘⌥G` is the inverse and pushes
+the focused window back out to the surrounding container; it works out which way to go from the
+group's own orientation, so there is nothing to aim.
+
+### Popping a window out
+
+`⌘O` pops the focused window out of the tiling tree: it floats, and it follows you onto every
+workspace you switch to — good for a video player, a timer, or a terminal running an agent. `⌘O`
+again drops it back into the tiling tree where you are.
+
+Two differences from Omarchy, both deliberate: only **one** window can be pinned at a time
+(pinning a second releases the first), and the window is moved just after the workspace switch
+rather than being drawn there already, so it flicks into place. AeroSpace has no sticky windows
+([issue #2](https://github.com/nikitabobko/AeroSpace/issues/2)); `others/aerospace-pin.sh` fakes
+one from the `exec-on-workspace-change` callback.
 
 ## Workspaces
 
-| Workspace         | Apps                                                           |
-| ----------------- | -------------------------------------------------------------- |
-| 1 Coding          | VS Code, Xcode                                                 |
-| 2 Terminal        | WezTerm, Ghostty, iTerm2                                       |
-| 3 Browser         | Brave, Chrome, Firefox, qutebrowser                            |
-| 4 Work / chat     | Slack, Discord                                                 |
-| 5 Files           | Finder                                                         |
-| 6 Reading & notes | Preview, sioyek, Books, calibre, Notes, Obsidian, Notion, Anki |
-| 7 Media           | OBS, DaVinci Resolve, Spotify                                  |
-| 8 Tools           | Postman, Docker                                                |
-| 9 VM              | VMware Fusion                                                  |
-| 0 Scratchpad      | —                                                              |
+Workspaces are free-form: **a window opens on whatever workspace is focused**, whether you
+launched it with a hotkey, from the Dock or from Spotlight. Nothing is auto-assigned — press
+`⌘⇧1`…`9` to move a window somewhere else, or `⌘⇧⌥1`…`9` to send it there without following.
+All nine are bound, 3, 4 and 5 included — which costs the macOS screenshot hotkeys, see
+[What ⌘ costs](#what--costs).
 
-Apps auto-assign on launch — see `[[on-window-detected]]` in
+Workspace 0 is the scratchpad. Omarchy binds it twice and so does this: `` ⌘` `` or `⌘S` drops
+down onto it and back, `` ⌘⇧` `` or `⌘⌥S` sends a window there. All ten workspaces are pinned to
+the main monitor — see `[workspace-to-monitor-force-assignment]` in
 `aerospace/.config/aerospace/aerospace.toml`.
 
 ## Launching apps
@@ -86,8 +132,8 @@ Apps auto-assign on launch — see `[[on-window-detected]]` in
 | --------------- | ------------------------------- |
 | `⌘ ⏎`           | WezTerm                         |
 | `⌘⌥ ⏎`          | WezTerm + tmux (`main` session) |
-| `⌘⇧ ⏎`          | Brave                           |
-| `⌘⇧⌥ B`         | Brave (incognito)               |
+| `⌘⇧ ⏎`          | Chrome                          |
+| `⌘⇧⌥ B`         | Chrome (incognito)              |
 | `⌥ N`           | nvim                            |
 | `⌥ D`           | lazydocker                      |
 | `⌥ G`           | Discord                         |
@@ -105,6 +151,31 @@ shadows a menu command in the focused app. `⌥` is otherwise free: tmux binds o
 
 `⌘⇧A` and `⌘⇧C` are deliberately unbound so the browser keeps Search Tabs and Inspect Element.
 Gemini has no launcher; `⌥A` is free if you want one.
+
+## Screen capture
+
+`⌘⇧3/4/5` now move windows to workspaces 3, 4 and 5, so macOS's capture hotkeys are gone.
+Open **Screenshot.app** instead (Spotlight → "Screenshot", or Launchpad ▸ Other) — it offers
+the same whole-screen, region, window and screen-recording captures from its toolbar.
+
+`⌘⌃⇧3` and `⌘⌃⇧4` (capture straight to the clipboard) still work: AeroSpace does not bind
+`⌘⌃⇧`.
+
+## Browser tabs
+
+`⌥1`…`⌥8` select that tab and `⌥9` selects the last one, exactly as `⌘1`…`⌘9` used to before
+AeroSpace took the ⌘ digits for workspaces.
+
+This one needs Karabiner-Elements, and it is the only binding here that does. The menu-rebind
+trick used everywhere else cannot help: Chrome's Tab menu offers only *Select Next/Previous Tab*
+plus the open tabs by page title, so there is no stable menu item to bind. Nor can `⌥N` simply be
+remapped to `⌘N` — AeroSpace's grab is global and swallows a synthesised `⌘N` before the browser
+sees it. So Karabiner matches `⌥1`…`⌥9` **only while a browser is frontmost** and runs
+`others/browser-tab.sh`, which drives the tab via AppleScript in about 100 ms.
+
+Because the rule is scoped to Chrome, Brave and Safari, `⌥1`…`⌥9` still reach tmux everywhere
+else — see [tmux](#tmux). Add browsers by bundle ID in
+`karabiner/.config/karabiner/karabiner.json` and `others/browser-tab.sh`.
 
 ## System panels
 
@@ -135,7 +206,7 @@ here because it is nvim's cmp completion trigger.
 | `⌃⌥⇧ ←↓↑→`                           | Resize pane                                               |
 | `⌃ hjkl`                             | Move between panes _and_ nvim splits (vim-tmux-navigator) |
 | `prefix c` / `prefix k` / `prefix r` | New / kill / rename window                                |
-| `⌥ 1`…`9`                            | Go to window                                              |
+| `⌥ 1`…`9`                            | Go to window (selects a tab in browsers)                  |
 | `⌥ ← →`                              | Previous / next window                                    |
 | `⌥⇧ ← →`                             | Move window left / right                                  |
 | `prefix C` / `K` / `R` / `N` / `P`   | New / kill / rename / next / previous session             |
@@ -172,9 +243,9 @@ cd others && make macos-shortcuts     # make macos-shortcuts-reset to undo
 
 | Was            | Now       |
 | -------------- | --------- |
-| `⌘F` Find      | `⌃F`      |
 | `⌘G` Find Next | `⌃G`      |
 | `⌘O` Open      | `⌃O`      |
+| `⌘S` Save      | `⌃S`      |
 | `⌘P` Print     | `⌃P`      |
 | `⌘J` Downloads | `⌃J`      |
 | `⌘-` `⌘=` Zoom | `⌃-` `⌃=` |
@@ -182,23 +253,40 @@ cd others && make macos-shortcuts     # make macos-shortcuts-reset to undo
 These are per-app menu rebinds, never global — `⌃F` stays zsh `autosuggest-accept` and `⌃L` `⌃J`
 `⌃K` stay vim-tmux-navigator inside terminals.
 
-`⌘T` and `⌘L` are **not** in that table: AeroSpace's layout toggles moved to `⌥T` / `⌥L`, so
-New Tab and Open Location work natively again.
+`⌘F`, `⌘T` and `⌘L` are **not** in that table: nothing is bound to `⌘F` any more, the
+tiled/floating toggle sits on `⌥T` and there is no layout toggle at all, so Find, New Tab and
+Open Location work natively.
 
-**Not recoverable:** `⌘1`…`⌘9` for browser tab selection — browsers expose no menu item for
-"switch to tab N". Use `⌃Tab` / `⌃⇧Tab`, which cycle tabs natively.
+**`⌘S` no longer saves.** It is the scratchpad toggle, and Save falls back to `⌃S` only in the
+apps listed in `others/macos-app-shortcuts.sh`. Anywhere else, Save is reachable from File ▸ Save
+and nowhere else — add the app's bundle ID to that list and re-run `make macos-shortcuts`.
 
-`⌘W` `⌘Q` `⌘C` `⌘V` `⌘X` `⌘S` `⌘Space` are left alone — macOS already does with them what Omarchy
-does, so they need no porting.
+`⌘1`…`⌘9` no longer select browser tabs — they are the workspace switches. **`⌥1`…`⌥9` do it
+instead**, via Karabiner; see [Browser tabs](#browser-tabs). `⌃Tab` / `⌃⇧Tab` still cycle.
+
+**`⌘Q` no longer quits.** It is Omarchy's `killactive`: it closes the focused window and leaves
+the app running, so closing a window on workspace 2 no longer takes that app's window on
+workspace 3 with it. In a browser that means the window and all its tabs. There is deliberately
+no quit-app hotkey — quit from the app's own menu, or `⌥⌘Esc` to force quit.
+
+**`⌘⇧3` `⌘⇧4` `⌘⇧5` no longer capture the screen** — they move windows to workspaces 3, 4 and 5.
+See [Screen capture](#screen-capture).
+
+`⌘W` `⌘C` `⌘V` `⌘X` `⌘Space` are left alone — macOS already does with them what Omarchy does, so
+they need no porting.
 
 ## Not available on macOS
 
 AeroSpace has no equivalent, and nothing here fakes one:
 
-- `Super+O` sticky floating overlay
-- Scrolling layout, `Super+P` pseudo style
+- `Super+P` pseudo style
 - `Super+Ctrl+Z` zoom, `Super+/` scaling steps
 - `Super+Home` width save/restore
 - `Super+Scroll` workspace scrolling, `Super+Mouse` drag/resize
 - Omarchy's Notifications, Style, Toggles, Reminders and Notices sections — these are
   Hyprland-ecosystem specific (mako, waybar, hyprsunset)
+
+Two more are approximated rather than matched. Accordion (`⌘G`) stands in for the scrolling
+layout, but AeroSpace keeps no per-workspace layout state, so unlike Omarchy the choice is lost
+when AeroSpace restarts. `⌘O` fakes a sticky window and can pin only one at a time — see
+[Popping a window out](#popping-a-window-out).
