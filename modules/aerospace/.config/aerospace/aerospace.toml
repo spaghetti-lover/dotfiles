@@ -199,12 +199,14 @@ cmd-alt-enter   = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/
 cmd-shift-enter = 'exec-and-forget open -na "Google Chrome"'
 cmd-shift-alt-b = 'exec-and-forget open -na "Google Chrome" --args --incognito'
 cmd-shift-f     = 'exec-and-forget open -a Finder'
+# Omarchy's Super+Shift+N. Costs Chrome's New Incognito Window -- already
+# moved to cmd-shift-alt-b above -- and Finder's New Folder, which is given up.
+cmd-shift-n     = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/nvim'
 
 # Moved off cmd-shift so the apps keep their own cmd-shift-<letter> commands
-# (Chrome's incognito window, find-previous, bookmark-all-tabs). alt-<letter>
-# is free here: tmux binds only alt-digit / alt-arrow / alt-enter / alt-escape,
-# zsh runs vi mode, and nvim has no alt maps.
-alt-n           = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/nvim'
+# (find-previous, bookmark-all-tabs). alt-<letter> is free here: tmux binds
+# only alt-digit / alt-arrow / alt-enter / alt-escape, zsh runs vi mode, and
+# nvim has no alt maps.
 alt-d           = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/lazydocker'
 alt-g           = 'exec-and-forget open -a Discord'
 alt-c           = 'exec-and-forget open -a Calendar'

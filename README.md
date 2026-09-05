@@ -90,18 +90,6 @@ For more information about GNU stow: [link](https://www.gnu.org/software/stow/)
 
 - You need Ghostty/iTerm,...(not default macos terminal) because this terminal can not represent right theme
 - Nerd font for view icon, text, folder, ... [link](https://www.nerdfonts.com/)
-- Need to install delve for debugging: `brew install delve`
-- Need ripgrep for telescope live grep
-
-```shell
-brew install ripgrep
-```
-
-- Need wget to help mason to download zip,... from internet
-
-```shell
-brew install wget
-```
 
 ## Keybindings
 
@@ -165,47 +153,18 @@ To make `docker compose ...` work (not just the standalone `docker-compose`), ad
 "cliPluginsExtraDirs": ["/opt/homebrew/lib/docker/cli-plugins"]
 ```
 
-### Nvim setup
+## Nvim
 
-- I use lazy to manage plugins, you can use packer
-- To sync or update plugins
+[LazyVim](https://www.lazyvim.org/), with Omarchy's overlays on top. `:Lazy sync` updates plugins;
+`:LazyExtras` is where language support and AI completion get switched on — nothing is enabled by
+default beyond neo-tree, so a fresh clone has no Go or TypeScript LSP until you pick the `lang.*`
+extras you want. `ai.supermaven` and `ai.copilot` live there too.
 
-```shell
-:Lazy sync
-:Lazy update
-```
+How to launch it, and how to edit root-owned files with it, is in
+[docs/keybindings.md](./docs/keybindings.md#neovim).
 
-- I think it's better if we keep our settings at a simple level, don't set many things
-  that you rarely use or you can achieve this purpose by some simple commands.
-
-- Check log lsp:
-
-```shell
-nvim ~/.local/state/nvim/lsp.log
-```
-
-or
-
-```
-:LspLog
-```
-
-- Vim help is so helpful. Use it as much as you can
-  example
-
-```
-:help Mason
-```
-
-## Integrate local LLMs with nvim
-
-- Local models: use ollama
-  [ollama](https://ollama.com/)
-
-- Code suggestion: nothing is on by default. Run `:LazyExtras` and enable `ai.supermaven`
-  ([supermaven](https://supermaven.com/)) or `ai.copilot`.
-
-- The open-webui compose file lives in [extras/open-webui](./extras/open-webui/docker-compose.yaml)
+For local models, [ollama](https://ollama.com/); the open-webui compose file is in
+[extras/open-webui](./extras/open-webui/docker-compose.yaml).
 
 ## Colima
 

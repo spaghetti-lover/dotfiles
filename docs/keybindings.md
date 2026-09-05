@@ -134,7 +134,7 @@ the main monitor — see `[workspace-to-monitor-force-assignment]` in
 | `⌘⌥ ⏎`          | Ghostty + tmux (`main` session) |
 | `⌘⇧ ⏎`          | Chrome                          |
 | `⌘⇧⌥ B`         | Chrome (incognito)              |
-| `⌥ N`           | nvim                            |
+| `⌘⇧ N`          | nvim — see [Neovim](#neovim)    |
 | `⌥ D`           | lazydocker                      |
 | `⌥ G`           | Discord                         |
 | `⌥ C`           | Calendar                        |
@@ -142,12 +142,16 @@ the main monitor — see `[workspace-to-monitor-force-assignment]` in
 | `⌘⇧ E`          | Mail                            |
 | `⌘⇧ Y` / `⌘⇧ X` | YouTube / X                     |
 
-Four launchers sit on `⌥`+letter rather than `⌘⇧`+letter, because every `⌘⇧` combination
+Three launchers sit on `⌥`+letter rather than `⌘⇧`+letter, because every `⌘⇧` combination
 shadows a menu command in the focused app. `⌥` is otherwise free: tmux binds only `⌥`+digit,
 `⌥`+arrow, `⌥⏎` and `⌥⎋`; zsh runs vi mode; nvim has no `⌥` maps. Two costs:
 
-- `⌥C` `⌥D` `⌥G` `⌥N` no longer type `ç` `∂` `©` `˜`.
+- `⌥C` `⌥D` `⌥G` no longer type `ç` `∂` `©`.
 - fzf's `ALT-C` (`fzf-cd-widget`) is given up; `.zshrc` unbinds it so it is not a dead key.
+
+`⌘⇧N` is the exception, kept on `⌘⇧` to match Omarchy's `Super+Shift+N`. It takes Chrome's
+New Incognito Window — already moved to `⌘⇧⌥B` — and Finder's New Folder, which is given up;
+use File ▸ New Folder.
 
 `⌘⇧A` and `⌘⇧C` are deliberately unbound so the browser keeps Search Tabs and Inspect Element.
 Gemini has no launcher; `⌥A` is free if you want one.
@@ -271,6 +275,57 @@ Both terminals send Option as Meta so the tmux Alt layer works.
 | `⌘⌃⇧ ←↓↑→`      | Resize split _(Ghostty)_        |
 
 `⌥1-9` is deliberately unbound in Ghostty so those keys reach tmux.
+
+## Neovim
+
+`⌘⇧N` opens nvim in a fresh Ghostty window — the row in [Launching apps](#launching-apps). It names
+`/opt/homebrew/bin/nvim` outright rather than `$EDITOR`, because AeroSpace's `exec-and-forget` runs
+under `/bin/sh`, which never sources `.zshrc` and so would find `$EDITOR` empty.
+
+Usually it is easier to start from a terminal you are already in. `cd` to the directory you want to
+work in and type `n`, which opens nvim on the current directory. `n myfile.txt` opens a single file.
+
+| Command           | Opens                         |
+| ----------------- | ----------------------------- |
+| `n`               | The current directory         |
+| `n myfile.txt`    | One file                      |
+| `sudoedit FILE`   | A root-owned file (see below) |
+
+### Editing root-owned files
+
+As on Omarchy, `sudoedit`:
+
+```shell
+sudoedit /etc/hosts
+```
+
+Your whole config comes with it, plugins and LSP included. sudo copies the file somewhere you own,
+runs the editor on the copy as *you*, then copies it back; from `man sudo`, "the editor is run with
+the invoking user's environment unmodified". It picks nvim from `EDITOR`, exported in `.zshrc`.
+
+**`sudo -e` is not a substitute, despite the man page implying it is.** sudo chooses its mode from
+the name it was invoked under, and `sudoers(5)` spells out what that costs you:
+
+> Unless invoked as sudoedit, sudo does not preserve the SUDO_EDITOR, VISUAL or EDITOR environment
+> variables unless they are present in the env_keep list or the env_reset option is disabled.
+
+So `sudo -e` has `EDITOR` stripped by `env_reset`, falls back to the sudoers `editor` list, and
+drops you in `/usr/bin/vi` with no config at all.
+
+macOS ships no `sudoedit` binary — only `/usr/bin/sudo` — so `modules/nvim/install.sh` creates the
+link Linux ships by default:
+
+```shell
+~/.local/bin/sudoedit -> /usr/bin/sudo
+```
+
+`make install` runs that hook. It is not stowed: stow aborts on an absolute symlink inside a
+package, and a relative one would need a fixed count of `../` to climb out of the repo. It has to
+be a real link, too — sudo resolves its own executable path, so faking `argv[0]` with
+`exec -a sudoedit` leaves it in ordinary sudo mode.
+
+Do not reach for `sudo nvim` instead. That runs as root with root's empty environment, so you get a
+bare editor and a scattering of root-owned files in `~/.local`.
 
 ---
 

@@ -49,10 +49,8 @@ alias lt='eza --tree --level=2 --long --icons --git'
 alias lta='lt -a'
 
 # my alias for an easier life
-alias v=nvim
-alias vim=nvim
-alias nv=nvim
-alias ovim=vim
+# the only nvim alias; `vim` is left alone so it still reaches /usr/bin/vim
+alias n=nvim
 alias os='nvim ~/.zshrc'
 alias ss='source ~/.zshrc'
 alias k='kubectl'
