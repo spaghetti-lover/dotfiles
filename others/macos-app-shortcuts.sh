@@ -23,6 +23,13 @@
 # A global write would steal those inside WezTerm and Ghostty, so terminal
 # bundle IDs are deliberately absent from APPS below.
 #
+# Back / Forward move to alt-arrow (the Linux convention) because cmd-left and
+# cmd-right are AeroSpace's focus keys. Arrow keys in NSUserKeyEquivalents are
+# the AppKit function-key constants, not the U+2190 glyphs: NSLeftArrow is
+# U+F702 and NSRightArrow U+F703. This binds at the menu layer, so it fires
+# ahead of the text field -- alt-arrow no longer moves the caret a word at a
+# time inside these apps.
+#
 # Not recoverable: cmd-1..9 for browser tab selection. Browsers expose no menu
 # item for "switch to tab N", so there is nothing to rebind. Use ctrl-Tab /
 # ctrl-shift-Tab, which cycle tabs natively.
@@ -68,6 +75,12 @@ APPS=(
 # ellipsis items are written twice: once with U+2026 and once with three
 # periods, since apps are inconsistent. Writing a title an app does not have
 # is a harmless no-op.
+# NSLeftArrowFunctionKey (U+F702) and NSRightArrowFunctionKey (U+F703), as
+# raw UTF-8 octal -- macOS ships bash 3.2, which has no $'\uXXXX' escape and
+# would silently write the literal text "uF702" instead.
+ARROW_LEFT=$(printf '\357\234\202')
+ARROW_RIGHT=$(printf '\357\234\203')
+
 BINDINGS=(
   'Find Next|^g'
   'Open…|^o'
@@ -82,6 +95,8 @@ BINDINGS=(
   'Print...|^p'
   'Zoom In|^='
   'Zoom Out|^-'
+  "Back|~${ARROW_LEFT}"
+  "Forward|~${ARROW_RIGHT}"
 )
 
 case "${1:-apply}" in

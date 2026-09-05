@@ -54,7 +54,9 @@ outer.right = [{monitor."Built-in Retina Display" = 15}, {monitor.secondary = 25
 [mode.main.binding]
 
 # ---------------------------------------------------------------- focus
-# Super + Arrow = move focus   (hjkl retained alongside)
+# Super + Arrow = move focus, as in Omarchy. This takes the browser's Back /
+# Forward (cmd-left / cmd-right); macos-app-shortcuts.sh puts those back on
+# alt-left / alt-right, the Linux convention.
 cmd-left  = 'focus left'
 cmd-down  = 'focus down'
 cmd-up    = 'focus up'
@@ -185,15 +187,14 @@ cmd-alt-9 = 'focus --dfs-index 8'
 # direction comes from the container's own orientation.
 cmd-alt-g = 'test %{window-layout} ~= ^h_ && move up || move left'
 
-# Omarchy's killactive. Plain `close`, not --quit-if-last-window, so the app
-# survives: closing its window on workspace 2 leaves its window on 3 alone.
-# There is deliberately no quit-app binding -- quit from the app's own menu.
-cmd-q = 'close'
+# Omarchy's killactive is deliberately NOT bound. cmd-q stays macOS's own Quit,
+# which is worth more here than close-one-window: AeroSpace's `close` would take
+# cmd-q away from every app and leave no quit hotkey at all. Close a window with
+# cmd-w, or use service mode's backspace to close all windows but the focused one.
 
 ctrl-alt-backspace = 'close-all-windows-but-current'
 
 # ------------------------------------------------------- launching apps
-cmd-enter       = 'exec-and-forget open -na WezTerm'
 cmd-alt-enter   = 'exec-and-forget open -na WezTerm --args start -- /opt/homebrew/bin/tmux new-session -A -s main'
 cmd-shift-enter = 'exec-and-forget open -na "Google Chrome"'
 cmd-shift-alt-b = 'exec-and-forget open -na "Google Chrome" --args --incognito'

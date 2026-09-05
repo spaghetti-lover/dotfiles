@@ -61,6 +61,11 @@ config.enable_tab_bar = false
 config.send_composed_key_when_left_alt_is_pressed = false
 config.send_composed_key_when_right_alt_is_pressed = false
 
+-- Shift+Enter is indistinguishable from Enter over plain xterm encoding, so
+-- tmux's Alt+Shift+Enter (split beside) never fires. The Kitty keyboard
+-- protocol disambiguates it; tmux opts in with `extended-keys on`.
+config.enable_kitty_keyboard = true
+
 -- never ask for confirmation when closing a window/tab/pane
 config.window_close_confirmation = "NeverPrompt"
 

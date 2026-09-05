@@ -119,6 +119,113 @@ qss() {
     tmux attach-session -t "$name"
   fi       
 }
+
+# ---------------------------------------------------------------------
+# Omarchy tmux layouts (https://omarchy.org/manual/navigation)
+# Ported from bash: zsh arrays are 1-indexed, so panes[1] is the first
+# pane where upstream writes panes[0] (which is empty in zsh).
+# ---------------------------------------------------------------------
+
+# Dev layout: editor left, AI right, terminal below.
+# Usage: tdl <c|cx|cy|other_ai> [<second_ai>]
+tdl() {
+  [[ -z $1 ]] && { echo "Usage: tdl <c|cx|cy|other_ai> [<second_ai>]"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tdl."; return 1; }
+
+  local current_dir="$PWD"
+  local ai="$1" ai2="$2"
+  local editor_pane ai_pane ai2_pane
+
+  # TMUX_PANE is stable even if the active window changes under us
+  editor_pane="$TMUX_PANE"
+
+  tmux rename-window -t "$editor_pane" "$(basename "$current_dir")"
+
+  # terminal along the bottom, 15%
+  tmux split-window -v -p 15 -t "$editor_pane" -c "$current_dir"
+
+  # AI on the right, 30%
+  ai_pane=$(tmux split-window -h -p 30 -t "$editor_pane" -c "$current_dir" -P -F '#{pane_id}')
+
+  if [[ -n $ai2 ]]; then
+    ai2_pane=$(tmux split-window -v -t "$ai_pane" -c "$current_dir" -P -F '#{pane_id}')
+    tmux send-keys -t "$ai2_pane" "$ai2" C-m
+  fi
+
+  tmux send-keys -t "$ai_pane" "$ai" C-m
+  tmux send-keys -t "$editor_pane" "$EDITOR ." C-m
+  tmux select-pane -t "$editor_pane"
+}
+
+# One tdl window per subdirectory of the current directory.
+# Usage: tdlm <c|cx|cy|other_ai> [<second_ai>]
+tdlm() {
+  [[ -z $1 ]] && { echo "Usage: tdlm <c|cx|cy|other_ai> [<second_ai>]"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tdlm."; return 1; }
+
+  # zsh errors on a glob that matches nothing; upstream bash just skips
+  setopt local_options null_glob
+
+  local ai="$1" ai2="$2"
+  local base_dir="$PWD"
+  local first=true
+  local dir dirpath pane_id
+
+  # tmux disallows dots and colons in session names
+  tmux rename-session "$(basename "$base_dir" | tr '.:' '--')"
+
+  for dir in "$base_dir"/*/; do
+    [[ -d $dir ]] || continue
+    dirpath="${dir%/}"
+
+    if $first; then
+      # reuse the current window for the first project
+      tmux send-keys -t "$TMUX_PANE" "cd '$dirpath' && tdl $ai $ai2" C-m
+      first=false
+    else
+      pane_id=$(tmux new-window -c "$dirpath" -P -F '#{pane_id}')
+      tmux send-keys -t "$pane_id" "tdl $ai $ai2" C-m
+    fi
+  done
+}
+
+# Swarm layout: N tiled panes all running the same command.
+# Usage: tsl <pane_count> <command>
+tsl() {
+  [[ -z $1 || -z $2 ]] && { echo "Usage: tsl <pane_count> <command>"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tsl."; return 1; }
+
+  local count="$1" cmd="$2"
+  local current_dir="$PWD"
+  local -a panes
+  local new_pane pane
+
+  tmux rename-window -t "$TMUX_PANE" "$(basename "$current_dir")"
+  panes+=("$TMUX_PANE")
+
+  while (( ${#panes[@]} < count )); do
+    new_pane=$(tmux split-window -h -t "${panes[-1]}" -c "$current_dir" -P -F '#{pane_id}')
+    panes+=("$new_pane")
+    tmux select-layout -t "${panes[1]}" tiled
+  done
+
+  for pane in "${panes[@]}"; do
+    tmux send-keys -t "$pane" "$cmd" C-m
+  done
+
+  tmux select-pane -t "${panes[1]}"
+}
+
+# AI agents, and the tdl shorthands built on them
+alias c='opencode'
+alias cx='printf "\033[2J\033[3J\033[H" && claude --permission-mode bypassPermissions'
+alias cy='codex -s danger-full-access -a never'
+alias ic='tdl c'
+alias ix='tdl cx'
+alias icx='tdl c cx'
+# 'main' matches the session aerospace's cmd-alt-enter creates
+alias t='tmux attach || tmux new -s main'
+
 bindkey -v
 bindkey ^F autosuggest-accept
 
@@ -127,6 +234,7 @@ bindkey ^F autosuggest-accept
 bindkey -M viins -r '^[c'
 bindkey -M vicmd -r '^[c'
 
+export EDITOR=nvim   # tdl opens `$EDITOR .` in its left pane
 export MANPAGER="nvim +Man!"
 
 # go.nvim reports GOBIN as unset otherwise; matches the default GOPATH/bin

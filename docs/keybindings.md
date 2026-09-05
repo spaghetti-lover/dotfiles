@@ -51,7 +51,6 @@ AeroSpace grabs ⌘ combos globally. See [What ⌘ costs](#what--costs) below.
 | `⌘⇧ -` / `⌘⇧ =`      | Shrink / expand height                                                |
 | `⌘⌥ -` / `⌘⌥ =`      | Small-step resize                                                     |
 | `⌘⌃ -` / `⌘⌃ =`      | Big-step resize                                                       |
-| `⌘ Q`                | Close this window (the app keeps running — see What ⌘ costs)          |
 | `⌃⌥ Delete`          | Close all windows but current                                         |
 | `⌥⇧ ;`               | Service mode (`esc` reload, `r` flatten, `f` float, `⌫` close others) |
 
@@ -84,7 +83,9 @@ dwindle while workspace 2 is accordion. If a tree gets tangled, service mode `�
 flattens it.
 
 Focus is arrow-based, as in Omarchy. There is no `⌘hjkl` alias because `⌘J` is
-Omarchy's window-position toggle.
+Omarchy's window-position toggle. This takes `⌘←` / `⌘→` from the browser;
+`macos-app-shortcuts.sh` puts Back and Forward on `⌥←` / `⌥→` — see
+[Back and Forward](#back-and-forward).
 
 ### Grouping
 
@@ -161,6 +162,21 @@ the same whole-screen, region, window and screen-recording captures from its too
 `⌘⌃⇧3` and `⌘⌃⇧4` (capture straight to the clipboard) still work: AeroSpace does not bind
 `⌘⌃⇧`.
 
+## Back and Forward
+
+`⌥←` and `⌥→` are Back and Forward, because AeroSpace's focus keys take `⌘←` / `⌘→`.
+`others/macos-app-shortcuts.sh` sets this the same way it restores Save and Open: it rebinds the
+**Back** and **Forward** menu items via `NSUserKeyEquivalents`, for every app in its list that has
+them (browsers, Finder, Preview, Mail, Xcode, VS Code). Apps without those menu items ignore it.
+
+Arrow keys in `NSUserKeyEquivalents` are the AppKit function-key constants — `U+F702` and `U+F703`
+— not the `←` `→` glyphs. The script handles that; it matters only if you add bindings by hand.
+
+One cost: a menu key equivalent is matched before the key reaches a text field, so **`⌥←` / `⌥→`
+no longer move the caret a word at a time inside these apps** — including a browser text box, where
+they now navigate away from the page. If that trade is not worth it, drop the `Back` and `Forward`
+lines from `BINDINGS` in the script and re-run it with `--reset`, then apply.
+
 ## Browser tabs
 
 `⌥1`…`⌥8` select that tab and `⌥9` selects the last one, exactly as `⌘1`…`⌘9` used to before
@@ -193,8 +209,8 @@ else — see [tmux](#tmux). Add browsers by bundle ID in
 
 ## tmux
 
-Prefix is `⌃A`. Omarchy documents the prefix as "Ctrl+Space or Ctrl+B"; `⌃Space` is unavailable
-here because it is nvim's cmp completion trigger.
+Prefix is `⌃B`. Omarchy documents it as "Ctrl+Space or Ctrl+B"; `⌃Space` is unavailable here
+because it is nvim's cmp completion trigger.
 
 | Keys                                 | Action                                                    |
 | ------------------------------------ | --------------------------------------------------------- |
@@ -215,6 +231,33 @@ here because it is nvim's cmp completion trigger.
 | `prefix q`                           | Reload config (Omarchy puts rename-window on `r`)         |
 | `prefix ?` / `prefix :`              | Show bindings / command prompt                            |
 | `prefix E` / `O` / `V`               | Scratch note / todo / nvim pane (moved from lowercase)    |
+
+`⌥⇧⏎` needs the terminal to distinguish Shift+Enter from Enter, which plain xterm encoding
+cannot. tmux asks for it with `extended-keys on`; Ghostty answers by default, WezTerm only with
+`config.enable_kitty_keyboard = true` (already set in `wezterm/.wezterm.lua`).
+
+## Tmux layouts
+
+Omarchy's layout functions, ported to zsh in `zsh/.zshrc`. All three must be run **inside** a
+tmux session.
+
+| Command                | Layout                                                              |
+| ---------------------- | ------------------------------------------------------------------- |
+| `tdl <ai> [<ai2>]`     | Editor left, AI right (30%), terminal below (15%)                   |
+| `tdlm <ai> [<ai2>]`    | One `tdl` window per subdirectory — switch with `⌥ 1`…`9`             |
+| `tsl <count> <cmd>`    | `count` tiled panes, all running `cmd`                              |
+
+`tdl` renames the window after the current directory and opens `$EDITOR` (nvim) on the left.
+
+| Alias  | Runs                                    |
+| ------ | --------------------------------------- |
+| `c`    | opencode                                |
+| `cx`   | claude (permissions bypassed)           |
+| `cy`   | codex                                   |
+| `ic`   | `tdl c` — editor + opencode              |
+| `ix`   | `tdl cx` — editor + claude               |
+| `icx`  | `tdl c cx` — editor + opencode + claude  |
+| `t`    | Attach to tmux, or start session `main` |
 
 ## Terminal
 
@@ -264,10 +307,9 @@ and nowhere else — add the app's bundle ID to that list and re-run `make macos
 `⌘1`…`⌘9` no longer select browser tabs — they are the workspace switches. **`⌥1`…`⌥9` do it
 instead**, via Karabiner; see [Browser tabs](#browser-tabs). `⌃Tab` / `⌃⇧Tab` still cycle.
 
-**`⌘Q` no longer quits.** It is Omarchy's `killactive`: it closes the focused window and leaves
-the app running, so closing a window on workspace 2 no longer takes that app's window on
-workspace 3 with it. In a browser that means the window and all its tabs. There is deliberately
-no quit-app hotkey — quit from the app's own menu, or `⌥⌘Esc` to force quit.
+**`⌘Q` still quits, natively.** Omarchy's `killactive` is deliberately left unbound: taking
+`⌘Q` for close-one-window would leave macOS with no quit hotkey at all. Close a single window
+with `⌘W`, or `⌃⌥⌫` to close every window but the focused one.
 
 **`⌘⇧3` `⌘⇧4` `⌘⇧5` no longer capture the screen** — they move windows to workspaces 3, 4 and 5.
 See [Screen capture](#screen-capture).
