@@ -137,24 +137,27 @@ the main monitor — see `[workspace-to-monitor-force-assignment]` in
 | `⌘⇧ N`          | nvim — see [Neovim](#neovim)    |
 | `⌥ D`           | lazydocker                      |
 | `⌥ G`           | Discord                         |
-| `⌥ C`           | Calendar                        |
+| `⌘⇧ A`          | ChatGPT                         |
+| `⌘⇧ C`          | Google Calendar — web app       |
+| `⌘⇧ S`          | Google Maps — web app           |
 | `⌘⇧ F`          | Finder                          |
 | `⌘⇧ E`          | Mail                            |
 | `⌘⇧ Y` / `⌘⇧ X` | YouTube / X                     |
 
-Three launchers sit on `⌥`+letter rather than `⌘⇧`+letter, because every `⌘⇧` combination
-shadows a menu command in the focused app. `⌥` is otherwise free: tmux binds only `⌥`+digit,
-`⌥`+arrow, `⌥⏎` and `⌥⎋`; zsh runs vi mode; nvim has no `⌥` maps. Two costs:
-
-- `⌥C` `⌥D` `⌥G` no longer type `ç` `∂` `©`.
-- fzf's `ALT-C` (`fzf-cd-widget`) is given up; `.zshrc` unbinds it so it is not a dead key.
+`⌥D` and `⌥G` sit on `⌥`+letter rather than `⌘⇧`+letter, because every `⌘⇧` combination shadows a
+menu command in the focused app. `⌥` is otherwise free: tmux binds only `⌥`+digit, `⌥`+arrow, `⌥⏎`
+and `⌥⎋`; zsh runs vi mode; nvim has no `⌥` maps. One cost: `⌥D` and `⌥G` no longer type `∂` `©`.
 
 `⌘⇧N` is the exception, kept on `⌘⇧` to match Omarchy's `Super+Shift+N`. It takes Chrome's
 New Incognito Window — already moved to `⌘⇧⌥B` — and Finder's New Folder, which is given up;
 use File ▸ New Folder.
 
-`⌘⇧A` and `⌘⇧C` are deliberately unbound so the browser keeps Search Tabs and Inspect Element.
-Gemini has no launcher; `⌥A` is free if you want one.
+`⌘⇧A`, `⌘⇧S` and `⌘⇧C` are Omarchy's ChatGPT, Google Maps and Google Calendar keys. ChatGPT is the
+native app; Maps and Calendar are **Chrome web apps** — install a page as one from Chrome ▸ Cast,
+save and share ▸ Install page as app, and it gets its own `~/Applications/Chrome Apps` bundle that
+`open -a "Google Maps"` finds by name. What they cost is in [What ⌘ costs](#what--costs).
+
+Gemini has no launcher; `⌥A` and `⌥C` are free if you want one.
 
 ## Screen capture
 
@@ -179,6 +182,25 @@ One cost: a menu key equivalent is matched before the key reaches a text field, 
 no longer move the caret a word at a time inside these apps** — including a browser text box, where
 they now navigate away from the page. If that trade is not worth it, drop the `Back` and `Forward`
 lines from `BINDINGS` in the script and re-run it with `--reset`, then apply.
+
+## Copy URL
+
+`⌥⇧L` copies the URL of the page in front of you, as in Omarchy. It exists for **web apps**: a
+`⌘⇧C` Google Calendar window has no address bar, so there is no `⌘L` to copy out of.
+
+AeroSpace's grab is global, so the binding runs `modules/aerospace/bin/copy-url.sh` from every app
+and the script decides whether to act. It asks AeroSpace itself which app owns the focused window
+(`aerospace list-windows --focused`) — the window manager already knows, so no Accessibility grant
+is needed, and `lsappinfo` is no help because it reports AeroSpace as the front application. Unless
+that bundle id is Chrome, Brave or a `com.google.Chrome.app.*` web app, the script exits without
+touching the clipboard. Only then does it ask Chrome for `URL of active tab of front window` and
+pipe it to `pbcopy`.
+
+A web app window is an ordinary Chrome window — only its frame is drawn by the app shim — so it is
+Chrome's `front window` while the shim is frontmost, and one AppleScript line covers both cases.
+macOS asks once to let AeroSpace control Chrome; say yes or nothing is ever copied.
+
+One cost: `⌥⇧L` no longer types `Ò`.
 
 ## Browser tabs
 
@@ -209,7 +231,6 @@ else — see [tmux](#tmux). Add browsers by bundle ID in
 | `⌘⌃ T`  | Activity Monitor     |
 | `⌘⌃ Q`  | Calculator           |
 | `⌘⌃ L`  | Lock (display sleep) |
-| `⌘⌃⌥ D` | Calendar             |
 
 ## tmux
 
@@ -338,14 +359,15 @@ AeroSpace's ⌘ bindings are global, so the macOS commands they displace are re-
 cd others && make macos-shortcuts     # make macos-shortcuts-reset to undo
 ```
 
-| Was            | Now       |
-| -------------- | --------- |
-| `⌘G` Find Next | `⌃G`      |
-| `⌘O` Open      | `⌃O`      |
-| `⌘S` Save      | `⌃S`      |
-| `⌘P` Print     | `⌃P`      |
-| `⌘J` Downloads | `⌃J`      |
-| `⌘-` `⌘=` Zoom | `⌃-` `⌃=` |
+| Was               | Now       |
+| ----------------- | --------- |
+| `⌘G` Find Next    | `⌃G`      |
+| `⌘O` Open         | `⌃O`      |
+| `⌘S` Save         | `⌃S`      |
+| `⌘P` Print        | `⌃P`      |
+| `⌘J` Downloads    | `⌃J`      |
+| `⌘⇧A` Search Tabs | `⌃⇧A`     |
+| `⌘-` `⌘=` Zoom    | `⌃-` `⌃=` |
 
 These are per-app menu rebinds, never global — `⌃F` stays zsh `autosuggest-accept` and `⌃L` `⌃J`
 `⌃K` stay vim-tmux-navigator inside terminals.
@@ -364,6 +386,12 @@ instead**, via Karabiner; see [Browser tabs](#browser-tabs). `⌃Tab` / `⌃⇧T
 **`⌘Q` still quits, natively.** Omarchy's `killactive` is deliberately left unbound: taking
 `⌘Q` for close-one-window would leave macOS with no quit hotkey at all. Close a single window
 with `⌘W`, or `⌃⌥⌫` to close every window but the focused one.
+
+**`⌘⇧A` `⌘⇧C` `⌘⇧S` are launchers** — ChatGPT, Google Calendar and Google Maps. `⌘⇧A` costs Chrome's
+Search Tabs, which the table above puts back on `⌃⇧A` (with ⇧, because plain `⌃A` is
+beginning-of-line in every text field). `⌘⇧S` costs Save As in the apps that bind it — plain Save
+is already on `⌃S`, and macOS's own Save As is `⌥⇧⌘S`. `⌘⇧C` costs nothing here: Inspect Element is
+`⌥⌘C` on macOS, not `⌘⇧C`.
 
 **`⌘⇧3` `⌘⇧4` `⌘⇧5` no longer capture the screen** — they move windows to workspaces 3, 4 and 5.
 See [Screen capture](#screen-capture).

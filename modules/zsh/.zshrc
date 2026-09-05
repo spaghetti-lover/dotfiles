@@ -227,11 +227,6 @@ alias t='tmux attach || tmux new -s main'
 bindkey -v
 bindkey ^F autosuggest-accept
 
-# AeroSpace grabs alt-c globally as the Calendar launcher, so fzf's ALT-C
-# (fzf-cd-widget) can never fire. Unbind it rather than leave a dead key.
-bindkey -M viins -r '^[c'
-bindkey -M vicmd -r '^[c'
-
 export EDITOR=nvim   # tdl opens `$EDITOR .` in its left pane
 export MANPAGER="nvim +Man!"
 

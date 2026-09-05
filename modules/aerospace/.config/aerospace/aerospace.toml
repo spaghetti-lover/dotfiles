@@ -129,6 +129,8 @@ cmd-shift-alt-9 = 'move-node-to-workspace 9'
 # Scratchpad = workspace 0. Press again to go back where you came from.
 # Omarchy binds both Super+Grave and Super+S, so both are here. cmd-s costs
 # Save everywhere -- macos-app-shortcuts.sh puts it back on ctrl-s.
+# Sending a window there is cmd-shift-backtick / cmd-alt-s: cmd-shift-s is the
+# Google Maps launcher, not a scratchpad key.
 cmd-backtick       = 'workspace --auto-back-and-forth 0'
 cmd-s              = 'workspace --auto-back-and-forth 0'
 cmd-shift-backtick = 'move-node-to-workspace 0'
@@ -209,10 +211,20 @@ cmd-shift-n     = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/
 # nvim has no alt maps.
 alt-d           = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/lazydocker'
 alt-g           = 'exec-and-forget open -a Discord'
-alt-c           = 'exec-and-forget open -a Calendar'
 
-# cmd-shift-a and cmd-shift-c are deliberately unbound: they are the browser's
-# Search Tabs and Inspect Element.
+# Omarchy's Super+Shift+A / S / C. Google Calendar and Google Maps are Chrome web
+# apps (Chrome > Cast, save and share > Install page as app), so they answer to
+# their own names -- bundle ids com.google.Chrome.app.kjbdgfilnfhdoflbpgamdcdgpehopbep
+# and ...mnhkaebcjjhencmpkapnbdaogjamfbcj. `open -a`, not `-na`: focus the window
+# that is already open instead of stacking up new ones.
+# cmd-shift-a costs Chrome's Search Tabs, which macos-app-shortcuts.sh puts back
+# on ctrl-shift-a. cmd-shift-s costs Save As in the apps that bind it (plain Save
+# is already on ctrl-s); cmd-shift-c costs nothing on macOS, where Inspect
+# Element is cmd-alt-c.
+cmd-shift-a     = 'exec-and-forget open -a ChatGPT'
+cmd-shift-c     = 'exec-and-forget open -a "Google Calendar"'
+cmd-shift-s     = 'exec-and-forget open -a "Google Maps"'
+
 cmd-shift-e     = 'exec-and-forget open -a Mail'
 cmd-shift-y     = 'exec-and-forget open -na "Google Chrome" --args --app=https://youtube.com'
 cmd-shift-x     = 'exec-and-forget open -na "Google Chrome" --args --app=https://x.com'
@@ -223,6 +235,11 @@ cmd-shift-x     = 'exec-and-forget open -na "Google Chrome" --args --app=https:/
 # cmd-shift-slash   = 'exec-and-forget open -a "1Password"'
 # cmd-shift-alt-g   = 'exec-and-forget open -a WhatsApp'
 
+# Omarchy's Shift+Alt+L: copy the current URL. A web app has no address bar to
+# copy from; the script asks Chrome and no-ops unless the focused window belongs
+# to Chrome, Brave or a Chrome web app. Costs the alt-shift-l glyph (Ò).
+alt-shift-l     = 'exec-and-forget /Users/ducannh/dotfiles/modules/aerospace/bin/copy-url.sh'
+
 # -------------------------------------------------------- system panels
 cmd-ctrl-a     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Sound-Settings.extension"'
 cmd-ctrl-b     = 'exec-and-forget open "x-apple.systempreferences:com.apple.BluetoothSettings"'
@@ -232,7 +249,6 @@ cmd-ctrl-p     = 'exec-and-forget open "x-apple.systempreferences:com.apple.Batt
 cmd-ctrl-t     = 'exec-and-forget open -a "Activity Monitor"'
 cmd-ctrl-q     = 'exec-and-forget open -a Calculator'
 cmd-ctrl-l     = 'exec-and-forget pmset displaysleepnow'
-cmd-ctrl-alt-d = 'exec-and-forget open -a Calendar'
 
 # ---------------------------------------------------------- service mode
 alt-shift-semicolon = 'mode service'

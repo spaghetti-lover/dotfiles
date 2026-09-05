@@ -30,6 +30,9 @@
 # ahead of the text field -- alt-arrow no longer moves the caret a word at a
 # time inside these apps.
 #
+# Search Tabs moves to ctrl-shift-A, because cmd-shift-A is the ChatGPT launcher.
+# Shift is not optional: plain ctrl-A is beginning-of-line in every text field.
+#
 # Not recoverable: cmd-1..9 for browser tab selection. Browsers expose no menu
 # item for "switch to tab N", so there is nothing to rebind. Use ctrl-Tab /
 # ctrl-shift-Tab, which cycle tabs natively.
@@ -61,6 +64,9 @@ APPS=(
   com.postmanlabs.mac
   com.hnc.Discord
   com.google.GeminiMacOS
+  com.openai.codex                                       # ChatGPT.app
+  com.google.Chrome.app.kjbdgfilnfhdoflbpgamdcdgpehopbep # Google Calendar web app
+  com.google.Chrome.app.mnhkaebcjjhencmpkapnbdaogjamfbcj # Google Maps web app
   com.microsoft.VSCode
   com.apple.dt.Xcode
   com.apple.Pages
@@ -95,6 +101,9 @@ BINDINGS=(
   'Print...|^p'
   'Zoom In|^='
   'Zoom Out|^-'
+  'Search Tabs…|^$a'
+  'Search Tabs...|^$a'
+  'Search Tabs|^$a'
   "Back|~${ARROW_LEFT}"
   "Forward|~${ARROW_RIGHT}"
 )
