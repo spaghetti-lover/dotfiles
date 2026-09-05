@@ -359,18 +359,23 @@ AeroSpace's ⌘ bindings are global, so the macOS commands they displace are re-
 cd others && make macos-shortcuts     # make macos-shortcuts-reset to undo
 ```
 
-| Was               | Now       |
-| ----------------- | --------- |
-| `⌘G` Find Next    | `⌃G`      |
-| `⌘O` Open         | `⌃O`      |
-| `⌘S` Save         | `⌃S`      |
-| `⌘P` Print        | `⌃P`      |
-| `⌘J` Downloads    | `⌃J`      |
-| `⌘⇧A` Search Tabs | `⌃⇧A`     |
-| `⌘-` `⌘=` Zoom    | `⌃-` `⌃=` |
+| Was                 | Now       |
+| ------------------- | --------- |
+| `⌘G` Find Next      | `⌃G`      |
+| `⌘⇧G` Find Previous | `⌃⇧G`     |
+| `⌘O` Open           | `⌃O`      |
+| `⌘S` Save           | `⌃S`      |
+| `⌘P` Print          | `⌃P`      |
+| `⌘J` Downloads      | `⌃J`      |
+| `⌘⇧A` Search Tabs   | `⌃⇧A`     |
+| `⌘-` `⌘=` Zoom      | `⌃-` `⌃=` |
 
 These are per-app menu rebinds, never global — `⌃F` stays zsh `autosuggest-accept` and `⌃L` `⌃J`
 `⌃K` stay vim-tmux-navigator inside terminals.
+
+`⌘⇧G` is in the table for the opposite reason to the rest: AeroSpace does not take it, but every
+AppKit app binds it to Find Previous, so an app that wants it as its own global hotkey refuses it
+(Gemini's Speak to Window, for one). Moving Find Previous to `⌃⇧G` frees it.
 
 `⌘F`, `⌘T` and `⌘L` are **not** in that table: nothing is bound to `⌘F` any more, the
 tiled/floating toggle sits on `⌥T` and there is no layout toggle at all, so Find, New Tab and

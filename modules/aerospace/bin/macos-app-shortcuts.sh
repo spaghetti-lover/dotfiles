@@ -32,6 +32,12 @@
 #
 # Search Tabs moves to ctrl-shift-A, because cmd-shift-A is the ChatGPT launcher.
 # Shift is not optional: plain ctrl-A is beginning-of-line in every text field.
+
+# Find Previous moves to ctrl-shift-G for a different reason: AeroSpace never
+# grabs cmd-shift-G, but every AppKit app binds it to Find Previous, which makes
+# it unavailable as an app's own global hotkey (Gemini refuses it with "already
+# used for Find Previous"). Rebinding frees it, and keeps Find Next / Previous
+# symmetric on ctrl-G / ctrl-shift-G.
 #
 # Not recoverable: cmd-1..9 for browser tab selection. Browsers expose no menu
 # item for "switch to tab N", so there is nothing to rebind. Use ctrl-Tab /
@@ -89,6 +95,7 @@ ARROW_RIGHT=$(printf '\357\234\203')
 
 BINDINGS=(
   'Find Next|^g'
+  'Find Previous|^$g'
   'Open…|^o'
   'Open...|^o'
   'Open File…|^o'
