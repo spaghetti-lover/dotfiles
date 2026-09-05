@@ -5,6 +5,5 @@ data
 ollama/
 .env
 **.out
-# xcodebuild.nvim stores per-project settings and breakpoints here
 .nvim/
 __pycache__/

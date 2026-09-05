@@ -237,7 +237,7 @@ bindkey -M vicmd -r '^[c'
 export EDITOR=nvim   # tdl opens `$EDITOR .` in its left pane
 export MANPAGER="nvim +Man!"
 
-# go.nvim reports GOBIN as unset otherwise; matches the default GOPATH/bin
+# where `go install` drops binaries; matches the default GOPATH/bin
 export GOBIN="$HOME/go/bin"
 # homebrew openjdk is keg-only, so java/javac need this to be found
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"

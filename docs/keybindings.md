@@ -220,7 +220,7 @@ because it is nvim's cmp completion trigger.
 | `⌥ Esc`                              | Kill pane (no prefix)                                     |
 | `⌃⌥ ←↓↑→`                            | Move between panes                                        |
 | `⌃⌥⇧ ←↓↑→`                           | Resize pane                                               |
-| `⌃ hjkl`                             | Move between panes _and_ nvim splits (vim-tmux-navigator) |
+| `⌃ hjkl`                             | Move between panes (vim-tmux-navigator; stops at nvim)    |
 | `prefix c` / `prefix k` / `prefix r` | New / kill / rename window                                |
 | `⌥ 1`…`9`                            | Go to window (selects a tab in browsers)                  |
 | `⌥ ← →`                              | Previous / next window                                    |

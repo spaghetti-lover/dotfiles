@@ -14,7 +14,7 @@ brew "docker-credential-helper"
 # ls replacement: long listings with icons and git status; .zshrc aliases ls/lsa/lt/lta to it
 brew "eza"
 brew "fastfetch"
-# fzf-lua falls back to BSD find without this and errors; xcodebuild.nvim wants it too
+# snacks.picker and fzf-lua want this; they fall back to BSD find and error without it
 brew "fd"
 brew "fzf"
 brew "git"

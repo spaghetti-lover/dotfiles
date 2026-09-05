@@ -202,11 +202,8 @@ or
 - Local models: use ollama
   [ollama](https://ollama.com/)
 
-- Code suggestion: use super Maven
-  [supermaven](https://supermaven.com/)
-
-- My nvim - llms integration settings are in:
-  [llms](./modules/nvim/.config/nvim/lua/plugins/llms.lua)
+- Code suggestion: nothing is on by default. Run `:LazyExtras` and enable `ai.supermaven`
+  ([supermaven](https://supermaven.com/)) or `ai.copilot`.
 
 - The open-webui compose file lives in [extras/open-webui](./extras/open-webui/docker-compose.yaml)
 
@@ -217,8 +214,3 @@ or
   ```sh
   sudo ln -s ~/.colima/default/docker.sock /var/run/docker.sock
   ```
-
-## Apple / mobile development
-
-Swift, iOS and macOS setup in nvim: [docs/apple-dev.md](./docs/apple-dev.md), with the brew
-packages in [install/apple-dev.sh](./install/apple-dev.sh).
