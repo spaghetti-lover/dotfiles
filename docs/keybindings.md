@@ -111,7 +111,7 @@ again drops it back into the tiling tree where you are.
 Two differences from Omarchy, both deliberate: only **one** window can be pinned at a time
 (pinning a second releases the first), and the window is moved just after the workspace switch
 rather than being drawn there already, so it flicks into place. AeroSpace has no sticky windows
-([issue #2](https://github.com/nikitabobko/AeroSpace/issues/2)); `others/aerospace-pin.sh` fakes
+([issue #2](https://github.com/nikitabobko/AeroSpace/issues/2)); `modules/aerospace/bin/aerospace-pin.sh` fakes
 one from the `exec-on-workspace-change` callback.
 
 ## Workspaces
@@ -125,14 +125,13 @@ All nine are bound, 3, 4 and 5 included — which costs the macOS screenshot hot
 Workspace 0 is the scratchpad. Omarchy binds it twice and so does this: `` ⌘` `` or `⌘S` drops
 down onto it and back, `` ⌘⇧` `` or `⌘⌥S` sends a window there. All ten workspaces are pinned to
 the main monitor — see `[workspace-to-monitor-force-assignment]` in
-`aerospace/.config/aerospace/aerospace.toml`.
+`modules/aerospace/.config/aerospace/aerospace.toml`.
 
 ## Launching apps
 
 | Keys            | App                             |
 | --------------- | ------------------------------- |
-| `⌘ ⏎`           | WezTerm                         |
-| `⌘⌥ ⏎`          | WezTerm + tmux (`main` session) |
+| `⌘⌥ ⏎`          | Ghostty + tmux (`main` session) |
 | `⌘⇧ ⏎`          | Chrome                          |
 | `⌘⇧⌥ B`         | Chrome (incognito)              |
 | `⌥ N`           | nvim                            |
@@ -165,7 +164,7 @@ the same whole-screen, region, window and screen-recording captures from its too
 ## Back and Forward
 
 `⌥←` and `⌥→` are Back and Forward, because AeroSpace's focus keys take `⌘←` / `⌘→`.
-`others/macos-app-shortcuts.sh` sets this the same way it restores Save and Open: it rebinds the
+`modules/aerospace/bin/macos-app-shortcuts.sh` sets this the same way it restores Save and Open: it rebinds the
 **Back** and **Forward** menu items via `NSUserKeyEquivalents`, for every app in its list that has
 them (browsers, Finder, Preview, Mail, Xcode, VS Code). Apps without those menu items ignore it.
 
@@ -187,11 +186,12 @@ trick used everywhere else cannot help: Chrome's Tab menu offers only *Select Ne
 plus the open tabs by page title, so there is no stable menu item to bind. Nor can `⌥N` simply be
 remapped to `⌘N` — AeroSpace's grab is global and swallows a synthesised `⌘N` before the browser
 sees it. So Karabiner matches `⌥1`…`⌥9` **only while a browser is frontmost** and runs
-`others/browser-tab.sh`, which drives the tab via AppleScript in about 100 ms.
+`modules/karabiner/bin/browser-tab.sh`, which drives the tab via AppleScript in about 100 ms.
 
 Because the rule is scoped to Chrome, Brave and Safari, `⌥1`…`⌥9` still reach tmux everywhere
 else — see [tmux](#tmux). Add browsers by bundle ID in
-`karabiner/.config/karabiner/karabiner.json` and `others/browser-tab.sh`.
+`modules/karabiner/.config/karabiner/karabiner.json` and
+`modules/karabiner/bin/browser-tab.sh`.
 
 ## System panels
 
@@ -233,12 +233,11 @@ because it is nvim's cmp completion trigger.
 | `prefix E` / `O` / `V`               | Scratch note / todo / nvim pane (moved from lowercase)    |
 
 `⌥⇧⏎` needs the terminal to distinguish Shift+Enter from Enter, which plain xterm encoding
-cannot. tmux asks for it with `extended-keys on`; Ghostty answers by default, WezTerm only with
-`config.enable_kitty_keyboard = true` (already set in `wezterm/.wezterm.lua`).
+cannot. tmux asks for it with `extended-keys on`, which Ghostty answers by default.
 
 ## Tmux layouts
 
-Omarchy's layout functions, ported to zsh in `zsh/.zshrc`. All three must be run **inside** a
+Omarchy's layout functions, ported to zsh in `modules/zsh/.zshrc`. All three must be run **inside** a
 tmux session.
 
 | Command                | Layout                                                              |
@@ -301,7 +300,7 @@ tiled/floating toggle sits on `⌥T` and there is no layout toggle at all, so Fi
 Open Location work natively.
 
 **`⌘S` no longer saves.** It is the scratchpad toggle, and Save falls back to `⌃S` only in the
-apps listed in `others/macos-app-shortcuts.sh`. Anywhere else, Save is reachable from File ▸ Save
+apps listed in `modules/aerospace/bin/macos-app-shortcuts.sh`. Anywhere else, Save is reachable from File ▸ Save
 and nowhere else — add the app's bundle ID to that list and re-run `make macos-shortcuts`.
 
 `⌘1`…`⌘9` no longer select browser tabs — they are the workspace switches. **`⌥1`…`⌥9` do it

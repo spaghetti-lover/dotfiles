@@ -10,7 +10,7 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 - homebrew (pkgs manager)
 - nvim (code editor)
 - tmux (term multiplexer)
-- ghostty and wezterm for terminal emulator
+- ghostty (terminal emulator)
 - aerospace is a window manager for macos (i3 like)
 - zshell
 - GNU stow is a symlink management tool
@@ -22,67 +22,73 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 
 _Note_: Some tools I also recommend: lazydocker, bat, fzf, autocompletion, ... (can be installed with brew)
 
-## Installing steps
+## Install
 
-- You need a package manager, if you are using macos, **homebrew** is a good one.
-
-### Homebrew
-
-[link](https://docs.brew.sh/Installation)
+You need [Homebrew](https://docs.brew.sh/Installation) first:
 
 ```shell
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-### After installing homebrew let's rock
+Then the whole machine is one command:
 
 ```shell
-brew install nvim
-brew install tmux
-brew install --cask ghostty
-brew install --cask wezterm
-brew install stow
-brew install zsh
+git clone <this-repo> ~/Projects/dotfiles
+ln -s ~/Projects/dotfiles ~/dotfiles     # some configs hardcode ~/dotfiles
+cd ~/dotfiles && make install
 ```
 
-### Where should your settings be stored?
+`make install` installs everything in `install/Brewfile`, symlinks every module into `$HOME` with
+stow, and runs each module's install hook. It is idempotent — re-run it whenever you pull.
 
-With stow you can create symlink from a directory to a target directory.
-So ideally, all settings shoul be in a directory, for example `~/dotfiles`
+Two steps still need a human afterwards, and `make install` reminds you of both:
 
 ```shell
-cd
-mkdir dotfiles
+make macos-shortcuts   # see Keybindings below; not optional
 ```
 
-After that, create dir tree structure for each tool with same structure as in its docs.
-For instance, with nvim, you should place your configs in `~/.config/nvim`
+...and launching Karabiner-Elements once to grant Input Monitoring.
 
--> Create dir structure like this in dotfiles
+Run `make help` to see every target.
+
+## Repo layout
+
+```
+modules/     one directory per tool -- this is the stow directory
+install/     Brewfile + bootstrap.sh
+docs/        cheat sheets
+extras/      things that are not dotfiles (open-webui compose file)
+```
+
+### Adding a module
+
+Create `modules/<tool>/` and put the payload at its root, mirroring where the files live in
+`$HOME`. Nothing else needs editing — the Makefile discovers modules by globbing `modules/*`.
+
+| Path in the module | Stowed into `$HOME`? | What it is |
+| ------------------ | -------------------- | ---------- |
+| `.zshrc`, `.config/...` | yes | The payload |
+| `bin/` | no | Helper scripts the config calls at runtime |
+| `share/` | no | Assets (sounds, images) |
+| `install.sh` | no | Post-stow hook, run if executable |
+| `README.md` | no | Notes about that tool |
+
+So a new `modules/foo/.config/foo/config` becomes `~/.config/foo/config` on the next `make stow`,
+while `modules/foo/bin/helper.sh` stays in the repo. Check before committing:
 
 ```shell
-cd ~/dotfiles
-mkdir -p nvim/.config/nvim
+make stow-check     # dry run, changes nothing
+make stow
 ```
 
-Do the same steps with the other tools.
-Then run this to create symlinks
+`make unstow` removes the links again; `make restow` does both, which is what you want after
+renaming or deleting a config file.
 
-```shell
-stow nvim
-stow zsh
-stow aerospace
-stow tmux
-stow wezterm
-stow ghostty
-stow karabiner
-```
-
-for more information about gnustow: [link](https://www.gnu.org/software/stow/)
+For more information about GNU stow: [link](https://www.gnu.org/software/stow/)
 
 ## Note:
 
-- You need Iterm/Wezeterm,...(not default macos terminal) because this terminal can not represent right theme
+- You need Ghostty/iTerm,...(not default macos terminal) because this terminal can not represent right theme
 - Nerd font for view icon, text, folder, ... [link](https://www.nerdfonts.com/)
 - Need to install delve for debugging: `brew install delve`
 - Need ripgrep for telescope live grep
@@ -108,24 +114,22 @@ Save, Print, Zoom, ...) are re-bound onto plain Ctrl. Run this once per machine 
 it is not optional, since ⌘S is the scratchpad toggle and Save has nowhere else to go:
 
 ```shell
-cd ~/dotfiles/others
+cd ~/dotfiles
 make macos-shortcuts        # make macos-shortcuts-reset to undo
 ```
 
-Apps are listed by bundle ID in `others/macos-app-shortcuts.sh`; add yours there as you install
-them, or they keep no Save shortcut at all.
+Apps are listed by bundle ID in `modules/aerospace/bin/macos-app-shortcuts.sh`; add yours there as
+you install them, or they keep no Save shortcut at all.
 
 ⌘1…⌘9 are workspace switches, so browser tabs move to ⌥1…⌥9. That one binding needs
 Karabiner-Elements: launch it once and grant Input Monitoring, and the stowed
-`karabiner/.config/karabiner/karabiner.json` does the rest. macOS will also ask once to let it
-control your browser.
+`modules/karabiner/.config/karabiner/karabiner.json` does the rest. macOS will also ask once to let
+it control your browser.
 
 ### Backup pkgs by brew
 
-Use the Makefile in `others/` for easy management:
-
 ```shell
-cd ~/dotfiles/others
+cd ~/dotfiles
 
 # Install packages from Brewfile (on new system)
 # This also refreshes Brewfile.lock.json
@@ -140,9 +144,6 @@ make brew-update
 
 # Remove packages not in Brewfile
 make brew-clean
-
-# Show all available commands
-make help
 ```
 
 Linux
@@ -150,8 +151,8 @@ Linux
 - skip un-supported packs
 
 ```shell
-brew bundle check --file=Brewfile
-sed -i '/cask /d' Brewfile
+brew bundle check --file=install/Brewfile
+sed -i '/cask /d' install/Brewfile
 ```
 
 ### Docker compose
@@ -205,7 +206,9 @@ or
   [supermaven](https://supermaven.com/)
 
 - My nvim - llms integration settings are in:
-  [llms](./nvim/.config/nvim/lua/plugins/llms.lua)
+  [llms](./modules/nvim/.config/nvim/lua/plugins/llms.lua)
+
+- The open-webui compose file lives in [extras/open-webui](./extras/open-webui/docker-compose.yaml)
 
 ## Colima
 
@@ -214,3 +217,8 @@ or
   ```sh
   sudo ln -s ~/.colima/default/docker.sock /var/run/docker.sock
   ```
+
+## Apple / mobile development
+
+Swift, iOS and macOS setup in nvim: [docs/apple-dev.md](./docs/apple-dev.md), with the brew
+packages in [install/apple-dev.sh](./install/apple-dev.sh).

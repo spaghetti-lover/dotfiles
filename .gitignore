@@ -3,10 +3,8 @@
 dev_*.lua
 data
 ollama/
-qutebrowser/.qutebrowser/bookmarks/
-qutebrowser/.qutebrowser/quickmarks/
-qutebrowser/.qutebrowser/.config.py.swp
 .env
 **.out
 # xcodebuild.nvim stores per-project settings and breakpoints here
 .nvim/
+__pycache__/
