@@ -19,7 +19,6 @@
 #
 # IMPORTANT: this is deliberately PER-APP, never `defaults write -g`.
 #   ctrl-F  is zsh autosuggest-accept
-#   ctrl-L / ctrl-J / ctrl-K are vim-tmux-navigator motions
 #   ctrl-S  is XOFF, which freezes the terminal
 # A global write would steal those inside Ghostty, so terminal bundle IDs are
 # deliberately absent from APPS below.
