@@ -129,24 +129,34 @@ the main monitor — see `[workspace-to-monitor-force-assignment]` in
 
 ## Launching apps
 
-| Keys            | App                             |
-| --------------- | ------------------------------- |
-| `⌘⌥ ⏎`          | Ghostty + tmux (`main` session) |
-| `⌘⇧ ⏎`          | Chrome                          |
-| `⌘⇧⌥ B`         | Chrome (incognito)              |
-| `⌘⇧ N`          | nvim — see [Neovim](#neovim)    |
-| `⌥ D`           | lazydocker                      |
-| `⌥ G`           | Discord                         |
-| `⌘⇧ A`          | ChatGPT                         |
-| `⌘⇧ C`          | Google Calendar — web app       |
-| `⌘⇧ S`          | Google Maps — web app           |
-| `⌘⇧ F`          | Finder                          |
-| `⌘⇧ E`          | Mail                            |
-| `⌘⇧ Y` / `⌘⇧ X` | YouTube / X                     |
+| Keys            | App                                       |
+| --------------- | ----------------------------------------- |
+| `⌘⌥ ⏎`          | Ghostty + tmux (`main` session)           |
+| `⌘⌃ ⏎`          | herdr — see [herdr](#herdr)               |
+| `⌘⌃ K`          | herdr's keybindings                       |
+| `⌘⇧ ⏎`          | Chrome                                    |
+| `⌘⇧⌥ B`         | Chrome (incognito)                        |
+| `⌘⇧ N`          | nvim — see [Neovim](#neovim)              |
+| `⌘⇧ D`          | lazydocker                                |
+| `⌘⌃ T`          | btop                                      |
+| `⌥ G`           | Discord                                   |
+| `⌘⇧ A`          | ChatGPT                                   |
+| `⌘⇧ C`          | Google Calendar — web app                 |
+| `⌘⇧ S`          | Google Maps — web app                     |
+| `⌘⇧ F`          | Finder                                    |
+| `⌘⇧ E`          | Mail                                      |
+| `⌘⇧ Y` / `⌘⇧ X` | YouTube / X                               |
+| `⌘⌃ S`          | LocalSend — share menu                    |
 
-`⌥D` and `⌥G` sit on `⌥`+letter rather than `⌘⇧`+letter, because every `⌘⇧` combination shadows a
-menu command in the focused app. `⌥` is otherwise free: tmux binds only `⌥`+digit, `⌥`+arrow, `⌥⏎`
-and `⌥⎋`; zsh runs vi mode; nvim has no `⌥` maps. One cost: `⌥D` and `⌥G` no longer type `∂` `©`.
+`⌥G` sits on `⌥`+letter rather than `⌘⇧`+letter, because every `⌘⇧` combination shadows a menu
+command in the focused app — and Omarchy has no Discord key to match anyway, so nothing is given
+up by moving it. `⌥` is otherwise free: tmux binds only `⌥`+digit, `⌥`+arrow, `⌥⏎` and `⌥⎋`; zsh
+runs vi mode; nvim has no `⌥` maps. One cost: `⌥G` no longer types `©`.
+
+lazydocker used to sit beside it on `⌥D`, and has moved to Omarchy's own `⌘⇧D` — an ordinary
+Ghostty window, like every other launcher in the table. The menu commands that shadows come back
+the same way every other displaced `⌘` binding's do, through `macos-app-shortcuts.sh` — see
+[What ⌘ costs](#what--costs). `⌥D` types `∂` again.
 
 `⌘⇧N` is the exception, kept on `⌘⇧` to match Omarchy's `Super+Shift+N`. It takes Chrome's
 New Incognito Window — already moved to `⌘⇧⌥B` — and Finder's New Folder, which is given up;
@@ -158,6 +168,60 @@ save and share ▸ Install page as app, and it gets its own `~/Applications/Chro
 `open -a "Google Maps"` finds by name. What they cost is in [What ⌘ costs](#what--costs).
 
 Gemini has no launcher; `⌥A` and `⌥C` are free if you want one.
+
+### btop and the herdr keybindings
+
+`⌘⌃T` and `⌘⌃K` open ordinary windows, like every other launcher in the table. **Omarchy floats
+and centres them** — `omarchy-launch-tui` runs the TUI in a terminal under a dedicated app-id
+(`org.omarchy.btop`), and the `floating-window` rule in `default/hypr/apps/system.lua` gives it
+float, center and 875×600 — and that does not port:
+
+- AeroSpace can float a window but has no command to place or resize one.
+- Its catch-all `on-window-detected` rule tiles and fullscreens a new window before Ghostty has set
+  the title the float rule matches on, so that rule wins only about half the time. Afterwards the
+  requested geometry is gone: `fullscreen off` restores the *tile* frame rather than the original,
+  which left btop 22 rows tall, refusing to draw because the terminal was too small.
+- Ghostty ignores the `CSI 8 t` resize escape and will not report its position, so there is no
+  fixing it from inside the window either. It does honour `window-width` / `window-height` from a
+  config file, but only until AeroSpace resizes it.
+
+A `tmux display-popup` is centred by definition and sizes correctly, being drawn inside the
+terminal rather than beside it — but it lives *inside* its host window, so `⌘W` there closes that
+window and takes the tmux session with it. Not worth the trade for a system monitor.
+
+`⌘⌃K` still goes through a config file (`modules/ghostty/.config/ghostty/herdr-keys.conf`) rather
+than `ghostty -e`, because `-e` makes Ghostty ask "Allow Ghostty to execute …?" every time.
+
+### Sharing files
+
+`⌘⌃S` is Omarchy's share menu, drawn with `fzf` instead of walker — see
+`modules/aerospace/bin/localsend-share.sh`. Type to filter, `⏎` picks, `⎋` closes without doing
+anything.
+
+| Entry       | What it does                                                          |
+| ----------- | --------------------------------------------------------------------- |
+| `Clipboard` | Writes the pasteboard to a temp file — text as `.txt`, otherwise an image as `.png` — and sends that |
+| `File`      | macOS file picker, multiple selection allowed                          |
+| `Folder`    | macOS folder picker                                                    |
+| `Receive`   | Just brings LocalSend forward so it can accept an incoming transfer    |
+
+Paths reach LocalSend through `open -a LocalSend <paths>`: the app declares
+`CFBundleDocumentTypes` for *Any File*, so macOS delivers them as an open-documents event and they
+land staged on its Send tab.
+
+Its command, title and 44×12 size are in `modules/ghostty/.config/ghostty/localsend-share.conf`,
+and it floats through the `on-window-detected` rule in `aerospace.toml` that matches that title.
+Ghostty sets the title just after the window appears, so that rule races the catch-all which
+fullscreens every new window; `localsend-share.sh` runs `aerospace fullscreen off` +
+`layout floating` from the inside to settle it.
+
+One trap when editing that config: it must not `config-file` the main config to inherit it.
+Includes are applied *after* the including file's own keys, so `title = ""` would win and the
+AeroSpace rule would lose the title it matches on.
+
+**LocalSend needs Local Network permission**, or it discovers no peers and the menu appears to do
+nothing. Launch it once and approve the prompt; check it later under System Settings ▸ Privacy &
+Security ▸ Local Network. This is the macOS counterpart of Omarchy's `ufw` rule for port 53317.
 
 ## Screen capture
 
@@ -228,9 +292,14 @@ else — see [tmux](#tmux). Add browsers by bundle ID in
 | `⌘⌃ W`  | Network              |
 | `⌘⌃ D`  | Displays             |
 | `⌘⌃ P`  | Battery              |
-| `⌘⌃ T`  | Activity Monitor     |
 | `⌘⌃ Q`  | Calculator           |
 | `⌘⌃ L`  | Lock (display sleep) |
+
+`⌘⌃S` is not a panel — it is the LocalSend share menu, in
+[Sharing files](#sharing-files). Neither is `⌘⌃T`: Omarchy labels that one "Activity (btop)", so
+it is btop, not Activity Monitor.app. The GUI app has no key at all
+now — open it from Spotlight on the rare occasion you want it (force-quitting something, or a
+`kill` target you cannot find).
 
 ## tmux
 
@@ -276,13 +345,46 @@ tmux session.
 | Alias  | Runs                                    |
 | ------ | --------------------------------------- |
 | `c`    | opencode                                |
-| `cx`   | claude (permissions bypassed)           |
+| `cx`   | claude (auto mode)                      |
 | `cy`   | codex                                   |
 | `ic`   | `tdl c` — editor + opencode              |
 | `ix`   | `tdl cx` — editor + claude               |
 | `icx`  | `tdl c cx` — editor + opencode + claude  |
 | `t`    | Attach to tmux, or start session `main` |
 
+## herdr
+
+`⌘⌃⏎` starts [herdr](https://herdr.dev), or reattaches to the session you already have. It is a
+second multiplexer alongside tmux — workspaces, tabs and panes in a persistent session you can
+detach from and come back to — built around keeping coding agents running rather than shells.
+Ghostty opens it as an ordinary full window, exactly as `⌘⌥⏎` does tmux.
+
+**The prefix is `⌃B`**, herdr's own default and the same as tmux's here. Omarchy remaps it to
+`⌃Space`; that key is unavailable on this machine because it is nvim's cmp completion trigger —
+the same reason the [tmux](#tmux) prefix is not `⌃Space` either. Sharing a prefix with tmux costs
+nothing as long as you do not nest one inside the other, which there is no reason to do: they are
+alternatives, not layers.
+
+| Keys       | Action                                   |
+| ---------- | ---------------------------------------- |
+| `⌘⌃ ⏎`     | Start herdr, or reattach                 |
+| `⌘⌃ K`     | Browse the bindings                      |
+| `prefix ?` | The same list, in-app                    |
+| `prefix q` | Detach                                   |
+| `prefix w` | Workspace picker                         |
+| `prefix c` | New tab                                  |
+
+`⌘⌃K` exists because `prefix ?` only works when herdr is the window in front of you. Omarchy draws
+its version with a Hyprland menu; herdr itself exposes no such command, so
+`modules/aerospace/bin/herdr-keys.sh` is a port of Omarchy's
+`bin/omarchy-menu-herdr-keybindings`, with `fzf` standing in for walker. It reads the action list
+and its defaults out of `herdr --default-config`, where each one appears as a commented
+`# action = "binding"` line, then lets `~/.config/herdr/config.toml` override them, and renders
+`PREFIX + N → Next tab`. Type to filter, `⎋` closes.
+
+That config file is **not** stowed and not in this repo — herdr writes it itself, and everything
+here works off the defaults. `herdr server reload-config` picks up an edit without a restart, and
+`herdr config reset-keys` backs the file up and restores the default bindings.
 ## Terminal
 
 Both terminals send Option as Meta so the tmux Alt layer works.
@@ -356,7 +458,7 @@ AeroSpace's ⌘ bindings are global, so the macOS commands they displace are re-
 `⌃` — the Linux convention. Run once per machine:
 
 ```sh
-cd others && make macos-shortcuts     # make macos-shortcuts-reset to undo
+cd ~/dotfiles && make macos-shortcuts     # make macos-shortcuts-reset to undo
 ```
 
 | Was                 | Now       |
@@ -368,6 +470,7 @@ cd others && make macos-shortcuts     # make macos-shortcuts-reset to undo
 | `⌘P` Print          | `⌃P`      |
 | `⌘J` Downloads      | `⌃J`      |
 | `⌘⇧A` Search Tabs   | `⌃⇧A`     |
+| `⌘⇧D` Bookmark All Tabs, Finder's Go ▸ Desktop | `⌃⇧D` |
 | `⌘-` `⌘=` Zoom      | `⌃-` `⌃=` |
 
 These are per-app menu rebinds, never global — `⌃F` stays zsh `autosuggest-accept` and `⌃L` `⌃J`
@@ -392,11 +495,20 @@ instead**, via Karabiner; see [Browser tabs](#browser-tabs). `⌃Tab` / `⌃⇧T
 `⌘Q` for close-one-window would leave macOS with no quit hotkey at all. Close a single window
 with `⌘W`, or `⌃⌥⌫` to close every window but the focused one.
 
-**`⌘⇧A` `⌘⇧C` `⌘⇧S` are launchers** — ChatGPT, Google Calendar and Google Maps. `⌘⇧A` costs Chrome's
+**`⌘⇧A` `⌘⇧C` `⌘⇧D` `⌘⇧S` are launchers** — ChatGPT, Google Calendar, lazydocker and Google Maps.
+`⌘⇧D` costs Chrome's Bookmark All Tabs and Finder's Go ▸ Desktop, both back on `⌃⇧D` in the table
+above; in any other app whose `⌘⇧D` you miss, add its menu item's exact title to `BINDINGS` in
+`macos-app-shortcuts.sh`. `⌘⇧A` costs Chrome's
 Search Tabs, which the table above puts back on `⌃⇧A` (with ⇧, because plain `⌃A` is
 beginning-of-line in every text field). `⌘⇧S` costs Save As in the apps that bind it — plain Save
 is already on `⌃S`, and macOS's own Save As is `⌥⇧⌘S`. `⌘⇧C` costs nothing here: Inspect Element is
 `⌥⌘C` on macOS, not `⌘⇧C`.
+
+**`⌘⌃S` costs nothing.** macOS binds no system command to it and the `⌘⌃` family here is
+otherwise system panels, so the share menu displaces nothing. It is not the scratchpad — that is
+`⌘S` / `⌘⌥S`.
+
+**`⌘⌃T` no longer opens Activity Monitor** — it is btop now.
 
 **`⌘⇧3` `⌘⇧4` `⌘⇧5` no longer capture the screen** — they move windows to workspaces 3, 4 and 5.
 See [Screen capture](#screen-capture).

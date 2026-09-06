@@ -38,7 +38,7 @@ $ran_any || echo "(no module defines an install.sh yet)"
 
 step "Done"
 cat <<'NEXT'
-Two things still need a human:
+Three things still need a human:
 
   make macos-shortcuts   Restore the macOS menu commands AeroSpace displaces.
                          Not optional -- Cmd-S is the scratchpad toggle, so
@@ -46,4 +46,7 @@ Two things still need a human:
 
   Karabiner-Elements     Launch it once and grant Input Monitoring, so Alt+1-9
                          reaches your browser tabs.
+
+  LocalSend              Launch it once and grant Local Network, or it finds no
+                         peers and cmd-ctrl-s appears to do nothing.
 NEXT

@@ -19,6 +19,8 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 - mise (per-project runtime versions, replaces SDKMAN here)
 - btop (resource monitor), fastfetch (system info)
 - glab (GitLab CLI, needs a one-time `glab auth login`)
+- localsend (AirDrop alternative; `⌘⌃S` opens a Clipboard/File/Folder/Receive share menu — needs
+  Local Network permission on first launch)
 
 _Note_: Some tools I also recommend: lazydocker, bat, fzf, autocompletion, ... (can be installed with brew)
 
@@ -41,13 +43,14 @@ cd ~/dotfiles && make install
 `make install` installs everything in `install/Brewfile`, symlinks every module into `$HOME` with
 stow, and runs each module's install hook. It is idempotent — re-run it whenever you pull.
 
-Two steps still need a human afterwards, and `make install` reminds you of both:
+Three steps still need a human afterwards, and `make install` reminds you of all three:
 
 ```shell
 make macos-shortcuts   # see Keybindings below; not optional
 ```
 
-...and launching Karabiner-Elements once to grant Input Monitoring.
+...launching Karabiner-Elements once to grant Input Monitoring, and launching LocalSend once to
+grant Local Network — without it, peer discovery on port 53317 finds nothing.
 
 Run `make help` to see every target.
 

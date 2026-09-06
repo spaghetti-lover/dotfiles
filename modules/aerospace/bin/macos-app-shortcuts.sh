@@ -3,8 +3,9 @@
 # Restore the macOS menu commands that AeroSpace's Omarchy bindings take over.
 #
 # AeroSpace grabs cmd-* globally (see aerospace/.config/aerospace/aerospace.toml),
-# so cmd-O, cmd-G, cmd-S, cmd-P and cmd-+/- never reach an app. (cmd-F is not
-# among them any more -- nothing is bound to it, so Find works natively.)
+# so cmd-O, cmd-G, cmd-S, cmd-P, cmd-shift-D and cmd-+/- never reach an app.
+# (cmd-F is not among them any more -- nothing is bound to it, so Find works
+# natively.)
 # This puts those commands back on plain ctrl -- the Linux convention, which is
 # what Omarchy users expect anyway.
 #
@@ -32,6 +33,10 @@
 #
 # Search Tabs moves to ctrl-shift-A, because cmd-shift-A is the ChatGPT launcher.
 # Shift is not optional: plain ctrl-A is beginning-of-line in every text field.
+#
+# Bookmark All Tabs and Finder's Go > Desktop move to ctrl-shift-D for the same
+# reason: cmd-shift-D is the lazydocker launcher. Shift again is not optional --
+# plain ctrl-D is end-of-file.
 
 # Find Previous moves to ctrl-shift-G for a different reason: AeroSpace never
 # grabs cmd-shift-G, but every AppKit app binds it to Find Previous, which makes
@@ -81,6 +86,7 @@ APPS=(
   com.apple.iMovieApp
   com.apple.garageband10
   com.obsproject.obs-studio
+  org.localsend.localsendApp                             # LocalSend (Flutter; most titles no-op)
 )
 
 # "Menu item title|shortcut". Titles must match the menu bar EXACTLY, so the
@@ -111,6 +117,9 @@ BINDINGS=(
   'Search Tabs…|^$a'
   'Search Tabs...|^$a'
   'Search Tabs|^$a'
+  'Bookmark All Tabs…|^$d'
+  'Bookmark All Tabs...|^$d'
+  'Desktop|^$d'
   "Back|~${ARROW_LEFT}"
   "Forward|~${ARROW_RIGHT}"
 )
