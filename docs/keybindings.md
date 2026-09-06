@@ -201,7 +201,15 @@ sorted biggest first, walk into whatever is eating the disk and delete it from i
 counterpart here, so it gets a key of its own. It floats and centres the window there, exactly as
 it does btop, and that does not port for the reasons above.
 
-The command is not Omarchy's `dua i /` verbatim. It is:
+It goes through `modules/ghostty/.config/ghostty/disk-usage.conf` rather than `ghostty -e`, the
+same reason `⌘⌃K` does — see [btop and the herdr keybindings](#btop-and-the-herdr-keybindings).
+The trigger is subtler here: AppKit turns **every existing path after `-e`** into an open-file
+event, and Ghostty answers each one with an "Allow Ghostty to execute …?" alert. `⌘⌃T` gets away
+with `-e` because its command is a single path; this one carries three, so it prompted every
+launch. Ghostty gained a filter for exactly this after 1.3.1 — the config file sidesteps it
+regardless of version.
+
+The command in that file is not Omarchy's `dua i /` verbatim. It is:
 
 ```sh
 dua i / -i /System/Volumes/Data
