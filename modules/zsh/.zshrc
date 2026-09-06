@@ -216,7 +216,7 @@ tsl() {
 
 # AI agents, and the tdl shorthands built on them
 alias c='opencode'
-alias cx='printf "\033[2J\033[3J\033[H" && claude --permission-mode bypassPermissions'
+alias cx='printf "\033[2J\033[3J\033[H" && claude --enable-auto-mode'
 alias cy='codex -s danger-full-access -a never'
 alias ic='tdl c'
 alias ix='tdl cx'
