@@ -139,6 +139,7 @@ the main monitor — see `[workspace-to-monitor-force-assignment]` in
 | `⌘⇧ N`          | nvim — see [Neovim](#neovim)              |
 | `⌘⇧ D`          | lazydocker                                |
 | `⌘⌃ T`          | btop                                      |
+| `⌘⌃ U`          | Disk Usage — dua                          |
 | `⌥ G`           | Discord                                   |
 | `⌘⇧ A`          | ChatGPT                                   |
 | `⌘⇧ C`          | Google Calendar — web app                 |
@@ -191,6 +192,48 @@ window and takes the tmux session with it. Not worth the trade for a system moni
 
 `⌘⌃K` still goes through a config file (`modules/ghostty/.config/ghostty/herdr-keys.conf`) rather
 than `ghostty -e`, because `-e` makes Ghostty ask "Allow Ghostty to execute …?" every time.
+
+### Disk Usage
+
+`⌘⌃U` opens [dua](https://github.com/Byron/dua-cli) in interactive mode: the whole file system,
+sorted biggest first, walk into whatever is eating the disk and delete it from inside the TUI.
+**Omarchy gives this no hotkey** — it is an entry in the Super+Space app launcher, which has no
+counterpart here, so it gets a key of its own. It floats and centres the window there, exactly as
+it does btop, and that does not port for the reasons above.
+
+The command is not Omarchy's `dua i /` verbatim. It is:
+
+```sh
+dua i / -i /System/Volumes/Data
+```
+
+On APFS the Data volume is *firmlinked* into `/`, so `/Users` and `/System/Volumes/Data/Users` are
+the same directory reached two ways — same device, same inode:
+
+```console
+$ stat -f "%d %i %N" /Users /System/Volumes/Data/Users
+16777233 18488 /Users
+16777233 18488 /System/Volumes/Data/Users
+```
+
+Without `-i`, `/Users`, `/Applications`, `/Library` and `/private` each appear twice in the same
+tree, and the totals are nonsense — `dua a` from `/` reported **350 GB** on a disk holding 185 GiB,
+with `System` alone at 205 GB. With `-i` it reports 196 GB and `System` 51 GB, which matches
+`df -h` (12 Gi on `/`, 173 Gi on the Data volume) once the unreadable directories are allowed for.
+`-x` (stay on filesystem) does not help — the firmlinked paths report the same `st_dev`.
+Overriding `--ignore-dirs` costs nothing here: dua presets it (`/proc /dev /sys /run`) on Linux
+only, under a `#[cfg_attr(target_os = "linux", ...)]`.
+
+**Grant Ghostty Full Disk Access**, once, in System Settings ▸ Privacy & Security ▸ Full Disk
+Access. Without it macOS hides other users' folders, `~/Library/Containers`, Photos libraries and
+similar from the terminal, and dua quietly reports them as smaller than they are — which is the
+opposite of useful when you are hunting for the thing filling the disk. It is not run under
+`sudo`: this TUI deletes, and delete-as-root one keystroke away is a worse trade than a few
+unreadable directories.
+
+If the totals look inflated on a disk full of Finder duplicates or Xcode `DerivedData`, add
+`--deduplicate-apfs-clones` — a macOS-only dua flag that counts fully shared clones once, at about
+6% of scan speed.
 
 ### Sharing files
 
@@ -296,10 +339,10 @@ else — see [tmux](#tmux). Add browsers by bundle ID in
 | `⌘⌃ L`  | Lock (display sleep) |
 
 `⌘⌃S` is not a panel — it is the LocalSend share menu, in
-[Sharing files](#sharing-files). Neither is `⌘⌃T`: Omarchy labels that one "Activity (btop)", so
-it is btop, not Activity Monitor.app. The GUI app has no key at all
-now — open it from Spotlight on the rare occasion you want it (force-quitting something, or a
-`kill` target you cannot find).
+[Sharing files](#sharing-files), nor is `⌘⌃U`, which is [Disk Usage](#disk-usage). Neither is
+`⌘⌃T`: Omarchy labels that one "Activity (btop)", so it is btop, not Activity Monitor.app. The GUI
+app has no key at all now — open it from Spotlight on the rare occasion you want it (force-quitting
+something, or a `kill` target you cannot find).
 
 ## tmux
 
@@ -549,6 +592,9 @@ is already on `⌃S`, and macOS's own Save As is `⌥⇧⌘S`. `⌘⇧C` costs n
 **`⌘⌃S` costs nothing.** macOS binds no system command to it and the `⌘⌃` family here is
 otherwise system panels, so the share menu displaces nothing. It is not the scratchpad — that is
 `⌘S` / `⌘⌥S`.
+
+**`⌘⌃U` costs nothing either.** macOS binds no system command to it, and no app here binds it as
+a menu command, so Disk Usage needs no entry in `macos-app-shortcuts.sh`.
 
 **`⌘⌃T` no longer opens Activity Monitor** — it is btop now.
 

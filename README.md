@@ -17,7 +17,8 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 - zoxide (smarter `cd`: `z <part-of-path>` jumps, `zi` picks with fzf)
 - eza (better `ls`: icons and git status; aliased to `ls`, `lsa`, `lt`, `lta`)
 - mise (per-project runtime versions, replaces SDKMAN here)
-- btop (resource monitor), fastfetch (system info)
+- btop (resource monitor), fastfetch (system info), dua (disk usage TUI; `⌘⌃U` walks the whole
+  file system, biggest first — needs Ghostty in Full Disk Access to see everything)
 - glab (GitLab CLI, needs a one-time `glab auth login`)
 - localsend (AirDrop alternative; `⌘⌃S` opens a Clipboard/File/Folder/Receive share menu — needs
   Local Network permission on first launch)

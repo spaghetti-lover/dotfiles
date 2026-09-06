@@ -221,6 +221,10 @@ cmd-shift-d     = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/
 # docs/keybindings.md#btop-and-the-herdr-keybindings.
 cmd-ctrl-t      = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/btop'
 
+# Omarchy's Disk Usage, which has no hotkey there. `-i` drops the APFS Data
+# volume, firmlinked into / -- see docs/keybindings.md#disk-usage.
+cmd-ctrl-u      = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/dua i / -i /System/Volumes/Data'
+
 # Omarchy's Super+Ctrl+Return: herdr, the sibling of cmd-alt-enter's tmux. A
 # full window, not a floating pane -- it is a workspace manager. Its prefix is
 # ctrl-b, herdr's own default; Omarchy remaps it to ctrl-space, which is nvim's

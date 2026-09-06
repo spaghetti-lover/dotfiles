@@ -11,6 +11,8 @@ brew "colima"
 brew "docker"
 brew "docker-compose"
 brew "docker-credential-helper"
+# Omarchy's Disk Usage, on cmd-ctrl-U
+brew "dua-cli"
 # ls replacement: long listings with icons and git status; .zshrc aliases ls/lsa/lt/lta to it
 brew "eza"
 brew "fastfetch"
