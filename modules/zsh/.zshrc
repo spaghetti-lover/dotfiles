@@ -42,6 +42,17 @@ alias fv='nvim $(fzf -m --preview="bat --color=always {}")'
 # zoxide: `z <part-of-path>` jumps to a directory you have visited, `zi` picks one with fzf
 eval "$(zoxide init zsh)"
 
+# try: date-stamped scratch directories for experiments under ~/Projects/tries.
+# `try init` shells out to ruby, so defer it to the first call instead of paying for it
+# on every prompt. The stub unfunctions itself, then the real init defines the real `try`.
+if command -v try >/dev/null; then
+  try() {
+    unfunction try
+    eval "$(SHELL=/bin/zsh command try init ~/Projects/tries)"
+    try "$@"
+  }
+fi
+
 # eza: ls replacement with icons, colors and git status. `man eza` for the manual.
 alias ls='eza -lh --group-directories-first --icons=auto'
 alias lsa='ls -a'

@@ -17,6 +17,8 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 - zoxide (smarter `cd`: `z <part-of-path>` jumps, `zi` picks with fzf)
 - eza (better `ls`: icons and git status; aliased to `ls`, `lsa`, `lt`, `lta`)
 - mise (per-project runtime versions, replaces SDKMAN here)
+- try (date-stamped experiment dirs under `~/Projects/tries`: plain `try` browses them,
+  `try redis` jumps to or creates one, `try .` makes a worktree of the current repo)
 - btop (resource monitor), fastfetch (system info), dua (disk usage TUI; `⌘⌃U` walks the whole
   file system, biggest first — needs Ghostty in Full Disk Access to see everything)
 - glab (GitLab CLI, needs a one-time `glab auth login`)
