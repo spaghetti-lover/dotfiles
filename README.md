@@ -90,6 +90,7 @@ For more information about GNU stow: [link](https://www.gnu.org/software/stow/)
 
 - You need Ghostty/iTerm,...(not default macos terminal) because this terminal can not represent right theme
 - Nerd font for view icon, text, folder, ... [link](https://www.nerdfonts.com/)
+- herdr reads its colours from Ghostty (`[theme] name = "terminal"`), so the Ghostty theme sets both
 
 ## Keybindings
 

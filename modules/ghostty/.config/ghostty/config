@@ -1,4 +1,7 @@
-# theme = "rose-pine"
+theme = "Gruvbox Dark Hard"
+# theme = "Gruvbox Dark"
+# theme = "Gruvbox Light Hard"
+# theme = "Rose Pine"
 font-family = "Inconsolata Nerd Font Mono Bold"
 font-size = 18
 window-padding-x = 18
