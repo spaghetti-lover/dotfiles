@@ -17,12 +17,34 @@ adjust-cursor-thickness = 1
 # don't ask for confirmation when closing a tab/split/window
 confirm-close-surface = false
 
+# Solid, non-blinking block cursor. Paired with no-cursor below, which stops
+# the shell integration from overriding the style.
+cursor-style = block
+cursor-style-blink = false
+
+# no-cursor: shell integration leaves cursor-style alone.
+# ssh-env: forward TERM/COLORTERM over ssh so remote hosts get working terminfo.
+# The list is applied on top of Ghostty's defaults, not in place of them.
+shell-integration-features = no-cursor,ssh-env
+
+# No transient size overlay when a split or window is resized.
+resize-overlay = never
+
+# Slow mouse scrolling slightly.
+mouse-scroll-multiplier = 0.95
+
 # ---------------------------------------------------------------------
 # Omarchy terminal layer (https://omarchy.org/manual/hotkeys)
 # ---------------------------------------------------------------------
 
 # Load-bearing: Option must arrive as Meta so tmux sees Alt+Enter / Alt+1-9.
 macos-option-as-alt = true
+
+# Send Shift+Enter as CSI-u so TUIs can distinguish it from Enter.
+keybind = shift+enter=csi:13;2u
+# Legacy encoding sends Alt+Shift+Enter the same as Alt+Enter; send CSI-u so
+# tmux can match M-S-Enter.
+keybind = alt+shift+enter=csi:13;4u
 
 # Splits
 keybind = ctrl+shift+e=new_split:down
@@ -31,15 +53,30 @@ keybind = ctrl+alt+left=goto_split:left
 keybind = ctrl+alt+right=goto_split:right
 keybind = ctrl+alt+up=goto_split:up
 keybind = ctrl+alt+down=goto_split:down
-keybind = cmd+ctrl+shift+left=resize_split:left,10
-keybind = cmd+ctrl+shift+right=resize_split:right,10
-keybind = cmd+ctrl+shift+up=resize_split:up,10
-keybind = cmd+ctrl+shift+down=resize_split:down,10
+keybind = super+control+shift+alt+arrow_left=resize_split:left,100
+keybind = super+control+shift+alt+arrow_right=resize_split:right,100
+keybind = super+control+shift+alt+arrow_up=resize_split:up,100
+keybind = super+control+shift+alt+arrow_down=resize_split:down,100
 
-# Tabs. AeroSpace owns cmd+t now, so New Tab lives on ctrl+shift+t.
+# Tabs. cmd+t still works -- AeroSpace deliberately leaves it free -- but
+# ctrl+shift+t is what Omarchy/Ghostty-on-Linux uses, so bind it too.
 keybind = ctrl+shift+t=new_tab
 keybind = ctrl+shift+left=move_tab:-1
 keybind = ctrl+shift+right=move_tab:1
+
+# Tab-by-number. Ghostty's macOS default is cmd+1-9, but AeroSpace owns those
+# for workspaces and alt+1-9 belongs to tmux, so it lives on ctrl+shift like
+# the rest of the tab cluster. digit_N is the physical key, layout-independent.
+# 9 is last_tab, matching Ghostty's own default (and every browser).
+keybind = ctrl+shift+digit_1=goto_tab:1
+keybind = ctrl+shift+digit_2=goto_tab:2
+keybind = ctrl+shift+digit_3=goto_tab:3
+keybind = ctrl+shift+digit_4=goto_tab:4
+keybind = ctrl+shift+digit_5=goto_tab:5
+keybind = ctrl+shift+digit_6=goto_tab:6
+keybind = ctrl+shift+digit_7=goto_tab:7
+keybind = ctrl+shift+digit_8=goto_tab:8
+keybind = ctrl+shift+digit_9=last_tab
 
 # Deliberately NOT bound: alt+1-9. Omarchy puts Ghostty tabs there, but
 # tmux wants those for windows -- let them pass through to the shell.
