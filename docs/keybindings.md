@@ -330,17 +330,22 @@ cannot. tmux asks for it with `extended-keys on`, which Ghostty answers by defau
 
 ## Tmux layouts
 
-Omarchy's layout functions, ported to zsh in `modules/zsh/.zshrc`. All four must be run **inside** a
-tmux session.
+Omarchy's layout functions, ported to zsh in `modules/zsh/.zshrc`, plus `tdh`. All five must be run
+**inside** a tmux session.
 
 | Command                | Layout                                                              |
 | ---------------------- | ------------------------------------------------------------------- |
 | `tdl <ai> [<ai2>]`     | Editor left, AI right (30%), terminal below (15%)                   |
+| `tdh <ai> [<ai2>]`     | The same, with `hunk diff --watch` on the left instead of an editor |
 | `tds`                  | Four quadrants: editor, `hunk diff --watch`, terminal, opencode     |
 | `tdlm <ai> [<ai2>]`    | One `tdl` window per subdirectory — switch with `⌥ 1`…`9`             |
 | `tsl <count> <cmd>`    | `count` tiled panes, all running `cmd`                              |
 
 `tdl` renames the window after the current directory and opens `$EDITOR` (nvim) on the left.
+
+`tdh` takes the same arguments and builds the same three panes, but the left one runs
+[hunk](https://hunk.dev) `--watch` — the layout for when the agent does the writing and you only
+read the diff. It leaves the AI pane focused rather than the left one, for the same reason.
 
 `tds` takes no arguments. Its diff pane runs [hunk](https://hunk.dev), a terminal diff viewer, with
 `--watch` so it re-renders as the agent edits files.
@@ -391,12 +396,13 @@ here works off the defaults. `herdr server reload-config` picks up an edit witho
 
 ### herdr layouts
 
-The same four layouts, against herdr instead of tmux. Run them **inside** herdr — they key off
+The same five layouts, against herdr instead of tmux. Run them **inside** herdr — they key off
 `$HERDR_PANE_ID`, the way the tmux ones key off `$TMUX`.
 
 | Command                | Layout                                                          |
 | ---------------------- | --------------------------------------------------------------- |
 | `hdl <ai> [<ai2>]`     | Editor left, AI right (30%), terminal below (15%)               |
+| `hdh <ai> [<ai2>]`     | The same, with `hunk diff --watch` instead of an editor         |
 | `hds`                  | Four quadrants: editor, `hunk diff --watch`, terminal, opencode |
 | `hdlm <ai> [<ai2>]`    | One `hdl` tab per subdirectory, and renames the workspace       |
 | `hsl <count> <cmd>`    | `count` panes in a grid, all running `cmd`                      |

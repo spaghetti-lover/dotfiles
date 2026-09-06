@@ -155,6 +155,37 @@ tdl() {
   tmux select-pane -t "$editor_pane"
 }
 
+# The same layout with a diff watcher in place of the editor: hunk left, AI right, terminal below.
+# Usage: tdh <c|cx|cy|other_ai> [<second_ai>]
+tdh() {
+  [[ -z $1 ]] && { echo "Usage: tdh <c|cx|cy|other_ai> [<second_ai>]"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tdh."; return 1; }
+
+  local current_dir="$PWD"
+  local ai="$1" ai2="$2"
+  local diff_pane ai_pane ai2_pane
+
+  diff_pane="$TMUX_PANE"
+
+  tmux rename-window -t "$diff_pane" "$(basename "$current_dir")"
+
+  # terminal along the bottom, 15%
+  tmux split-window -v -p 15 -t "$diff_pane" -c "$current_dir"
+
+  # AI on the right, 30%
+  ai_pane=$(tmux split-window -h -p 30 -t "$diff_pane" -c "$current_dir" -P -F '#{pane_id}')
+
+  if [[ -n $ai2 ]]; then
+    ai2_pane=$(tmux split-window -v -t "$ai_pane" -c "$current_dir" -P -F '#{pane_id}')
+    tmux send-keys -t "$ai2_pane" "$ai2" C-m
+  fi
+
+  tmux send-keys -t "$ai_pane" "$ai" C-m
+  tmux send-keys -t "$diff_pane" "hunk diff --watch" C-m
+  # the diff pane is only there to be read, so land in the agent
+  tmux select-pane -t "$ai_pane"
+}
+
 tds() {
   [[ -n $1 ]] && { echo "Usage: tds"; return 1; }
   [[ -z $TMUX ]] && { echo "You must start tmux to use tds."; return 1; }
@@ -265,6 +296,32 @@ hdl() {
 
   herdr pane run "$ai_pane" "$ai" >/dev/null
   herdr pane run "$editor_pane" "$EDITOR ." >/dev/null
+}
+
+hdh() {
+  [[ -z $1 ]] && { echo "Usage: hdh <c|cx|cy|other_ai> [<second_ai>]"; return 1; }
+  [[ -z $HERDR_PANE_ID ]] && { echo "You must start herdr to use hdh."; return 1; }
+
+  local current_dir="$PWD"
+  local ai="$1" ai2="$2"
+  local diff_pane ai_pane ai2_pane
+
+  diff_pane="$HERDR_PANE_ID"
+
+  herdr tab rename "$HERDR_TAB_ID" "$(basename "$current_dir")" >/dev/null
+
+  _herdr_split "$diff_pane" down 0.85 "$current_dir" >/dev/null
+  ai_pane=$(_herdr_split "$diff_pane" right 0.7 "$current_dir")
+
+  if [[ -n $ai2 ]]; then
+    ai2_pane=$(_herdr_split "$ai_pane" down 0.5 "$current_dir")
+    herdr pane run "$ai2_pane" "$ai2" >/dev/null
+  fi
+
+  herdr pane run "$ai_pane" "$ai" >/dev/null
+  herdr pane run "$diff_pane" "hunk diff --watch" >/dev/null
+  # herdr has no focus-by-id, so step right out of the diff pane instead
+  herdr pane focus --pane "$diff_pane" --direction right >/dev/null
 }
 
 hds() {
