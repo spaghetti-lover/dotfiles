@@ -233,11 +233,24 @@ Overriding `--ignore-dirs` costs nothing here: dua presets it (`/proc /dev /sys 
 only, under a `#[cfg_attr(target_os = "linux", ...)]`.
 
 **Grant Ghostty Full Disk Access**, once, in System Settings ▸ Privacy & Security ▸ Full Disk
-Access. Without it macOS hides other users' folders, `~/Library/Containers`, Photos libraries and
+Access — add **Ghostty**, then quit and reopen it, because TCC grants only take effect on a fresh
+launch. Without it macOS hides other users' folders, `~/Library/Containers`, Photos libraries and
 similar from the terminal, and dua quietly reports them as smaller than they are — which is the
-opposite of useful when you are hunting for the thing filling the disk. It is not run under
-`sudo`: this TUI deletes, and delete-as-root one keystroke away is a worse trade than a few
-unreadable directories.
+opposite of useful when you are hunting for the thing filling the disk.
+
+Until it is granted, walking into `/Users` sets off macOS's own dialog, once per app whose
+container dua touches:
+
+> **"Ghostty.app" would like to access data from other apps.**
+> Keeping app data separate makes it easier to manage your privacy and security.
+
+That is TCC (`SystemPolicyAppData`), not the Ghostty "Allow … to execute" alert above, and no
+config file suppresses it. Full Disk Access is a superset of it, so granting that ends the
+prompting; the alternative is `-i ~/Library/Containers -i ~/Library/Group\ Containers`, which
+stops the dialogs by giving up the numbers you were looking for.
+
+It is not run under `sudo`: this TUI deletes, and delete-as-root one keystroke away is a worse
+trade than a few unreadable directories.
 
 If the totals look inflated on a disk full of Finder duplicates or Xcode `DerivedData`, add
 `--deduplicate-apfs-clones` — a macOS-only dua flag that counts fully shared clones once, at about
