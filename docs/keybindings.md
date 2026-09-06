@@ -314,7 +314,6 @@ because it is nvim's cmp completion trigger.
 | `⌥ Esc`                              | Kill pane (no prefix)                                     |
 | `⌃⌥ ←↓↑→`                            | Move between panes                                        |
 | `⌃⌥⇧ ←↓↑→`                           | Resize pane                                               |
-| `⌃ hjkl`                             | Move between panes (vim-tmux-navigator; stops at nvim)    |
 | `prefix c` / `prefix k` / `prefix r` | New / kill / rename window                                |
 | `⌥ 1`…`9`                            | Go to window (selects a tab in browsers)                  |
 | `⌥ ← →`                              | Previous / next window                                    |
@@ -331,16 +330,20 @@ cannot. tmux asks for it with `extended-keys on`, which Ghostty answers by defau
 
 ## Tmux layouts
 
-Omarchy's layout functions, ported to zsh in `modules/zsh/.zshrc`. All three must be run **inside** a
+Omarchy's layout functions, ported to zsh in `modules/zsh/.zshrc`. All four must be run **inside** a
 tmux session.
 
 | Command                | Layout                                                              |
 | ---------------------- | ------------------------------------------------------------------- |
 | `tdl <ai> [<ai2>]`     | Editor left, AI right (30%), terminal below (15%)                   |
+| `tds`                  | Four quadrants: editor, `hunk diff --watch`, terminal, opencode     |
 | `tdlm <ai> [<ai2>]`    | One `tdl` window per subdirectory — switch with `⌥ 1`…`9`             |
 | `tsl <count> <cmd>`    | `count` tiled panes, all running `cmd`                              |
 
 `tdl` renames the window after the current directory and opens `$EDITOR` (nvim) on the left.
+
+`tds` takes no arguments. Its diff pane runs [hunk](https://hunk.dev), a terminal diff viewer, with
+`--watch` so it re-renders as the agent edits files.
 
 | Alias  | Runs                                    |
 | ------ | --------------------------------------- |
@@ -385,6 +388,39 @@ and its defaults out of `herdr --default-config`, where each one appears as a co
 That config file is **not** stowed and not in this repo — herdr writes it itself, and everything
 here works off the defaults. `herdr server reload-config` picks up an edit without a restart, and
 `herdr config reset-keys` backs the file up and restores the default bindings.
+
+### herdr layouts
+
+The same four layouts, against herdr instead of tmux. Run them **inside** herdr — they key off
+`$HERDR_PANE_ID`, the way the tmux ones key off `$TMUX`.
+
+| Command                | Layout                                                          |
+| ---------------------- | --------------------------------------------------------------- |
+| `hdl <ai> [<ai2>]`     | Editor left, AI right (30%), terminal below (15%)               |
+| `hds`                  | Four quadrants: editor, `hunk diff --watch`, terminal, opencode |
+| `hdlm <ai> [<ai2>]`    | One `hdl` tab per subdirectory, and renames the workspace       |
+| `hsl <count> <cmd>`    | `count` panes in a grid, all running `cmd`                      |
+
+Two differences from the tmux versions, both from herdr's CLI rather than choice. Commands are
+handed to `herdr pane run` instead of typed in as keystrokes, and pane ids come back as JSON, so
+these need `jq`. `hsl` also builds a real `ceil(sqrt(n))` grid itself, where `tsl` just splits and
+lets `select-layout tiled` sort it out.
+
+## Git worktrees
+
+| Command       | Action                                                            |
+| ------------- | ----------------------------------------------------------------- |
+| `ga <branch>` | Worktree + branch at `../<repo>--<branch>`, then `cd` into it     |
+| `gd`          | Remove the worktree and its branch, from inside it (asks first)   |
+
+The `--` in the directory name is the contract between the two: `ga` writes it, `gd` splits on the
+first one to recover the repo and branch, and does nothing at all in a directory that has none. So
+renaming a worktree directory breaks `gd`. `gd` confirms with `gum` before deleting anything.
+
+These take the `ga`/`gd` names back from oh-my-zsh's git plugin, where they are `git add` and
+`git diff` — hence the `unalias ga gd` above the definitions in `.zshrc`. The aliases would
+otherwise also be expanded in the `ga() {` line itself, which is a parse error, not a shadowing.
+
 ## Terminal
 
 Both terminals send Option as Meta so the tmux Alt layer works.
@@ -473,8 +509,8 @@ cd ~/dotfiles && make macos-shortcuts     # make macos-shortcuts-reset to undo
 | `⌘⇧D` Bookmark All Tabs, Finder's Go ▸ Desktop | `⌃⇧D` |
 | `⌘-` `⌘=` Zoom      | `⌃-` `⌃=` |
 
-These are per-app menu rebinds, never global — `⌃F` stays zsh `autosuggest-accept` and `⌃L` `⌃J`
-`⌃K` stay vim-tmux-navigator inside terminals.
+These are per-app menu rebinds, never global — `⌃F` stays zsh `autosuggest-accept`, and `⌃L` `⌃J`
+`⌃K` reach whatever is running in the terminal (`⌃L` clear, `⌃J` a newline in Claude Code).
 
 `⌘⇧G` is in the table for the opposite reason to the rest: AeroSpace does not take it, but every
 AppKit app binds it to Find Previous, so an app that wants it as its own global hotkey refuses it
