@@ -140,6 +140,7 @@ the main monitor — see `[workspace-to-monitor-force-assignment]` in
 | `⌘⇧ D`          | lazydocker                                |
 | `⌘⌃ T`          | btop                                      |
 | `⌘⌃ U`          | Disk Usage — dua                          |
+| `⌘⌃ E`          | Emoji picker — see [below](#emoji-picker) |
 | `⌥ G`           | Discord                                   |
 | `⌘⇧ A`          | ChatGPT                                   |
 | `⌘⇧ C`          | Google Calendar — web app                 |
@@ -255,6 +256,30 @@ trade than a few unreadable directories.
 If the totals look inflated on a disk full of Finder duplicates or Xcode `DerivedData`, add
 `--deduplicate-apfs-clones` — a macOS-only dua flag that counts fully shared clones once, at about
 6% of scan speed.
+
+### Emoji picker
+
+`⌘⌃E` is Omarchy's own `Super+Ctrl+E`, unchanged. What it opens is different: Omarchy draws a
+Quickshell overlay that copies the emoji you pick to the clipboard, and macOS already ships the
+same thing in **Character Viewer** ("Emoji & Symbols") — search by name, recents, skin-tone
+variants — which *inserts* at the cursor rather than only reaching the clipboard. So nothing here
+vendors an emoji dataset or a picker UI; Character Viewer is on the system hotkey `⌃⌘Space`, and
+the whole feature is one rewrite of `⌘⌃E` onto it, the second rule in
+`modules/karabiner/.config/karabiner/karabiner.json`.
+
+**Karabiner, not AeroSpace.** AeroSpace can only `exec-and-forget`, and no command raises the
+modern popover: `open -a` on `/System/Library/Input Methods/CharacterPalette.app` gets the legacy
+palette window instead, and pressing `⌃⌘Space` through `osascript` would need Accessibility
+permission for AeroSpace. Karabiner posts the keystroke from its own virtual keyboard — no script,
+no permission, no window to manage — and it intercepts below AeroSpace, which is why
+`aerospace.toml` has a comment where `cmd-ctrl-e` would go rather than a binding.
+
+If `⌘⌃E` does nothing, the system hotkey it depends on has been turned off or moved: System
+Settings ▸ Keyboard ▸ Keyboard Shortcuts ▸ Input Sources ▸ **Show Emoji & Symbols**. The fix is
+there, not in Karabiner.
+
+Omarchy's CapsLock quick-emoji and quick-completion sequences are a separate mechanism and are not
+ported — see [Not available on macOS](#not-available-on-macos).
 
 ### Sharing files
 
@@ -617,6 +642,9 @@ otherwise system panels, so the share menu displaces nothing. It is not the scra
 **`⌘⌃U` costs nothing either.** macOS binds no system command to it, and no app here binds it as
 a menu command, so Disk Usage needs no entry in `macos-app-shortcuts.sh`.
 
+**`⌘⌃E` costs nothing either.** It displaces nothing, not even macOS's own `⌃⌘Space` — it is a
+second door onto the same panel, on the key Omarchy uses.
+
 **`⌘⌃T` no longer opens Activity Monitor** — it is btop now.
 
 **`⌘⇧3` `⌘⇧4` `⌘⇧5` no longer capture the screen** — they move windows to workspaces 3, 4 and 5.
@@ -635,6 +663,13 @@ AeroSpace has no equivalent, and nothing here fakes one:
 - `Super+Scroll` workspace scrolling, `Super+Mouse` drag/resize
 - Omarchy's Notifications, Style, Toggles, Reminders and Notices sections — these are
   Hyprland-ecosystem specific (mako, waybar, hyprsunset)
+- Omarchy's **Quick Emojis** (`CapsLock M S` → 😄, and 22 more) and **Quick Completions**
+  (`CapsLock Space N` / `E` for name and email, `CapsLock Space Space` for an mdash) — see below
+
+Those CapsLock sequences are XCompose, not keybindings: Omarchy makes CapsLock the `Multi_key`
+(`compose:caps`) and fcitx5 serves `~/.XCompose`. macOS has neither, and faking the layer in
+Karabiner means handing CapsLock over — it would stop toggling caps for good. That is not worth
+paying when [`⌘⌃E`](#emoji-picker) reaches every one of those 23 emoji by typing its name.
 
 Two more are approximated rather than matched. Accordion (`⌘G`) stands in for the scrolling
 layout, but AeroSpace keeps no per-workspace layout state, so unlike Omarchy the choice is lost

@@ -225,6 +225,10 @@ cmd-ctrl-t      = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/
 # than `ghostty -e`, like cmd-ctrl-k below -- see docs/keybindings.md#disk-usage.
 cmd-ctrl-u      = 'exec-and-forget open -na Ghostty --args --config-file=/Users/ducannh/.config/ghostty/disk-usage.conf'
 
+# cmd-ctrl-e is not here: Karabiner serves Omarchy's Super+Ctrl+E emoji picker,
+# and it intercepts below AeroSpace, so a binding written here would never fire
+# -- see docs/keybindings.md#emoji-picker.
+
 # Omarchy's Super+Ctrl+Return: herdr, the sibling of cmd-alt-enter's tmux. A
 # full window, not a floating pane -- it is a workspace manager. Its prefix is
 # ctrl-b, herdr's own default; Omarchy remaps it to ctrl-space, which is nvim's
