@@ -54,6 +54,8 @@ brew "tmux"
 brew "tree"
 # nvim-treesitter uses this to build parsers that ship no pre-generated source
 brew "tree-sitter-cli"
+# date-stamped scratch dirs for experiments; .zshrc lazy-inits it against ~/Projects/tries
+brew "try"
 brew "wget"
 brew "xcbeautify"
 brew "xcode-build-server"
