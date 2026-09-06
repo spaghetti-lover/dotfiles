@@ -495,15 +495,28 @@ otherwise also be expanded in the `ga() {` line itself, which is a parse error, 
 
 Both terminals send Option as Meta so the tmux Alt layer works.
 
-| Keys            | Action                          |
-| --------------- | ------------------------------- |
-| `⌃⇧ T`          | New tab                         |
-| `⌃⇧ ← →`        | Move tab                        |
-| `⌃⇧ E` / `⌃⇧ O` | Split down / right _(Ghostty)_  |
-| `⌃⌥ ←↓↑→`       | Move between splits _(Ghostty)_ |
-| `⌘⌃⇧ ←↓↑→`      | Resize split _(Ghostty)_        |
+| Keys               | Action                          |
+| ------------------ | ------------------------------- |
+| `⌃⇧ T` / `⌘ T`     | New tab                         |
+| `⌃⇧ ← →`           | Move tab                        |
+| `⌃⇧ 1-9`           | Go to tab, 9 = last _(Ghostty)_ |
+| `⌃ Tab` / `⌃⇧ Tab` | Next / previous tab _(Ghostty)_ |
+| `⌘⇧ [` / `⌘⇧ ]`    | Previous / next tab _(Ghostty)_ |
+| `⌘⌥ W`             | Close tab _(Ghostty)_           |
+| `⌃⇧ E` / `⌃⇧ O`    | Split down / right _(Ghostty)_  |
+| `⌃⌥ ←↓↑→`          | Move between splits _(Ghostty)_ |
+| `⌘⌃⇧⌥ ←↓↑→`        | Resize split _(Ghostty)_        |
+| `⇧⏎` / `⌥⇧⏎`       | CSI-u, distinct from `⏎` / `⌥⏎` |
 
 `⌥1-9` is deliberately unbound in Ghostty so those keys reach tmux.
+
+Tab-by-number is on `⌃⇧`, not the `⌘1-9` Ghostty uses by default on macOS: AeroSpace takes `⌘1-9`
+for workspaces, so those never reach the terminal. Omarchy has no such clash — on Linux Ghostty's tab
+keys are already `⌃⇧`-based and Hyprland's workspaces sit on Super.
+
+`⇧⏎` and `⌥⇧⏎` are sent as CSI-u (`^[[13;2u` and `^[[13;4u`). Without this, legacy encoding
+makes `⌥⇧⏎` indistinguishable from the `⌥⏎` that tmux binds to a split — see the Alt layer note
+above.
 
 ## Neovim
 
