@@ -30,12 +30,9 @@
 # ahead of the text field -- alt-arrow no longer moves the caret a word at a
 # time inside these apps.
 #
-# Search Tabs moves to ctrl-shift-A, because cmd-shift-A is the ChatGPT launcher.
-# Shift is not optional: plain ctrl-A is beginning-of-line in every text field.
-#
-# Bookmark All Tabs and Finder's Go > Desktop move to ctrl-shift-D for the same
-# reason: cmd-shift-D is the lazydocker launcher. Shift again is not optional --
-# plain ctrl-D is end-of-file.
+# Bookmark All Tabs and Finder's Go > Desktop move to ctrl-shift-D, because
+# cmd-shift-D is the lazydocker launcher. Shift is not optional -- plain ctrl-D
+# is end-of-file.
 
 # Find Previous moves to ctrl-shift-G for a different reason: AeroSpace never
 # grabs cmd-shift-G, but every AppKit app binds it to Find Previous, which makes
@@ -113,9 +110,6 @@ BINDINGS=(
   'Print...|^p'
   'Zoom In|^='
   'Zoom Out|^-'
-  'Search Tabs…|^$a'
-  'Search Tabs...|^$a'
-  'Search Tabs|^$a'
   'Bookmark All Tabs…|^$d'
   'Bookmark All Tabs...|^$d'
   'Desktop|^$d'

@@ -239,16 +239,17 @@ cmd-ctrl-enter  = 'exec-and-forget open -na Ghostty --args -e /opt/homebrew/bin/
 # you. herdr's own help is prefix+?, which is no help from another window.
 cmd-ctrl-k      = 'exec-and-forget open -na Ghostty --args --title=Herdr-Keys --config-file=/Users/ducannh/.config/ghostty/herdr-keys.conf'
 
-# Omarchy's Super+Shift+A / S / C. Google Calendar and Google Maps are Chrome web
+# Omarchy's Super+Shift+S / C. Google Calendar and Google Maps are Chrome web
 # apps (Chrome > Cast, save and share > Install page as app), so they answer to
 # their own names -- bundle ids com.google.Chrome.app.kjbdgfilnfhdoflbpgamdcdgpehopbep
 # and ...mnhkaebcjjhencmpkapnbdaogjamfbcj. `open -a`, not `-na`: focus the window
 # that is already open instead of stacking up new ones.
-# cmd-shift-a costs Chrome's Search Tabs, which macos-app-shortcuts.sh puts back
-# on ctrl-shift-a. cmd-shift-s costs Save As in the apps that bind it (plain Save
-# is already on ctrl-s); cmd-shift-c costs nothing on macOS, where Inspect
-# Element is cmd-alt-c.
-cmd-shift-a     = 'exec-and-forget open -a ChatGPT'
+# cmd-shift-s costs Save As in the apps that bind it (plain Save is already on
+# ctrl-s); cmd-shift-c costs nothing on macOS, where Inspect Element is
+# cmd-alt-c.
+#
+# cmd-shift-a is deliberately left unbound (it was Omarchy's ChatGPT launcher),
+# so Chrome's Search Tabs answers it natively.
 cmd-shift-c     = 'exec-and-forget open -a "Google Calendar"'
 cmd-shift-s     = 'exec-and-forget open -a "Google Maps"'
 

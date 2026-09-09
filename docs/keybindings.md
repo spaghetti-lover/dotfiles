@@ -142,7 +142,6 @@ the main monitor — see `[workspace-to-monitor-force-assignment]` in
 | `⌘⌃ U`          | Disk Usage — dua                          |
 | `⌘⌃ E`          | Emoji picker — see [below](#emoji-picker) |
 | `⌥ G`           | Discord                                   |
-| `⌘⇧ A`          | ChatGPT                                   |
 | `⌘⇧ C`          | Google Calendar — web app                 |
 | `⌘⇧ S`          | Google Maps — web app                     |
 | `⌘⇧ F`          | Finder                                    |
@@ -164,10 +163,11 @@ the same way every other displaced `⌘` binding's do, through `macos-app-shortc
 New Incognito Window — already moved to `⌘⇧⌥B` — and Finder's New Folder, which is given up;
 use File ▸ New Folder.
 
-`⌘⇧A`, `⌘⇧S` and `⌘⇧C` are Omarchy's ChatGPT, Google Maps and Google Calendar keys. ChatGPT is the
-native app; Maps and Calendar are **Chrome web apps** — install a page as one from Chrome ▸ Cast,
-save and share ▸ Install page as app, and it gets its own `~/Applications/Chrome Apps` bundle that
-`open -a "Google Maps"` finds by name. What they cost is in [What ⌘ costs](#what--costs).
+`⌘⇧S` and `⌘⇧C` are Omarchy's Google Maps and Google Calendar keys. Both are **Chrome web apps** —
+install a page as one from Chrome ▸ Cast, save and share ▸ Install page as app, and it gets its own
+`~/Applications/Chrome Apps` bundle that `open -a "Google Maps"` finds by name. What they cost is in
+[What ⌘ costs](#what--costs). Omarchy's `Super+Shift+A` ChatGPT key is deliberately not ported —
+`⌘⇧A` is left to Chrome's Search Tabs.
 
 Gemini has no launcher; `⌥A` and `⌥C` are free if you want one.
 
@@ -613,7 +613,6 @@ cd ~/dotfiles && make macos-shortcuts     # make macos-shortcuts-reset to undo
 | `⌘S` Save           | `⌃S`      |
 | `⌘P` Print          | `⌃P`      |
 | `⌘J` Downloads      | `⌃J`      |
-| `⌘⇧A` Search Tabs   | `⌃⇧A`     |
 | `⌘⇧D` Bookmark All Tabs, Finder's Go ▸ Desktop | `⌃⇧D` |
 | `⌘-` `⌘=` Zoom      | `⌃-` `⌃=` |
 
@@ -624,9 +623,9 @@ These are per-app menu rebinds, never global — `⌃F` stays zsh `autosuggest-a
 AppKit app binds it to Find Previous, so an app that wants it as its own global hotkey refuses it
 (Gemini's Speak to Window, for one). Moving Find Previous to `⌃⇧G` frees it.
 
-`⌘F`, `⌘T` and `⌘L` are **not** in that table: nothing is bound to `⌘F` any more, the
-tiled/floating toggle sits on `⌥T` and there is no layout toggle at all, so Find, New Tab and
-Open Location work natively.
+`⌘F`, `⌘T`, `⌘L` and `⌘⇧A` are **not** in that table: nothing is bound to `⌘F` any more, the
+tiled/floating toggle sits on `⌥T`, there is no layout toggle at all, and `⌘⇧A` is unbound, so
+Find, New Tab, Open Location and Chrome's Search Tabs work natively.
 
 **`⌘S` no longer saves.** It is the scratchpad toggle, and Save falls back to `⌃S` only in the
 apps listed in `modules/aerospace/bin/macos-app-shortcuts.sh`. Anywhere else, Save is reachable from File ▸ Save
@@ -639,12 +638,10 @@ instead**, via Karabiner; see [Browser tabs](#browser-tabs). `⌃Tab` / `⌃⇧T
 `⌘Q` for close-one-window would leave macOS with no quit hotkey at all. Close a single window
 with `⌘W`, or `⌃⌥⌫` to close every window but the focused one.
 
-**`⌘⇧A` `⌘⇧C` `⌘⇧D` `⌘⇧S` are launchers** — ChatGPT, Google Calendar, lazydocker and Google Maps.
+**`⌘⇧C` `⌘⇧D` `⌘⇧S` are launchers** — Google Calendar, lazydocker and Google Maps.
 `⌘⇧D` costs Chrome's Bookmark All Tabs and Finder's Go ▸ Desktop, both back on `⌃⇧D` in the table
 above; in any other app whose `⌘⇧D` you miss, add its menu item's exact title to `BINDINGS` in
-`macos-app-shortcuts.sh`. `⌘⇧A` costs Chrome's
-Search Tabs, which the table above puts back on `⌃⇧A` (with ⇧, because plain `⌃A` is
-beginning-of-line in every text field). `⌘⇧S` costs Save As in the apps that bind it — plain Save
+`macos-app-shortcuts.sh`. `⌘⇧S` costs Save As in the apps that bind it — plain Save
 is already on `⌃S`, and macOS's own Save As is `⌥⇧⌘S`. `⌘⇧C` costs nothing here: Inspect Element is
 `⌥⌘C` on macOS, not `⌘⇧C`.
 
