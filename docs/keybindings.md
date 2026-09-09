@@ -144,7 +144,6 @@ the main monitor — see `[workspace-to-monitor-force-assignment]` in
 | `⌥ G`           | Discord                                   |
 | `⌘⇧ C`          | Google Calendar — web app                 |
 | `⌘⇧ S`          | Google Maps — web app                     |
-| `⌘⇧ F`          | Finder                                    |
 | `⌘⇧ E`          | Mail                                      |
 | `⌘⇧ Y` / `⌘⇧ X` | YouTube / X                               |
 | `⌘⌃ S`          | LocalSend — share menu                    |
@@ -623,9 +622,10 @@ These are per-app menu rebinds, never global — `⌃F` stays zsh `autosuggest-a
 AppKit app binds it to Find Previous, so an app that wants it as its own global hotkey refuses it
 (Gemini's Speak to Window, for one). Moving Find Previous to `⌃⇧G` frees it.
 
-`⌘F`, `⌘T`, `⌘L` and `⌘⇧A` are **not** in that table: nothing is bound to `⌘F` any more, the
-tiled/floating toggle sits on `⌥T`, there is no layout toggle at all, and `⌘⇧A` is unbound, so
-Find, New Tab, Open Location and Chrome's Search Tabs work natively.
+`⌘F`, `⌘T`, `⌘L`, `⌘⇧A` and `⌘⇧F` are **not** in that table: nothing is bound to `⌘F` any more,
+the tiled/floating toggle sits on `⌥T`, there is no layout toggle at all, and `⌘⇧A` and `⌘⇧F` are
+unbound, so Find, New Tab, Open Location, Chrome's Search Tabs and each app's own `⌘⇧F` work
+natively.
 
 **`⌘S` no longer saves.** It is the scratchpad toggle, and Save falls back to `⌃S` only in the
 apps listed in `modules/aerospace/bin/macos-app-shortcuts.sh`. Anywhere else, Save is reachable from File ▸ Save
