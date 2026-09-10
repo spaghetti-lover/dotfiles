@@ -448,7 +448,7 @@ gd() {
 
 # AI agents, and the tdl shorthands built on them
 alias c='opencode'
-alias cx='printf "\033[2J\033[3J\033[H" && claude --enable-auto-mode'
+alias cx='printf "\033[2J\033[3J\033[H" && claude --dangerously-skip-permissions'
 alias cy='codex -s danger-full-access -a never'
 alias ic='tdl c'
 alias ix='tdl cx'
