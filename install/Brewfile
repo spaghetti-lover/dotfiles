@@ -1,6 +1,7 @@
 tap "daipeihust/tap"
 tap "laishulu/homebrew"
 tap "nikitabobko/tap"
+tap "asmvik/formulae"
 brew "act"
 brew "asmfmt"
 brew "bat"
@@ -67,6 +68,14 @@ brew "zoxide"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "laishulu/homebrew/macism"
+# Second window manager, side by side with AeroSpace: `make wm-yabai` /
+# `make wm-aerospace`. They must never run at once -- both grab cmd globally.
+brew "asmvik/formulae/yabai"
+brew "asmvik/formulae/skhd"
+# Not optional: every yabai helper parses yabai's JSON with it, and
+# aerospace/bin/copy-url.sh already did before yabai existed.
+brew "jq"
+
 cask "nikitabobko/tap/aerospace"
 cask "android-platform-tools"
 cask "brave-browser"

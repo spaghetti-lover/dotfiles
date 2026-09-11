@@ -19,6 +19,26 @@ here: Hyper is just ⌃⌥⌘ chorded together, which makes `Super+Alt` indistin
 
 AeroSpace grabs ⌘ combos globally. See [What ⌘ costs](#what--costs) below.
 
+## Two window managers
+
+Every key below is bound in both. AeroSpace is the default; **yabai + skhd** is a
+second, switchable implementation of the same layer -- `make wm-yabai` /
+`make wm-aerospace`, and see [docs/yabai.md](yabai.md).
+
+The differences are all in this table; everything else behaves the same.
+
+| Keys | AeroSpace | yabai |
+| ---- | --------- | ----- |
+| `⌘G` grouping | accordion stand-in, lost on restart | real stacks (also lost on restart) |
+| `⌘O` pop out | one window, flicks into place | native sticky, any number, drawn in place |
+| `⌘⌥1`…`9` | *n*th window on the workspace | *n*th window in the group, falling back to that |
+| `⌘⌥L` | — | flip this workspace bsp ↔ stack, remembered |
+| `⌘⌃F` / `⌘⌥F` | — | full screen inside the tile / full width |
+| `⌘` + drag / right-drag | — | move / resize the window |
+| Workspaces | virtual, all pinned to the main monitor | real macOS Spaces, [with caveats](yabai.md#workspaces-are-real-macos-spaces) |
+
+`⌘F` is bound under neither -- see [What ⌘ costs](#what--costs).
+
 ---
 
 ## Navigating
@@ -670,7 +690,8 @@ AeroSpace has no equivalent, and nothing here fakes one:
 - `Super+P` pseudo style
 - `Super+Ctrl+Z` zoom, `Super+/` scaling steps
 - `Super+Home` width save/restore
-- `Super+Scroll` workspace scrolling, `Super+Mouse` drag/resize
+- `Super+Scroll` workspace scrolling. `Super+Mouse` drag/resize works under yabai
+  (`⌘` + drag / right-drag) but not AeroSpace
 - Omarchy's Notifications, Style, Toggles, Reminders and Notices sections — these are
   Hyprland-ecosystem specific (mako, waybar, hyprsunset)
 - Omarchy's **Quick Emojis** (`CapsLock M S` → 😄, and 22 more) and **Quick Completions**

@@ -27,6 +27,23 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 
 _Note_: Some tools I also recommend: lazydocker, bat, fzf, autocompletion, ... (can be installed with brew)
 
+
+## Window managers
+
+Two are installed, side by side, bound to the same
+[Omarchy-style keys](docs/keybindings.md). AeroSpace is the default; yabai +
+skhd is a second implementation with real window groups, real sticky windows
+and mouse drag/resize -- see [docs/yabai.md](docs/yabai.md).
+
+```sh
+make wm-status     # which is configured, and which is running
+make wm-yabai      # switch to yabai + skhd
+make wm-aerospace  # switch back
+```
+
+They must never run at once: both grab `cmd` combinations globally. Run
+`make wm-aerospace` before the first `make stow`.
+
 ## Install
 
 You need [Homebrew](https://docs.brew.sh/Installation) first:
