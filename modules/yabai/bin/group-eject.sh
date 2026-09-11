@@ -24,6 +24,10 @@ if [[ -n $target ]]; then
 else
   # The stack is the only node on the space, so there is no sibling to warp to.
   # Float and unfloat re-inserts the window into the tree as a plain leaf.
-  "$YABAI" -m window --toggle float 2>/dev/null &&
-    "$YABAI" -m window --toggle float 2>/dev/null
+  #
+  # The sleep is load bearing: back to back, the second toggle fires before the
+  # window server has settled the first and the window lands back in the stack.
+  "$YABAI" -m window --toggle float 2>/dev/null || exit 0
+  sleep 0.25
+  "$YABAI" -m window --toggle float 2>/dev/null
 fi

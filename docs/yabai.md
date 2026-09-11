@@ -37,53 +37,54 @@ reverse needs no guard, but `yabairc` calls `guard-yabai` anyway.
 
 yabai injects an addition into `Dock.app` for the things the window server owns.
 It needs SIP partially disabled *and* `-arm64e_preview_abi` in `boot-args`, both
-of which are already set on this machine.
+already set on this machine.
 
 ```sh
 make yabai-sa      # (re)authorise it -- rerun after every `brew upgrade yabai`
 ```
 
 The sudoers rule pins the binary's SHA-256, so an upgrade invalidates it and
-`--load-sa` begins failing *silently*. `yabairc` notices and drops a breadcrumb
-at `~/.cache/yabai/no-sa`; if a feature below has stopped working, look there
-first.
+`--load-sa` begins failing *silently*.
 
-### Status on macOS 26.6.2: unresolved
+### Status on macOS 26.6.2: everything works except creating spaces
 
-yabai's changelog names addition updates for macOS 26.2, 26.3 and 26.4. This
-machine runs **26.6.2**, which is named nowhere, and `sudo -n yabai --load-sa`
-returns **exit 1 with no output**. That is very likely yabai failing rather than
-sudo refusing -- `sudo -n true` prints "a password is required" and this printed
-nothing.
+Measured on this machine, not inferred from the changelog:
 
-The definitive probe needs yabai actually running:
+| Command | 26.6.2 |
+| --- | --- |
+| `window --toggle sticky` | **works** |
+| `window --opacity` | **works** |
+| `window --sub-layer` | **works** |
+| `window --raise` / `--lower` | **works** |
+| `window --scratchpad` | **works** |
+| `space --focus` / `window --space` | **works** (never needed it since 7.1.19 / 7.1.25) |
+| `space --create` | **exits 0 and does nothing** |
+
+So `⌘O` is fully functional: the popped window reports `is-sticky=true` and
+`is-visible=true` from another space while still belonging to its own.
+
+The one casualty is **provisioning**. `space --create` is the single command with
+no fallback path, and it silently no-ops, so the spaces have to exist before
+yabai can label them.
+
+> `yabairc` writes `~/.cache/yabai/no-sa` when `sudo -n yabai --load-sa` fails.
+> On this machine it fails under launchd -- `sudo -n` has no terminal there --
+> while every addition-gated command above still works. **Treat that breadcrumb
+> as a hint, not a verdict**; the real test is running one of the commands.
+
+### Creating the spaces by hand
+
+`setup-spaces.sh` labels the first ten spaces on the main display `ws1`…`ws9`
+and `scratch`. It can only label spaces that already exist, so until there are
+ten, the higher digits do nothing.
+
+Mission Control (F3, or a three-finger swipe up) → **+** in the top right, once
+per missing space. Then:
 
 ```sh
-before=$(yabai -m query --spaces | jq length)
-yabai -m space --create; echo "exit=$?"
-yabai -m query --spaces | jq length          # must be $before + 1
-yabai -m space --destroy
+make yabai-spaces     # label them
+yabai -m query --spaces | jq -r '.[] | "\(.index) \(.label // "-")"'
 ```
-
-`space --create` is addition-only with no fallback path, which makes it the
-clean test. **`space --focus` is not** -- it stopped needing SIP in yabai 7.1.19,
-as did `window --space` in 7.1.25.
-
-### What breaks without it
-
-**Lost:** `space --create/--destroy/--move/--swap/--display`; `window --toggle
-sticky|pip|shadow`; `--sub-layer`; `--opacity`; `--raise/--lower`;
-`--scratchpad`; the `sticky`, `sub-layer`, `opacity` and `scratchpad` rule
-properties.
-
-**Survives:** `⌘1..9` and `⌘⇧1..9`, all bsp tiling, `--stack` / `--warp` /
-`--swap` / `--insert` / `--ratio` / `--resize` / `--grid`, `space --layout`,
-`--balance`, `--gap`, `--padding`, every signal, and the whole mouse subsystem.
-
-**So in practice:** grouping and mouse/fullscreen are unaffected. `⌘O` degrades
-to a centred float that does *not* follow you -- worse than `aerospace-pin.sh` --
-and the nine spaces have to be created by hand once in Mission Control, after
-which `setup-spaces.sh` still labels them and `⌘1..9` works.
 
 ## Workspaces are real macOS Spaces
 
@@ -148,6 +149,9 @@ Two honest caveats:
 - **Sticky implies float.** There is no sticky-and-tiled window.
 - **Nine spaces are permanently visible** in Mission Control and the three-finger
   swipe, whether or not they hold windows. Virtual workspaces never showed there.
+- **Spaces cannot be created programmatically on 26.6.2.** `space --create`
+  silently no-ops, so they are made by hand once -- see above. Everything else
+  the addition gates does work.
 
 **Not persisted:** space labels, stacks, and scratchpad assignments all die with
 the process. (`yabai -m window --scratchpad recover` un-hides orphans.) Per-space
@@ -160,8 +164,10 @@ the process. (`yabai -m window --scratchpad recover` un-hides orphans.) Per-spac
   `⌘⌫` stays Finder's Move to Trash.
 - `Super+Home` window width save/restore -- `Home` is `fn+←` on the built-in
   keyboard.
-- The scratchpad uses a labelled space rather than `window --scratchpad`, which
-  is the closer analogue but needs the scripting addition.
+- The scratchpad is a labelled space rather than `window --scratchpad`. The
+  latter does work here, but a space is what AeroSpace used, so the muscle
+  memory carries over -- and it keeps working on a machine whose scripting
+  addition does not.
 
 **Still impossible under either manager**, as `docs/keybindings.md` records:
 `Super+P` pseudo, `Super+Ctrl+Z` zoom, `Super+/` scaling, `Super+Scroll`, and the

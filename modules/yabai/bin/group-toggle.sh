@@ -41,14 +41,29 @@ if (( si > 0 )); then
   done
 
   (( ${#ids[@]} > 1 )) || exit 0
-  base=${ids[0]}
-  for id in "${ids[@]}"; do
-    [[ $id == "$base" ]] && continue
-    "$YABAI" -m window "$id" --warp "$base" 2>/dev/null
+
+  # The warp target has to be OUTSIDE the stack. Warping a member onto another
+  # member of the same stack is silently a no-op -- the man page's "any warp
+  # unstacks it" holds only for a target that is not itself stacked. Stack
+  # members all have stack-index > 0, so this picks a non-member by construction.
+  outside=$("$YABAI" -m query --windows --space |
+    "$JQ" -r 'map(select(."stack-index" == 0)) | .[0].id // empty')
+
+  for id in "${ids[@]:1}"; do
+    if [[ -n $outside ]]; then
+      "$YABAI" -m window "$id" --warp "$outside" 2>/dev/null
+    else
+      # The stack is the whole space, so there is nothing outside it yet.
+      # Floating and re-tiling re-inserts this window as a plain leaf.
+      # The sleep is load bearing -- see group-eject.sh.
+      "$YABAI" -m window "$id" --toggle float 2>/dev/null
+      sleep 0.25
+      "$YABAI" -m window "$id" --toggle float 2>/dev/null
+    fi
+    # It is outside the stack now, so it can be the target for the next one.
+    outside=$id
   done
 
-  # Clear the stack insertion mode set below, so new windows tile again.
-  "$YABAI" -m window "$fid" --insert east >/dev/null 2>&1
   "$YABAI" -m window --focus "$fid" 2>/dev/null
 else
   # ---- group with a neighbour ---------------------------------------------
