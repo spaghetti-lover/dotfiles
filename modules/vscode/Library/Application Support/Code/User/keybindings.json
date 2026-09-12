@@ -1,0 +1,12 @@
+[
+  {
+    "key": "n",
+    "command": "explorer.newFile",
+    "when": "filesExplorerFocus"
+  },
+  {
+    "key": "shift+n",
+    "command": "explorer.newFolder",
+    "when": "filesExplorerFocus"
+  }
+]
