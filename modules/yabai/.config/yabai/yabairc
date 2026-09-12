@@ -85,6 +85,7 @@ yabai -m rule --add label=float_1pw      app='^1Password'                     ma
 yabai -m rule --add label=float_raycast  app='^Raycast$'                      manage=off
 yabai -m rule --add label=float_archive  app='^Archive Utility$'              manage=off
 yabai -m rule --add label=float_keycastr app='^KeyCastr$'                     manage=off
+yabai -m rule --add label=float_textedit app='^TextEdit$'                     manage=off
 yabai -m rule --add label=float_finder   app='^Finder$' \
   title='^(Copy|Move|Delete|Info|Connect to Server|Go to Folder)' manage=off
 yabai -m rule --add label=float_dialogs  subrole='^(AXDialog|AXSystemDialog)$' manage=off
