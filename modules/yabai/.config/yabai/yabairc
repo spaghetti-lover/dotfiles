@@ -1,0 +1,142 @@
+#!/usr/bin/env sh
+#
+# Omarchy-style tiling for macOS, the yabai half. Keybindings are the skhd half,
+# in ../../skhd/.config/skhd/skhdrc -- the two together are what aerospace.toml
+# is on its own.
+#
+# NEVER run this at the same time as AeroSpace: both it and skhd grab ⌘ combos
+# globally. `make wm-yabai` / `make wm-aerospace` switch between them.
+
+# Stand down if AeroSpace is the configured manager (see bin/wm.sh).
+/Users/ducannh/dotfiles/modules/yabai/bin/wm.sh guard-yabai
+
+# ---------------------------------------------------------------- scripting addition
+# Everything space-related EXCEPT `space --focus` and `window --space` needs it:
+# creating spaces, sticky windows, opacity, scratchpads, sub-layer, raise/lower.
+# Those two stopped needing SIP in yabai 7.1.19 and 7.1.25 respectively, so ⌘1..9
+# and ⌘⇧1..9 work either way.
+#
+# See bin/load-sa.sh for the SIP and boot-arg checks, and docs/yabai.md for what
+# breaks when this fails.
+if sudo -n yabai --load-sa 2>/dev/null; then
+  rm -f "$HOME/.cache/yabai/no-sa"
+else
+  mkdir -p "$HOME/.cache/yabai" && touch "$HOME/.cache/yabai/no-sa"
+  # The man page says to enable this ONLY when not using the scripting addition:
+  # without the addition servicing the switch, macOS animates it instead.
+  yabai -m config skip_window_focus_animation on
+fi
+
+# The addition lives inside Dock.app, so a Dock restart (a display change, a
+# macOS update, `killall Dock`) drops it. Put it back rather than leaving ⌘1..9
+# quietly degraded until the next login.
+yabai -m signal --add label=reload_sa event=dock_did_restart \
+  action="sudo -n yabai --load-sa"
+
+# ---------------------------------------------------------------- layout
+# AeroSpace's dwindle: each new window becomes the second child, so windows
+# spiral right, down, right, ... This is what `split opposite` bought there, and
+# what Omarchy gets from dwindle's force_split = 2.
+yabai -m config layout                    bsp
+yabai -m config window_placement          second_child
+yabai -m config split_type                auto
+yabai -m config split_ratio               0.50
+yabai -m config auto_balance              off
+yabai -m config window_zoom_persist       on
+yabai -m config window_origin_display     focused
+yabai -m config insert_feedback_color     0xffd75f5f
+
+# Omarchy: "switch focus and move the cursor to the center of the new
+# application" -- AeroSpace's on-focus-changed = 'move-mouse monitor-lazy-center'.
+yabai -m config mouse_follows_focus        on
+yabai -m config focus_follows_mouse        off
+
+# Omarchy's Super+LeftMouse / Super+RightMouse, which AeroSpace could not do at
+# all. ⌘ is Super here, so ⌘-drag anywhere is a window move; if that turns out to
+# fight ⌘-click in Finder or Chrome, `fn` is the fallback.
+yabai -m config mouse_modifier             cmd
+yabai -m config mouse_action1              move
+yabai -m config mouse_action2              resize
+# Dropping a window on the centre of another groups them, which is the mouse
+# route to the same place as ⌘G.
+yabai -m config mouse_drop_action          stack
+
+# ---------------------------------------------------------------- gaps
+# AeroSpace set outer padding per monitor (15/0/20/15 on the built-in Retina,
+# 25 all round on the DELL). yabai's padding is global or per-space, never
+# per-display, so these are the built-in display's values applied everywhere.
+# docs/yabai.md records this as a known gap.
+yabai -m config top_padding                0
+yabai -m config bottom_padding             20
+yabai -m config left_padding               15
+yabai -m config right_padding              15
+yabai -m config window_gap                 5
+
+# ---------------------------------------------------------------- rules
+# yabai matches on the app's localized process name with POSIX extended regex --
+# not bundle ids, and no \d, \w or lookarounds.
+#
+# yabai already declines to manage anything whose subrole is not
+# AXStandardWindow, so most sheets, popovers and pickers never enter the tree at
+# all. The list below is for the ones that lie about it.
+yabai -m rule --add label=float_settings app='^System Settings$'              manage=off
+yabai -m rule --add label=float_calc     app='^Calculator$'                   manage=off
+yabai -m rule --add label=float_1pw      app='^1Password'                     manage=off
+yabai -m rule --add label=float_raycast  app='^Raycast$'                      manage=off
+yabai -m rule --add label=float_karabiner app='^Karabiner-(Elements|EventViewer)$' manage=off
+yabai -m rule --add label=float_archive  app='^Archive Utility$'              manage=off
+yabai -m rule --add label=float_keycastr app='^KeyCastr$'                     manage=off
+yabai -m rule --add label=float_localsend app='^LocalSend$'                   manage=off
+yabai -m rule --add label=float_finder   app='^Finder$' \
+  title='^(Copy|Move|Delete|Info|Connect to Server|Go to Folder)' manage=off
+yabai -m rule --add label=float_dialogs  subrole='^(AXDialog|AXSystemDialog)$' manage=off
+yabai -m rule --add label=float_opensave title='^(Opening|Open File|Save|Save As)' manage=off
+
+# Ghostty TUI windows that stand in for Omarchy's floating terminals. Every
+# Ghostty window shares one bundle id, so the identity has to be the title --
+# which is what the --title= and --config-file= launchers in skhdrc set.
+#
+# This regex MUST stay byte-identical to FLOAT_TITLE in
+# bin/on-window-created.sh: this rule decides what is unmanaged, that decides
+# what is placed, and `--resize abs` refuses to touch a managed window. A title
+# in one list but not the other is either an unplaced float or a no-op.
+yabai -m rule --add label=tui_float app='^Ghostty$' \
+  title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About|Herdr-Keys|LocalSend-Share)$' manage=off
+
+# There is deliberately no `space=` on any rule: docs/keybindings.md is emphatic
+# that a window opens on whatever workspace is focused, and nothing is pinned.
+
+# ---------------------------------------------------------------- signals
+# AeroSpace opened every new window `fullscreen --no-outer-gaps` -- edge to edge
+# over its workspace, with the tile still allotted underneath. This is that.
+yabai -m signal --add label=new_window event=window_created \
+  action="/Users/ducannh/dotfiles/modules/yabai/bin/on-window-created.sh \$YABAI_WINDOW_ID"
+
+# The tui_float rule above is evaluated the instant a window appears, and it
+# intermittently declines a window it should match -- between one launch in ten
+# and one in two. Nothing else would then float that window, so this is its
+# second chance. The app and title filters keep the signal off every ordinary
+# terminal, which retitles itself on every command.
+#
+# Both signals fire for the same window within a tick, and `--toggle float` is
+# the only float control yabai has, so two of them cancel out. The script holds
+# a lock per window id -- see its header.
+yabai -m signal --add label=tui_float_late event=window_title_changed \
+  app='^Ghostty$' \
+  title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About|Herdr-Keys|LocalSend-Share)$' \
+  action="/Users/ducannh/dotfiles/modules/yabai/bin/on-window-created.sh --late \$YABAI_WINDOW_ID"
+
+# macOS reassigns spaces to displays on hot-plug; re-pin and re-label after.
+yabai -m signal --add label=display_added event=display_added \
+  action="/Users/ducannh/dotfiles/modules/yabai/bin/setup-spaces.sh"
+yabai -m signal --add label=display_removed event=display_removed \
+  action="/Users/ducannh/dotfiles/modules/yabai/bin/setup-spaces.sh"
+
+# ---------------------------------------------------------------- spaces
+# Last, and backgrounded: `space --create` costs about 0.3s each and there may be
+# nine of them on a fresh machine, which would otherwise block yabai's startup
+# for three seconds. layout-memo waits on the labels this creates.
+{
+  /Users/ducannh/dotfiles/modules/yabai/bin/setup-spaces.sh
+  /Users/ducannh/dotfiles/modules/yabai/bin/layout-memo.sh restore
+} &
