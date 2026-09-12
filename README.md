@@ -22,8 +22,6 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 - btop (resource monitor), fastfetch (system info), dua (disk usage TUI; `⌘⌃U` walks the whole
   file system, biggest first — needs Ghostty in Full Disk Access to see everything)
 - glab (GitLab CLI, needs a one-time `glab auth login`)
-- localsend (AirDrop alternative; `⌘⌃S` opens a Clipboard/File/Folder/Receive share menu — needs
-  Local Network permission on first launch)
 
 _Note_: Some tools I also recommend: lazydocker, bat, fzf, autocompletion, ... (can be installed with brew)
 
@@ -62,15 +60,6 @@ cd ~/dotfiles && make install
 
 `make install` installs everything in `install/Brewfile`, symlinks every module into `$HOME` with
 stow, and runs each module's install hook. It is idempotent — re-run it whenever you pull.
-
-Two steps still need a human afterwards, and `make install` reminds you of both:
-
-```shell
-make macos-shortcuts   # see Keybindings below; not optional
-```
-
-...and launching LocalSend once to grant Local Network — without it, peer discovery on port 53317
-finds nothing.
 
 Run `make help` to see every target.
 
@@ -120,18 +109,6 @@ For more information about GNU stow: [link](https://www.gnu.org/software/stow/)
 Window management, terminal and tmux follow an
 [Omarchy](https://omarchy.org/manual/navigation)-style keyboard layer, with **⌘ as Super**.
 Full cheat sheet: [docs/keybindings.md](./docs/keybindings.md).
-
-Because AeroSpace grabs ⌘ combos globally, the macOS menu commands it displaces (Find, Open,
-Save, Print, Zoom, ...) are re-bound onto plain Ctrl. Run this once per machine —
-it is not optional, since ⌘S is the scratchpad toggle and Save has nowhere else to go:
-
-```shell
-cd ~/dotfiles
-make macos-shortcuts        # make macos-shortcuts-reset to undo
-```
-
-Apps are listed by bundle ID in `modules/aerospace/bin/macos-app-shortcuts.sh`; add yours there as
-you install them, or they keep no Save shortcut at all.
 
 ⌘1…⌘9 are workspace switches, so browser tabs move to ⌥1…⌥9, handled by skhd in browsers only
 (`modules/skhd/bin/browser-tab.sh`). macOS will ask once to let skhd control your browser.

@@ -87,8 +87,6 @@ cask "ghostty"
 cask "google-chrome"
 cask "iterm2"
 cask "keycastr"
-# cmd-ctrl-s share menu (modules/aerospace/bin/localsend-share.sh) drives this app
-cask "localsend"
 cask "obs"
 cask "sioyek"
 go "github.com/air-verse/air"

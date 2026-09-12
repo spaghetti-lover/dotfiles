@@ -17,12 +17,13 @@ file, but stow installs a *symlink*, and FSEvents on a symlink does not reliably
 fire when the target changes. Service mode's `escape` does this too.
 
 **`bin/` holds only `browser-tab.sh`**, which backs the opt-1..9 browser tab
-bindings that used to live in Karabiner-Elements. The launchers point at
-`../aerospace/bin/{copy-url,localsend-share,herdr-keys}.sh` and the ghostty
-config files in `../ghostty`, so the two window managers share one copy of each
-rather than drifting apart. They move into a module of their own only if
-AeroSpace is deleted.
+bindings that used to live in Karabiner-Elements. The TUI launchers
+(`cmd-ctrl-t` btop, `cmd-ctrl-u` disk usage) run no script of their own -- they
+point at the ghostty config files in `../ghostty`, which is also what places
+them: the title each config sets is what `../yabai`'s `tui_float` rule matches.
 
-**`macos-app-shortcuts.sh` is still required**, and still lives in
-`../aerospace/bin/`. skhd grabs `cmd` globally exactly as AeroSpace does, so the
-displaced menu commands need the same treatment: `make macos-shortcuts`.
+**skhd grabs `cmd` globally**, so the macOS menu commands it displaces (Save,
+Open, Find, Print, ...) stay displaced. The `macos-app-shortcuts.sh` helper that
+used to re-bind them onto plain Ctrl lived in the deleted `../aerospace/bin/` and
+is gone; rebind by hand in System Settings > Keyboard > Keyboard Shortcuts if you
+miss one.

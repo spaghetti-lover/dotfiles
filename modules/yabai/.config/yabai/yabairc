@@ -85,7 +85,6 @@ yabai -m rule --add label=float_1pw      app='^1Password'                     ma
 yabai -m rule --add label=float_raycast  app='^Raycast$'                      manage=off
 yabai -m rule --add label=float_archive  app='^Archive Utility$'              manage=off
 yabai -m rule --add label=float_keycastr app='^KeyCastr$'                     manage=off
-yabai -m rule --add label=float_localsend app='^LocalSend$'                   manage=off
 yabai -m rule --add label=float_finder   app='^Finder$' \
   title='^(Copy|Move|Delete|Info|Connect to Server|Go to Folder)' manage=off
 yabai -m rule --add label=float_dialogs  subrole='^(AXDialog|AXSystemDialog)$' manage=off
@@ -93,14 +92,14 @@ yabai -m rule --add label=float_opensave title='^(Opening|Open File|Save|Save As
 
 # Ghostty TUI windows that stand in for Omarchy's floating terminals. Every
 # Ghostty window shares one bundle id, so the identity has to be the title --
-# which is what the --title= and --config-file= launchers in skhdrc set.
+# which is what the --config-file= launchers in skhdrc set.
 #
 # This regex MUST stay byte-identical to FLOAT_TITLE in
 # bin/on-window-created.sh: this rule decides what is unmanaged, that decides
 # what is placed, and `--resize abs` refuses to touch a managed window. A title
 # in one list but not the other is either an unplaced float or a no-op.
 yabai -m rule --add label=tui_float app='^Ghostty$' \
-  title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About|Herdr-Keys|LocalSend-Share)$' manage=off
+  title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About)$' manage=off
 
 # There is deliberately no `space=` on any rule: docs/keybindings.md is emphatic
 # that a window opens on whatever workspace is focused, and nothing is pinned.
@@ -122,7 +121,7 @@ yabai -m signal --add label=new_window event=window_created \
 # a lock per window id -- see its header.
 yabai -m signal --add label=tui_float_late event=window_title_changed \
   app='^Ghostty$' \
-  title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About|Herdr-Keys|LocalSend-Share)$' \
+  title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About)$' \
   action="/Users/ducannh/dotfiles/modules/yabai/bin/on-window-created.sh --late \$YABAI_WINDOW_ID"
 
 # macOS reassigns spaces to displays on hot-plug; re-pin and re-label after.

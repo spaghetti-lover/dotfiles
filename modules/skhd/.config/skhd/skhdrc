@@ -258,9 +258,6 @@ cmd + ctrl - e        : /opt/homebrew/bin/skhd -k "cmd + ctrl - space"
 # Omarchy's Super+Ctrl+Return: herdr, the sibling of cmd-alt-enter's tmux.
 cmd + ctrl - return   : open -na Ghostty --args -e /opt/homebrew/bin/herdr
 
-# Omarchy's Super+Ctrl+K: browse herdr's bindings without herdr in front of you.
-cmd + ctrl - k        : open -na Ghostty --args --title=Herdr-Keys --config-file=/Users/ducannh/.config/ghostty/herdr-keys.conf
-
 # Omarchy's Super+Shift+S / C, as Chrome web apps. `open -a`, not `-na`: focus
 # the window that is already open instead of stacking up new ones.
 #
@@ -273,17 +270,11 @@ cmd + shift - e       : open -a Mail
 cmd + shift - y       : open -na "Google Chrome" --args --app=https://youtube.com
 cmd + shift - x       : open -na "Google Chrome" --args --app=https://x.com
 
-# LocalSend share menu -- shared with the AeroSpace module.
-cmd + ctrl - s        : open -na Ghostty --args --title=LocalSend-Share --config-file=/Users/ducannh/.config/ghostty/localsend-share.conf
-
 # Not installed on this machine -- uncomment once they are:
 # cmd + shift - m       : open -a Spotify
 # cmd + shift - o       : open -a Obsidian
 # cmd + shift - 0x2C    : open -a "1Password"
 # cmd + shift + alt - g : open -a WhatsApp
-
-# Omarchy's Shift+Alt+L: copy the current URL. Shared with the AeroSpace module.
-alt + shift - l       : /Users/ducannh/dotfiles/modules/aerospace/bin/copy-url.sh
 
 # ---------------------------------------------------------------- system panels
 cmd + ctrl - a : open "x-apple.systempreferences:com.apple.Sound-Settings.extension"

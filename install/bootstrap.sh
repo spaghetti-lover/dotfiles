@@ -37,13 +37,3 @@ done
 $ran_any || echo "(no module defines an install.sh yet)"
 
 step "Done"
-cat <<'NEXT'
-Two things still need a human:
-
-  make macos-shortcuts   Restore the macOS menu commands AeroSpace displaces.
-                         Not optional -- Cmd-S is the scratchpad toggle, so
-                         Save has nowhere else to go.
-
-  LocalSend              Launch it once and grant Local Network, or it finds no
-                         peers and cmd-ctrl-s appears to do nothing.
-NEXT

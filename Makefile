@@ -12,7 +12,6 @@ STOW        := stow -d modules -t "$(HOME)" $(STOW_IGNORE)
 
 .PHONY: install stow unstow restow stow-check \
         brew-install brew-check brew-update brew-clean \
-        macos-shortcuts macos-shortcuts-list macos-shortcuts-reset \
         wm-yabai wm-aerospace wm-status yabai-sa yabai-spaces help
 
 install: ## Full setup: brew bundle, stow every module, run install hooks
@@ -70,16 +69,6 @@ yabai-sa: ## (Re)authorise yabai's scripting addition -- rerun after every brew 
 
 yabai-spaces: ## Re-provision and re-label ws1..ws9 + scratch on the main display
 	@bash modules/yabai/bin/setup-spaces.sh
-
-# ---------------------------------------------------------------- macOS
-macos-shortcuts: ## Restore macOS menu commands the window manager took over (ctrl-O, ctrl-S, ...)
-	@bash modules/aerospace/bin/macos-app-shortcuts.sh
-
-macos-shortcuts-list: ## Show which menu shortcuts are currently overridden
-	@bash modules/aerospace/bin/macos-app-shortcuts.sh --list
-
-macos-shortcuts-reset: ## Undo macos-shortcuts
-	@bash modules/aerospace/bin/macos-app-shortcuts.sh --reset
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-22s\033[0m %s\n", $$1, $$2}'
