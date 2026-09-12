@@ -94,7 +94,6 @@ yabai -m rule --add label=float_opensave title='^(Opening|Open File|Save|Save As
 # Ghostty TUI windows that stand in for Omarchy's floating terminals. Every
 # Ghostty window shares one bundle id, so the identity has to be the title --
 # which is what the --title= and --config-file= launchers in skhdrc set.
-<<<<<<< HEAD
 #
 # This regex MUST stay byte-identical to FLOAT_TITLE in
 # bin/on-window-created.sh: this rule decides what is unmanaged, that decides
@@ -102,10 +101,6 @@ yabai -m rule --add label=float_opensave title='^(Opening|Open File|Save|Save As
 # in one list but not the other is either an unplaced float or a no-op.
 yabai -m rule --add label=tui_float app='^Ghostty$' \
   title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About|Herdr-Keys|LocalSend-Share)$' manage=off
-=======
-yabai -m rule --add label=tui_float app='^Ghostty$' \
-  title='^(LocalSend-Share|Herdr-Keys)$' manage=off
->>>>>>> yabai-sidebyside
 
 # There is deliberately no `space=` on any rule: docs/keybindings.md is emphatic
 # that a window opens on whatever workspace is focused, and nothing is pinned.
@@ -116,7 +111,6 @@ yabai -m rule --add label=tui_float app='^Ghostty$' \
 yabai -m signal --add label=new_window event=window_created \
   action="/Users/ducannh/dotfiles/modules/yabai/bin/on-window-created.sh \$YABAI_WINDOW_ID"
 
-<<<<<<< HEAD
 # The tui_float rule above is evaluated the instant a window appears, and it
 # intermittently declines a window it should match -- between one launch in ten
 # and one in two. Nothing else would then float that window, so this is its
@@ -131,8 +125,6 @@ yabai -m signal --add label=tui_float_late event=window_title_changed \
   title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About|Herdr-Keys|LocalSend-Share)$' \
   action="/Users/ducannh/dotfiles/modules/yabai/bin/on-window-created.sh --late \$YABAI_WINDOW_ID"
 
-=======
->>>>>>> yabai-sidebyside
 # macOS reassigns spaces to displays on hot-plug; re-pin and re-label after.
 yabai -m signal --add label=display_added event=display_added \
   action="/Users/ducannh/dotfiles/modules/yabai/bin/setup-spaces.sh"
