@@ -63,14 +63,14 @@ cd ~/dotfiles && make install
 `make install` installs everything in `install/Brewfile`, symlinks every module into `$HOME` with
 stow, and runs each module's install hook. It is idempotent — re-run it whenever you pull.
 
-Three steps still need a human afterwards, and `make install` reminds you of all three:
+Two steps still need a human afterwards, and `make install` reminds you of both:
 
 ```shell
 make macos-shortcuts   # see Keybindings below; not optional
 ```
 
-...launching Karabiner-Elements once to grant Input Monitoring, and launching LocalSend once to
-grant Local Network — without it, peer discovery on port 53317 finds nothing.
+...and launching LocalSend once to grant Local Network — without it, peer discovery on port 53317
+finds nothing.
 
 Run `make help` to see every target.
 
@@ -133,10 +133,8 @@ make macos-shortcuts        # make macos-shortcuts-reset to undo
 Apps are listed by bundle ID in `modules/aerospace/bin/macos-app-shortcuts.sh`; add yours there as
 you install them, or they keep no Save shortcut at all.
 
-⌘1…⌘9 are workspace switches, so browser tabs move to ⌥1…⌥9. That one binding needs
-Karabiner-Elements: launch it once and grant Input Monitoring, and the stowed
-`modules/karabiner/.config/karabiner/karabiner.json` does the rest. macOS will also ask once to let
-it control your browser.
+⌘1…⌘9 are workspace switches, so browser tabs move to ⌥1…⌥9, handled by skhd in browsers only
+(`modules/skhd/bin/browser-tab.sh`). macOS will ask once to let skhd control your browser.
 
 ### Backup pkgs by brew
 

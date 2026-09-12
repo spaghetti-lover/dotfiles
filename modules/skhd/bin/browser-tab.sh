@@ -2,13 +2,13 @@
 #
 # Select tab N in the frontmost browser.
 #
-# AeroSpace grabs cmd-1..9 for workspaces, so browsers lose their numbered tab
-# shortcuts and there is no menu item to rebind -- Chrome's Tab menu only offers
-# "Select Next/Previous Tab" plus the open tabs by page title, which change.
-# Karabiner puts the jumps on opt-1..9 in browsers only and calls this script;
-# see ../.config/karabiner/karabiner.json and docs/keybindings.md.
+# AeroSpace and skhd grab cmd-1..9 for workspaces, so browsers lose their
+# numbered tab shortcuts and there is no menu item to rebind -- Chrome's Tab menu
+# only offers "Select Next/Previous Tab" plus the open tabs by page title, which
+# change. skhd puts the jumps on opt-1..9 in browsers only and calls this script;
+# see ../.config/skhd/skhdrc and docs/keybindings.md.
 #
-# Remapping opt-N to cmd-N would not work: AeroSpace's grab is global and
+# Remapping opt-N to cmd-N would not work: the workspace grab is global and
 # catches synthesised cmd-N before the browser ever sees it.
 #
 # As in every browser, 1-8 pick that tab and 9 picks the last one, and a number

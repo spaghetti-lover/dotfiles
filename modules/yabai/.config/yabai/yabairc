@@ -83,7 +83,6 @@ yabai -m rule --add label=float_settings app='^System Settings$'              ma
 yabai -m rule --add label=float_calc     app='^Calculator$'                   manage=off
 yabai -m rule --add label=float_1pw      app='^1Password'                     manage=off
 yabai -m rule --add label=float_raycast  app='^Raycast$'                      manage=off
-yabai -m rule --add label=float_karabiner app='^Karabiner-(Elements|EventViewer)$' manage=off
 yabai -m rule --add label=float_archive  app='^Archive Utility$'              manage=off
 yabai -m rule --add label=float_keycastr app='^KeyCastr$'                     manage=off
 yabai -m rule --add label=float_localsend app='^LocalSend$'                   manage=off

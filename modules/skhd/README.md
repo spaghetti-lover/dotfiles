@@ -16,7 +16,8 @@ Stow-ignored (`README.md`), so only `skhdrc` reaches `$HOME`, as
 file, but stow installs a *symlink*, and FSEvents on a symlink does not reliably
 fire when the target changes. Service mode's `escape` does this too.
 
-**This module has no `bin/`.** The launchers point at
+**`bin/` holds only `browser-tab.sh`**, which backs the opt-1..9 browser tab
+bindings that used to live in Karabiner-Elements. The launchers point at
 `../aerospace/bin/{copy-url,localsend-share,herdr-keys}.sh` and the ghostty
 config files in `../ghostty`, so the two window managers share one copy of each
 rather than drifting apart. They move into a module of their own only if

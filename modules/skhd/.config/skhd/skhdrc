@@ -253,9 +253,7 @@ cmd + ctrl - t        : open -na Ghostty --args --config-file=/Users/ducannh/.co
 # than `ghostty -e` -- see docs/keybindings.md#disk-usage.
 cmd + ctrl - u        : open -na Ghostty --args --config-file=/Users/ducannh/.config/ghostty/disk-usage.conf
 
-# cmd-ctrl-e is not here: Karabiner serves Omarchy's Super+Ctrl+E emoji picker,
-# and it intercepts below skhd, so a binding written here would never fire
-# -- see docs/keybindings.md#emoji-picker.
+cmd + ctrl - e        : /opt/homebrew/bin/skhd -k "cmd + ctrl - space"
 
 # Omarchy's Super+Ctrl+Return: herdr, the sibling of cmd-alt-enter's tmux.
 cmd + ctrl - return   : open -na Ghostty --args -e /opt/homebrew/bin/herdr
@@ -297,6 +295,61 @@ cmd + ctrl - p : open "x-apple.systempreferences:com.apple.Battery-Settings.exte
 # what Omarchy puts on Super+Ctrl+T. Activity Monitor.app has no key now.
 cmd + ctrl - q : open -a Calculator
 cmd + ctrl - l : pmset displaysleepnow
+
+alt - 1 [
+    "google chrome" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 1
+    "brave browser" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 1
+    "safari"        : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 1
+    *               ~
+]
+alt - 2 [
+    "google chrome" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 2
+    "brave browser" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 2
+    "safari"        : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 2
+    *               ~
+]
+alt - 3 [
+    "google chrome" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 3
+    "brave browser" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 3
+    "safari"        : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 3
+    *               ~
+]
+alt - 4 [
+    "google chrome" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 4
+    "brave browser" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 4
+    "safari"        : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 4
+    *               ~
+]
+alt - 5 [
+    "google chrome" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 5
+    "brave browser" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 5
+    "safari"        : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 5
+    *               ~
+]
+alt - 6 [
+    "google chrome" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 6
+    "brave browser" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 6
+    "safari"        : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 6
+    *               ~
+]
+alt - 7 [
+    "google chrome" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 7
+    "brave browser" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 7
+    "safari"        : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 7
+    *               ~
+]
+alt - 8 [
+    "google chrome" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 8
+    "brave browser" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 8
+    "safari"        : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 8
+    *               ~
+]
+alt - 9 [
+    "google chrome" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 9
+    "brave browser" : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 9
+    "safari"        : /Users/ducannh/dotfiles/modules/skhd/bin/browser-tab.sh 9
+    *               ~
+]
 
 # ------------------------------------------------------------------ service mode
 # skhd's grammar gives a key either a command or a mode switch, never both, so
