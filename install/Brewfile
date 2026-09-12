@@ -68,22 +68,19 @@ brew "zoxide"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "laishulu/homebrew/macism"
-# Second window manager, side by side with AeroSpace: `make wm-yabai` /
-# `make wm-aerospace`. They must never run at once -- both grab cmd globally.
+# Window manager. Both grab cmd globally, so nothing else may.
 brew "asmvik/formulae/yabai"
 brew "asmvik/formulae/skhd"
-# Not optional: every yabai helper parses yabai's JSON with it, and
-# aerospace/bin/copy-url.sh already did before yabai existed.
+# Not optional: every yabai helper parses yabai's JSON with it.
 brew "jq"
 
-cask "nikitabobko/tap/aerospace"
 cask "android-platform-tools"
 cask "brave-browser"
 cask "calibre"
 cask "discord"
 cask "flutter"
 cask "ghostty"
-# aerospace's browser launchers (cmd-shift-enter and friends) point here
+# the browser launchers (cmd-shift-enter and friends) point here
 cask "google-chrome"
 cask "iterm2"
 cask "keycastr"

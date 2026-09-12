@@ -1,16 +1,11 @@
 # Omarchy-style navigation for macOS, the keybinding half. The window manager
-# half is ../../yabai/.config/yabai/yabairc; together they do what
-# aerospace.toml does on its own.
+# half is ../../yabai/.config/yabai/yabairc.
 #
 # Modifier map:  Super -> cmd,  Alt -> alt,  Ctrl -> ctrl,  Shift -> shift
 # Every binding below mirrors https://omarchy.org/manual/hotkeys
 #
-# skhd grabs cmd-* globally, exactly as AeroSpace does, so the same
-# compensation applies: the macOS menu commands it displaces (Open, Save, Print,
-# Zoom, ...) are restored on plain ctrl by
-# ../../aerospace/bin/macos-app-shortcuts.sh. Running it is not optional, and it
-# is shared with the AeroSpace setup rather than copied -- it moves into a module
-# of its own only if AeroSpace is deleted. `make macos-shortcuts`.
+# skhd grabs cmd-* globally, so the macOS menu commands it displaces (Open,
+# Save, Print, Zoom, ...) stay displaced. See README.md.
 #
 # NOTHING here binds cmd-f: Find stays native. See the fullscreen block below.
 #
@@ -23,9 +18,9 @@
 # no variables, so every path is written out in full.
 #
 # The workspace bindings need yabai's scripting addition on some macOS versions
-# and not others -- see docs/yabai.md. `space --focus` and `window --space`
-# stopped needing it in yabai 7.1.19 and 7.1.25, so cmd-1..9 and cmd-shift-1..9
-# work regardless; sticky (cmd-o) does not.
+# and not others. `space --focus` and `window --space` stopped needing it in
+# yabai 7.1.19 and 7.1.25, so cmd-1..9 and cmd-shift-1..9 work regardless;
+# sticky (cmd-o) does not.
 
 # ---------------------------------------------------------------------- modes
 # Declared up front: skhd resolves a mode name when it parses the binding that
@@ -36,8 +31,7 @@
 
 # ---------------------------------------------------------------------- focus
 # Super + Arrow = move focus, as in Omarchy. This takes the browser's Back /
-# Forward (cmd-left / cmd-right); macos-app-shortcuts.sh puts those back on
-# alt-left / alt-right, the Linux convention.
+# Forward (cmd-left / cmd-right).
 cmd - left  : /opt/homebrew/bin/yabai -m window --focus west
 cmd - down  : /opt/homebrew/bin/yabai -m window --focus south
 cmd - up    : /opt/homebrew/bin/yabai -m window --focus north
@@ -53,8 +47,8 @@ cmd + shift - up    : /opt/homebrew/bin/yabai -m window --swap north
 cmd + shift - right : /opt/homebrew/bin/yabai -m window --swap east
 
 # Alt + Tab = cycle windows   /   Ctrl + Alt + Tab = cycle monitors
-# `|| --focus first` is AeroSpace's --wrap-around: yabai's next/prev fail at the
-# end of the list rather than wrapping.
+# `|| --focus first` wraps: yabai's next/prev fail at the end of the list
+# rather than wrapping.
 alt - tab                : /opt/homebrew/bin/yabai -m window --focus next || /opt/homebrew/bin/yabai -m window --focus first
 alt + shift - tab        : /opt/homebrew/bin/yabai -m window --focus prev || /opt/homebrew/bin/yabai -m window --focus last
 ctrl + alt - tab         : /opt/homebrew/bin/yabai -m display --focus next || /opt/homebrew/bin/yabai -m display --focus first
@@ -120,17 +114,16 @@ cmd + shift + alt - 8 : /opt/homebrew/bin/yabai -m window --space ws8
 cmd + shift + alt - 9 : /opt/homebrew/bin/yabai -m window --space ws9
 
 # Scratchpad. Omarchy's is a special workspace drawn as a Quake console over
-# whatever you are on; macOS spaces cannot overlay, so this stays what AeroSpace
-# did -- a labelled workspace you toggle in and out of.
+# whatever you are on; macOS spaces cannot overlay, so this is a labelled
+# workspace you toggle in and out of instead.
 #
 # Deliberately NOT yabai's own `window --scratchpad`, which is the closer
 # analogue but needs the scripting addition. A labelled space works on any
 # machine, which matters while the addition's status on macOS 26.6 is unsettled.
 #
 # Omarchy binds both Super+Grave and Super+S, so both are here. cmd-s costs Save
-# everywhere -- macos-app-shortcuts.sh puts it back on ctrl-s. Sending a window
-# there is cmd-shift-backtick / cmd-alt-s: cmd-shift-s is the Google Maps
-# launcher, not a scratchpad key.
+# everywhere. Sending a window there is cmd-shift-backtick / cmd-alt-s:
+# cmd-shift-s is the Google Maps launcher, not a scratchpad key.
 cmd - 0x32         : /opt/homebrew/bin/yabai -m query --spaces --space | /opt/homebrew/bin/jq -e '.label == "scratch"' >/dev/null && /opt/homebrew/bin/yabai -m space --focus recent || /opt/homebrew/bin/yabai -m space --focus scratch
 cmd - s            : /opt/homebrew/bin/yabai -m query --spaces --space | /opt/homebrew/bin/jq -e '.label == "scratch"' >/dev/null && /opt/homebrew/bin/yabai -m space --focus recent || /opt/homebrew/bin/yabai -m space --focus scratch
 cmd + shift - 0x32 : /opt/homebrew/bin/yabai -m window --space scratch
@@ -147,32 +140,28 @@ cmd + shift + alt - right : /opt/homebrew/bin/yabai -m space --display east
 alt - t : /opt/homebrew/bin/yabai -m window --toggle float
 
 # Omarchy's Super+O: pop this window out of the tiling tree and have it follow
-# you from workspace to workspace. Press again to put it back. Unlike
-# AeroSpace's aerospace-pin.sh this is a real sticky window, so there is no
-# limit of one and it is drawn in place rather than flicking there afterwards.
+# you from workspace to workspace. Press again to put it back. A real sticky
+# window, so there is no limit of one.
 cmd - o : /Users/ducannh/dotfiles/modules/yabai/bin/window-pop.sh
 
 # Toggle window position: side by side <-> stacked. This is Hyprland's
 # togglesplit exactly -- it flips the split of the focused node, leaving the
-# rest of the tree alone. (AeroSpace had to re-orient the workspace root
-# instead, because of its split-opposite rule.)
+# rest of the tree alone.
 #
-# Through a script, not a bare `--toggle split`: every new window here arrives
-# zoomed, and the flip underneath a zoomed window is invisible. See the header
-# of split-toggle.sh for the measurements.
+# Through a script, not a bare `--toggle split`: see the header of
+# split-toggle.sh for what it guards against.
 cmd - j : /Users/ducannh/dotfiles/modules/yabai/bin/split-toggle.sh
 
 # Per-workspace layout, remembered across restarts: bsp <-> stack, where stack
 # makes the whole space one pile with a single window showing. Omarchy's
 # Super+L, which flips dwindle <-> scrolling.
 #
-# On cmd-alt-l, not cmd-l: docs/keybindings.md leaves cmd-l as Open Location.
+# On cmd-alt-l, not cmd-l: cmd-l stays Open Location.
 cmd + alt - l : /Users/ducannh/dotfiles/modules/yabai/bin/layout-memo.sh toggle
 
 # ---------------------------------------------------------------- fullscreen
 # Omarchy's plain Super+F (zoom-fullscreen) is deliberately NOT bound, so that
-# cmd-f stays Find in every app and macos-app-shortcuts.sh needs no entry for
-# it. The other two modes keep Omarchy's own keys.
+# cmd-f stays Find in every app. The other two modes keep Omarchy's own keys.
 #
 # windowed-fullscreen rather than native-fullscreen for the alt slot: macOS
 # native fullscreen creates a fullscreen Space, which fights yabai's own space
@@ -181,9 +170,8 @@ cmd + ctrl - f : /opt/homebrew/bin/yabai -m window --toggle zoom-parent
 cmd + alt - f  : /opt/homebrew/bin/yabai -m window --toggle windowed-fullscreen
 
 # ------------------------------------------------------------------- grouping
-# Omarchy's window groups, and the reason for this migration. These are real
-# stacks -- one window visible, stack-index on each member, stack.N to reach
-# them -- where AeroSpace could only stand in with an accordion container.
+# Omarchy's window groups. Real stacks: one window visible, stack-index on each
+# member, stack.N to reach them.
 cmd - g       : /Users/ducannh/dotfiles/modules/yabai/bin/group-toggle.sh
 cmd + alt - g : /Users/ducannh/dotfiles/modules/yabai/bin/group-eject.sh
 
@@ -203,7 +191,7 @@ cmd + alt - right : /Users/ducannh/dotfiles/modules/yabai/bin/group-join.sh east
 
 # Super + Alt + N = jump to the Nth window in the group, which is Omarchy's own
 # meaning for this key. Outside a group there is no stack.N, so it falls back to
-# the Nth window on the space -- what AeroSpace's --dfs-index did.
+# the Nth window on the space, depth-first.
 cmd + alt - 1 : /opt/homebrew/bin/yabai -m window --focus stack.1 || /Users/ducannh/dotfiles/modules/yabai/bin/focus-index.sh 1
 cmd + alt - 2 : /opt/homebrew/bin/yabai -m window --focus stack.2 || /Users/ducannh/dotfiles/modules/yabai/bin/focus-index.sh 2
 cmd + alt - 3 : /opt/homebrew/bin/yabai -m window --focus stack.3 || /Users/ducannh/dotfiles/modules/yabai/bin/focus-index.sh 3
@@ -220,9 +208,8 @@ cmd + alt - 9 : /Users/ducannh/dotfiles/modules/yabai/bin/focus-index.sh 9
 ctrl + alt - backspace : /Users/ducannh/dotfiles/modules/yabai/bin/close-others.sh
 
 # --------------------------------------------------------------- launching apps
-# Lifted verbatim from aerospace.toml's exec-and-forget payloads, so both window
-# managers launch things identically and the ghostty config files in
-# modules/ghostty are shared rather than duplicated.
+# The ghostty config files these point at live in modules/ghostty.
+cmd - return          : open -na Ghostty
 cmd + alt - return    : open -na Ghostty --args -e /opt/homebrew/bin/tmux new-session -A -s main
 cmd + shift - return  : open -na "Google Chrome"
 cmd + shift + alt - b : open -na "Google Chrome" --args --incognito
@@ -236,14 +223,14 @@ cmd + shift - n       : open -na Ghostty --args -e /opt/homebrew/bin/nvim
 alt - g               : open -a Discord
 
 # Omarchy's Super+Shift+D. Costs Chrome's Bookmark All Tabs and Finder's Go >
-# Desktop; macos-app-shortcuts.sh puts both back on ctrl-shift-d.
+# Desktop.
 cmd + shift - d       : open -na Ghostty --args -e /opt/homebrew/bin/lazydocker
 
 # Omarchy's Super+Ctrl+T, open btop
 cmd + ctrl - t        : open -na Ghostty --args --config-file=/Users/ducannh/.config/ghostty/btop.conf
 
 # Omarchy's Disk Usage, which has no hotkey there. Through a config file rather
-# than `ghostty -e` -- see docs/keybindings.md#disk-usage.
+# than `ghostty -e` -- see ../../ghostty.
 cmd + ctrl - u        : open -na Ghostty --args --config-file=/Users/ducannh/.config/ghostty/disk-usage.conf
 
 cmd + ctrl - e        : /opt/homebrew/bin/skhd -k "cmd + ctrl - space"
@@ -337,12 +324,12 @@ alt - 9 [
 
 # ------------------------------------------------------------------ service mode
 # skhd's grammar gives a key either a command or a mode switch, never both, so
-# AeroSpace's ['<action>', 'mode main'] pairs become: run the action, then
-# synthesize the key that leaves the mode. `q` is that key.
+# an action that should also leave the mode runs the action and then synthesizes
+# the key that leaves it. `q` is that key.
 alt + shift - 0x29 ; service
 
-# AeroSpace's ['reload-config', 'mode main']. A reload resets skhd to the
-# default mode by itself, so this needs no ; default of its own.
+# A reload resets skhd to the default mode by itself, so this needs no
+# ; default of its own.
 service < escape : /opt/homebrew/bin/yabai --restart-service && /opt/homebrew/bin/skhd --reload
 
 service < q ; default

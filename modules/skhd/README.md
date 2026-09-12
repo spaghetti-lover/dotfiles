@@ -1,16 +1,11 @@
 # skhd
 
-The keybinding half of the yabai setup. The window manager half is
-`../yabai`; together they do what `../aerospace/.config/aerospace/aerospace.toml`
-does on its own.
+The keybinding half of the yabai setup. The window manager half is `../yabai`.
 
 Stow-ignored (`README.md`), so only `skhdrc` reaches `$HOME`, as
 `~/.config/skhd/skhdrc` -- the first path skhd looks in.
 
 ## Operational notes
-
-**Run `make wm-aerospace` before the first `make stow`.** See `../yabai/README.md`
--- skhd hot-loads, so the config goes live the instant it is stowed.
 
 **`skhd --reload` after editing `skhdrc` in the repo.** The hot-load watches the
 file, but stow installs a *symlink*, and FSEvents on a symlink does not reliably
@@ -23,7 +18,5 @@ point at the ghostty config files in `../ghostty`, which is also what places
 them: the title each config sets is what `../yabai`'s `tui_float` rule matches.
 
 **skhd grabs `cmd` globally**, so the macOS menu commands it displaces (Save,
-Open, Find, Print, ...) stay displaced. The `macos-app-shortcuts.sh` helper that
-used to re-bind them onto plain Ctrl lived in the deleted `../aerospace/bin/` and
-is gone; rebind by hand in System Settings > Keyboard > Keyboard Shortcuts if you
-miss one.
+Open, Find, Print, ...) stay displaced. Rebind by hand in System Settings >
+Keyboard > Keyboard Shortcuts if you miss one.

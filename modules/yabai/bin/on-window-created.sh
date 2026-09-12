@@ -1,28 +1,25 @@
 #!/usr/bin/env bash
 #
 # Everything that happens to a new window. Driven by two signals in
-# .config/yabai/yabairc, and it does one of two things:
+# .config/yabai/yabairc, and it does one thing: a TUI in the float namespace
+# gets Hyprland's `float + center + size`.
 #
-#   1. A TUI in the float namespace gets Hyprland's `float + center + size` --
-#      the one thing AeroSpace could not do, since it floats a window but has no
-#      command to place or resize one.
-#   2. Anything else opens zoomed to fill the space, which is what AeroSpace's
-#      catch-all `fullscreen --no-outer-gaps` rule did: a new window arrives
-#      edge to edge rather than as a tile you then have to enlarge. Its place in
-#      the tree is unchanged -- only the drawn frame covers the space.
+# Anything else is left alone, to be tiled by bsp like any other window. New
+# windows used to arrive zoomed over the whole space; that is deliberately gone,
+# because the zoom hid the dwindle tile it was drawn on top of.
 #
-# Branch 2 belongs to the window_created signal alone; branch 1 is reachable
-# from window_title_changed too. The reason is that the tui_float rule, which is
-# what is supposed to keep these windows unmanaged, **intermittently declines a
-# window it should match** -- between one launch in ten and one in two,
-# depending on the run. When it declines, the window is tiled, and by the time
-# this script queries it the title reads correctly, so all we can say is that
-# the rule saw something different from what we see a few milliseconds later.
+# Both signals reach the same path. The reason there are two is that the
+# tui_float rule, which is what is supposed to keep these windows unmanaged,
+# **intermittently declines a window it should match** -- between one launch in
+# ten and one in two, depending on the run. When it declines, the window is
+# tiled, and by the time this script queries it the title reads correctly, so
+# all we can say is that the rule saw something different from what we see a
+# few milliseconds later.
 # Whether Ghostty had not applied the title yet or yabai's matching is flaky is
 # not observable from here; either way nothing else would put the window right.
 #
 # Two consequences, both handled below: the script floats the window itself
-# rather than trusting the rule (see the --toggle float in branch 1), and the
+# rather than trusting the rule (see the --toggle float below), and the
 # size cannot be read back off the window, because the tile frame has already
 # overwritten it (see the `case $title` table).
 #
@@ -31,17 +28,14 @@
 #
 # --late: the title-changed entry point, a backstop for the case where the
 # window is not recognisable as a float until after window_created has been and
-# gone. It never runs branch 2 -- an ordinary terminal retitles itself on every
-# command, and zooming it each time would be unusable.
+# gone. It is accepted and ignored: both entry points now do the same work.
 
 set -uo pipefail
 
 YABAI=/opt/homebrew/bin/yabai
 JQ=/opt/homebrew/bin/jq
 
-late=false
 if [[ ${1:-} == --late ]]; then
-  late=true
   shift
 fi
 
@@ -100,15 +94,8 @@ case $title in
   org.omarchy.btop) w=1359; h=864 ;;   # 117x34 cells at 18pt
 esac
 
+# Not a float: nothing to do. bsp places it.
 if [[ $app != Ghostty ]] || ! printf '%s' "$title" | grep -Eq "$FLOAT_TITLE"; then
-  # Not a float. On the late path there is nothing to do: this is an ordinary
-  # terminal announcing an ordinary title change.
-  [[ $late == false ]] || exit 0
-  # yabai un-zooms the previously zoomed window when a new one is created, so
-  # the newest window is the one filling the space -- the same behaviour
-  # AeroSpace got by unfullscreening on the next window.
-  [[ $floating == false ]] || exit 0
-  "$YABAI" -m window "$id" --toggle zoom-fullscreen 2>/dev/null
   exit 0
 fi
 

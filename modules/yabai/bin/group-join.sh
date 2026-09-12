@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Omarchy's Super+Alt+<arrow>: pull the window in that direction into a group
-# with the focused one. AeroSpace called this join-with.
+# with the focused one.
 #
 # Usage: group-join.sh <north|south|east|west>
 

@@ -12,7 +12,7 @@ STOW        := stow -d modules -t "$(HOME)" $(STOW_IGNORE)
 
 .PHONY: install stow unstow restow stow-check \
         brew-install brew-check brew-update brew-clean \
-        wm-yabai wm-aerospace wm-status yabai-sa yabai-spaces help
+        yabai-sa yabai-spaces help
 
 install: ## Full setup: brew bundle, stow every module, run install hooks
 	@bash install/bootstrap.sh
@@ -51,19 +51,7 @@ brew-clean: ## Remove packages not in the Brewfile
 	@echo "Removing packages not in Brewfile..."
 	brew bundle cleanup --force --file=$(BREWFILE)
 
-# ------------------------------------------------------ window managers
-# AeroSpace and yabai+skhd both grab cmd globally, so exactly one runs at a
-# time. The choice is remembered in ~/.config/dotfiles/wm and enforced at each
-# manager's startup -- see modules/yabai/bin/wm.sh.
-wm-yabai: ## Switch to yabai + skhd (quits AeroSpace)
-	@bash modules/yabai/bin/wm.sh yabai
-
-wm-aerospace: ## Switch back to AeroSpace (stops yabai + skhd)
-	@bash modules/yabai/bin/wm.sh aerospace
-
-wm-status: ## Show which window manager is configured and running
-	@bash modules/yabai/bin/wm.sh status
-
+# ------------------------------------------------------ window manager
 yabai-sa: ## (Re)authorise yabai's scripting addition -- rerun after every brew upgrade
 	@bash modules/yabai/bin/load-sa.sh
 

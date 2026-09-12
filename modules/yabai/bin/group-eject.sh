@@ -2,10 +2,9 @@
 #
 # Omarchy's Super+Alt+G: push the focused window back out of its group.
 #
-# The inverse of group-join.sh. AeroSpace worked out which way to go from the
-# container's own orientation (`test %{window-layout} ~= ^h_ && move up || move
-# left`); yabai has `sibling` as a window selector, which resolves to the stack
-# node's BSP sibling -- the surrounding container -- so there is nothing to aim.
+# The inverse of group-join.sh. yabai has `sibling` as a window selector, which
+# resolves to the stack node's BSP sibling -- the surrounding container -- so
+# there is nothing to aim.
 
 set -uo pipefail
 

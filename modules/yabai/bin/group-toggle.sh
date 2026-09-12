@@ -2,14 +2,12 @@
 #
 # Omarchy's Super+G: toggle window grouping.
 #
-# yabai has stacks but no toggle for them, so this is the toggle. A stack is a
-# real thing here -- one window visible, the others behind it, `stack-index` on
-# every member and stack.next / stack.1..N to move between them -- where the
-# AeroSpace config could only approximate it with an accordion container.
+# yabai has stacks but no toggle for them, so this is the toggle. A stack is
+# one window visible, the others behind it, `stack-index` on every member and
+# stack.next / stack.1..N to move between them.
 #
 # What it does NOT buy is persistence: a stack lives in yabai's in-memory BSP
-# tree and dies with the process, exactly as AeroSpace's accordion did. See
-# docs/yabai.md.
+# tree and dies with the process.
 #
 # Membership is enumerated through STACK_SEL relative to the focused window
 # rather than by comparing frames, so it is exact at any depth.
@@ -73,7 +71,7 @@ else
       "$JQ" -r 'select(."is-floating" == false) | .id // empty')
     [[ -n $nid ]] && break
   done
-  # Only window on the space: silent no-op, as AeroSpace was.
+  # Only window on the space: silent no-op.
   [[ -n $nid ]] || exit 0
 
   # Explicit ids, never a direction. `--stack` reads "stack the GIVEN window on
@@ -83,7 +81,6 @@ else
   "$YABAI" -m window --focus "$fid" 2>/dev/null
 
   # Omarchy: "every window you start while the group is active belongs to the
-  # group". This is the port of that, and of the AeroSpace rule that tested
-  # window-parent-container-layout ~= accordion.
+  # group". This is the port of that.
   "$YABAI" -m window --insert stack >/dev/null 2>&1
 fi

@@ -11,7 +11,6 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 - nvim (code editor)
 - tmux (term multiplexer)
 - ghostty (terminal emulator)
-- aerospace is a window manager for macos (i3 like)
 - zshell
 - GNU stow is a symlink management tool
 - zoxide (smarter `cd`: `z <part-of-path>` jumps, `zi` picks with fzf)
@@ -26,21 +25,11 @@ This repo belong to [Kunkka](https://github.com/kunkka19xx). I just cloned and a
 _Note_: Some tools I also recommend: lazydocker, bat, fzf, autocompletion, ... (can be installed with brew)
 
 
-## Window managers
+## Window manager
 
-Two are installed, side by side, bound to the same
-[Omarchy-style keys](docs/keybindings.md). AeroSpace is the default; yabai +
-skhd is a second implementation with real window groups, real sticky windows
-and mouse drag/resize -- see [docs/yabai.md](docs/yabai.md).
-
-```sh
-make wm-status     # which is configured, and which is running
-make wm-yabai      # switch to yabai + skhd
-make wm-aerospace  # switch back
-```
-
-They must never run at once: both grab `cmd` combinations globally. Run
-`make wm-aerospace` before the first `make stow`.
+yabai + skhd, with real window groups, real sticky windows and mouse
+drag/resize. skhd grabs `cmd` combinations globally, so no other window
+manager may run alongside it.
 
 ## Install
 
@@ -68,7 +57,6 @@ Run `make help` to see every target.
 ```
 modules/     one directory per tool -- this is the stow directory
 install/     Brewfile + bootstrap.sh
-docs/        cheat sheets
 extras/      things that are not dotfiles (open-webui compose file)
 ```
 
@@ -108,7 +96,7 @@ For more information about GNU stow: [link](https://www.gnu.org/software/stow/)
 
 Window management, terminal and tmux follow an
 [Omarchy](https://omarchy.org/manual/navigation)-style keyboard layer, with **⌘ as Super**.
-Full cheat sheet: [docs/keybindings.md](./docs/keybindings.md).
+The bindings themselves are in `modules/skhd/.config/skhd/skhdrc`.
 
 ⌘1…⌘9 are workspace switches, so browser tabs move to ⌥1…⌥9, handled by skhd in browsers only
 (`modules/skhd/bin/browser-tab.sh`). macOS will ask once to let skhd control your browser.
@@ -159,8 +147,7 @@ To make `docker compose ...` work (not just the standalone `docker-compose`), ad
 default beyond neo-tree, so a fresh clone has no Go or TypeScript LSP until you pick the `lang.*`
 extras you want. `ai.supermaven` and `ai.copilot` live there too.
 
-How to launch it, and how to edit root-owned files with it, is in
-[docs/keybindings.md](./docs/keybindings.md#neovim).
+How to launch it: ⌘⇧N, or `nvim` in any shell.
 
 For local models, [ollama](https://ollama.com/); the open-webui compose file is in
 [extras/open-webui](./extras/open-webui/docker-compose.yaml).

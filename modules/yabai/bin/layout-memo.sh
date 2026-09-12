@@ -10,7 +10,7 @@
 # the rest behind it. That is a fair analogue of Omarchy's scrolling layout, and
 # it is a different thing from the per-window groups on ⌘G (group-toggle.sh).
 #
-# Bound to ⌘⌥L, not ⌘L: docs/keybindings.md leaves ⌘L as Open Location.
+# Bound to ⌘⌥L, not ⌘L: ⌘L stays Open Location.
 #
 # Usage: layout-memo.sh toggle|restore
 

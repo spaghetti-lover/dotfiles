@@ -2,11 +2,11 @@
 #
 # Select tab N in the frontmost browser.
 #
-# AeroSpace and skhd grab cmd-1..9 for workspaces, so browsers lose their
+# skhd grabs cmd-1..9 for workspaces, so browsers lose their
 # numbered tab shortcuts and there is no menu item to rebind -- Chrome's Tab menu
 # only offers "Select Next/Previous Tab" plus the open tabs by page title, which
 # change. skhd puts the jumps on opt-1..9 in browsers only and calls this script;
-# see ../.config/skhd/skhdrc and docs/keybindings.md.
+# see ../.config/skhd/skhdrc.
 #
 # Remapping opt-N to cmd-N would not work: the workspace grab is global and
 # catches synthesised cmd-N before the browser ever sees it.

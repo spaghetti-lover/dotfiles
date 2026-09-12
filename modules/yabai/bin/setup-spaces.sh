@@ -8,11 +8,9 @@
 # you add a space on the DELL. A label survives all of that -- but not a yabai
 # restart, which is why this runs from yabairc on every start.
 #
-# This stands in for AeroSpace's [workspace-to-monitor-force-assignment], and
-# only partly. AeroSpace workspaces are virtual and could be pinned to `main` by
-# config; macOS spaces BELONG to a display and the only lever is the imperative
-# `space <label> --display`. See the drift-correction pass at the bottom, and
-# docs/yabai.md for what it cannot promise.
+# Pinning a space to a display is only partly possible: macOS spaces BELONG to
+# a display and the only lever is the imperative `space <label> --display`. See
+# the drift-correction pass at the bottom.
 #
 # Idempotent and never destructive: it creates spaces up to the target count and
 # labels them, but extra spaces you made by hand are left alone -- destroying a

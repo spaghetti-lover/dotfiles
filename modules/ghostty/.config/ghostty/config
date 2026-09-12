@@ -58,14 +58,14 @@ keybind = super+control+shift+alt+arrow_right=resize_split:right,100
 keybind = super+control+shift+alt+arrow_up=resize_split:up,100
 keybind = super+control+shift+alt+arrow_down=resize_split:down,100
 
-# Tabs. cmd+t still works -- AeroSpace deliberately leaves it free -- but
+# Tabs. cmd+t still works -- skhd deliberately leaves it free -- but
 # ctrl+shift+t is what Omarchy/Ghostty-on-Linux uses, so bind it too.
 keybind = ctrl+shift+t=new_tab
 keybind = ctrl+shift+left=move_tab:-1
 keybind = ctrl+shift+right=move_tab:1
 
-# Tab-by-number. Ghostty's macOS default is cmd+1-9, but AeroSpace owns those
-# for workspaces and alt+1-9 belongs to tmux, so it lives on ctrl+shift like
+# Tab-by-number. Ghostty's macOS default is cmd+1-9, but skhd owns those for
+# workspaces and alt+1-9 belongs to tmux, so it lives on ctrl+shift like
 # the rest of the tab cluster. digit_N is the physical key, layout-independent.
 # 9 is last_tab, matching Ghostty's own default (and every browser).
 keybind = ctrl+shift+digit_1=goto_tab:1

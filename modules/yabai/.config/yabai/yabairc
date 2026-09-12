@@ -1,14 +1,7 @@
 #!/usr/bin/env sh
 #
 # Omarchy-style tiling for macOS, the yabai half. Keybindings are the skhd half,
-# in ../../skhd/.config/skhd/skhdrc -- the two together are what aerospace.toml
-# is on its own.
-#
-# NEVER run this at the same time as AeroSpace: both it and skhd grab ⌘ combos
-# globally. `make wm-yabai` / `make wm-aerospace` switch between them.
-
-# Stand down if AeroSpace is the configured manager (see bin/wm.sh).
-/Users/ducannh/dotfiles/modules/yabai/bin/wm.sh guard-yabai
+# in ../../skhd/.config/skhd/skhdrc.
 
 # ---------------------------------------------------------------- scripting addition
 # Everything space-related EXCEPT `space --focus` and `window --space` needs it:
@@ -16,8 +9,7 @@
 # Those two stopped needing SIP in yabai 7.1.19 and 7.1.25 respectively, so ⌘1..9
 # and ⌘⇧1..9 work either way.
 #
-# See bin/load-sa.sh for the SIP and boot-arg checks, and docs/yabai.md for what
-# breaks when this fails.
+# See bin/load-sa.sh for the SIP and boot-arg checks.
 if sudo -n yabai --load-sa 2>/dev/null; then
   rm -f "$HOME/.cache/yabai/no-sa"
 else
@@ -34,9 +26,8 @@ yabai -m signal --add label=reload_sa event=dock_did_restart \
   action="sudo -n yabai --load-sa"
 
 # ---------------------------------------------------------------- layout
-# AeroSpace's dwindle: each new window becomes the second child, so windows
-# spiral right, down, right, ... This is what `split opposite` bought there, and
-# what Omarchy gets from dwindle's force_split = 2.
+# Dwindle: each new window becomes the second child, so windows spiral right,
+# down, right, ... -- what Omarchy gets from dwindle's force_split = 2.
 yabai -m config layout                    bsp
 yabai -m config window_placement          second_child
 yabai -m config split_type                auto
@@ -47,13 +38,13 @@ yabai -m config window_origin_display     focused
 yabai -m config insert_feedback_color     0xffd75f5f
 
 # Omarchy: "switch focus and move the cursor to the center of the new
-# application" -- AeroSpace's on-focus-changed = 'move-mouse monitor-lazy-center'.
+# application".
 yabai -m config mouse_follows_focus        on
 yabai -m config focus_follows_mouse        off
 
-# Omarchy's Super+LeftMouse / Super+RightMouse, which AeroSpace could not do at
-# all. ⌘ is Super here, so ⌘-drag anywhere is a window move; if that turns out to
-# fight ⌘-click in Finder or Chrome, `fn` is the fallback.
+# Omarchy's Super+LeftMouse / Super+RightMouse. ⌘ is Super here, so ⌘-drag
+# anywhere is a window move; if that turns out to fight ⌘-click in Finder or
+# Chrome, `fn` is the fallback.
 yabai -m config mouse_modifier             cmd
 yabai -m config mouse_action1              move
 yabai -m config mouse_action2              resize
@@ -62,10 +53,8 @@ yabai -m config mouse_action2              resize
 yabai -m config mouse_drop_action          stack
 
 # ---------------------------------------------------------------- gaps
-# AeroSpace set outer padding per monitor (15/0/20/15 on the built-in Retina,
-# 25 all round on the DELL). yabai's padding is global or per-space, never
-# per-display, so these are the built-in display's values applied everywhere.
-# docs/yabai.md records this as a known gap.
+# yabai's padding is global or per-space, never per-display, so these are the
+# built-in display's values applied everywhere (the DELL wants 25 all round).
 yabai -m config top_padding                0
 yabai -m config bottom_padding             20
 yabai -m config left_padding               15
@@ -102,12 +91,12 @@ yabai -m rule --add label=float_opensave title='^(Opening|Open File|Save|Save As
 yabai -m rule --add label=tui_float app='^Ghostty$' \
   title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About)$' manage=off
 
-# There is deliberately no `space=` on any rule: docs/keybindings.md is emphatic
-# that a window opens on whatever workspace is focused, and nothing is pinned.
+# There is deliberately no `space=` on any rule: a window opens on whatever
+# workspace is focused, and nothing is pinned.
 
 # ---------------------------------------------------------------- signals
-# AeroSpace opened every new window `fullscreen --no-outer-gaps` -- edge to edge
-# over its workspace, with the tile still allotted underneath. This is that.
+# Places the Ghostty TUI floats -- see bin/on-window-created.sh. It no longer
+# zooms ordinary new windows: they arrive as plain bsp tiles.
 yabai -m signal --add label=new_window event=window_created \
   action="/Users/ducannh/dotfiles/modules/yabai/bin/on-window-created.sh \$YABAI_WINDOW_ID"
 
@@ -130,16 +119,6 @@ yabai -m signal --add label=display_added event=display_added \
   action="/Users/ducannh/dotfiles/modules/yabai/bin/setup-spaces.sh"
 yabai -m signal --add label=display_removed event=display_removed \
   action="/Users/ducannh/dotfiles/modules/yabai/bin/setup-spaces.sh"
-
-# Ghostty uses macOS native tabs, and the window manager API reports every tab
-# as its own window -- so opening or closing a tab leaves the bsp tree holding a
-# window that is not really there. Ghostty documents this as a macOS limitation
-# with nothing they can fix; the community workaround is to re-apply the space
-# layout on both edges, which rebuilds the tree from what is actually on screen.
-yabai -m signal --add label=ghostty_tab_created app='^Ghostty$' \
-  event=window_created   action='yabai -m space --layout bsp'
-yabai -m signal --add label=ghostty_tab_destroyed app='^Ghostty$' \
-  event=window_destroyed action='yabai -m space --layout bsp'
 
 # ---------------------------------------------------------------- spaces
 # Last, and backgrounded: `space --create` costs about 0.3s each and there may be

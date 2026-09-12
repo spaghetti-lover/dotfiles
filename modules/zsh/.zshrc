@@ -453,7 +453,7 @@ alias cy='codex -s danger-full-access -a never'
 alias ic='tdl c'
 alias ix='tdl cx'
 alias icx='tdl c cx'
-# 'main' matches the session aerospace's cmd-alt-enter creates
+# 'main' matches the session cmd-alt-enter creates
 alias t='tmux attach || tmux new -s main'
 
 bindkey -v

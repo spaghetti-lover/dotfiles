@@ -4,12 +4,6 @@
 # tile out of the tree so it floats above everything and stays put as you move
 # between spaces. Press again to put it back.
 #
-# This replaces aerospace-pin.sh, which faked the same thing by dragging one
-# recorded window onto each workspace as you arrived (AeroSpace has no sticky
-# windows -- https://github.com/nikitabobko/AeroSpace/issues/2). With the yabai
-# scripting addition, sticky is a real window property: any number of windows
-# can be popped, and they are already there rather than flicking into place.
-#
 # `sticky` and `--sub-layer` both need System Integrity Protection partially
 # disabled. Without it this floats and centres but does not follow you.
 #

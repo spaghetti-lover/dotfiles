@@ -7,14 +7,11 @@
 # `yabai -m window --toggle split` is the whole of it on paper, and bound bare
 # it looks broken. Two reasons, both real:
 #
-#   1. Every new window arrives zoomed. on-window-created.sh puts each one into
-#      zoom-fullscreen -- AeroSpace's catch-all `fullscreen --no-outer-gaps`,
-#      ported -- and yabairc sets window_zoom_persist on. The split underneath
-#      does flip; measured directly, split-type goes vertical -> horizontal and
-#      the sibling re-tiles from 882x1109 to 1770x552. You just cannot see it,
-#      because the focused window is still drawn over the whole space. So the
-#      zoom is cleared first. Hyprland has no such auto-zoom, which is why the
-#      binding needs this here and not there.
+#   1. A zoomed window is drawn over the whole space, so the flip underneath is
+#      invisible -- measured directly, split-type goes vertical -> horizontal
+#      and the sibling re-tiles from 882x1109 to 1770x552 with nothing visibly
+#      changing. yabairc sets window_zoom_persist on, so a zoom from cmd-ctrl-f
+#      or cmd-alt-f sticks around to do exactly that. The zoom is cleared first.
 #   2. A window alone in its space has no parent to split with -- split-type is
 #      `none` -- and yabai answers with an error on stderr. Hyprland no-ops
 #      silently in the same case, so this does too.

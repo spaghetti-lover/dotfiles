@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# AeroSpace's `focus --dfs-index N` (Super+Alt+N): jump to the Nth window on the
-# current space. yabai has no index selector, so walk its window list.
+# Super+Alt+N: jump to the Nth window on the current space, depth-first. yabai
+# has no index selector, so walk its window list.
 #
-# AeroSpace walked the tiling tree depth-first, top to bottom then left to
-# right, which is the order a group shows its windows in. yabai's query is not
-# tree-ordered, so sort by position instead -- same answer for every layout
-# where the two could differ visibly.
+# The wanted order is top to bottom then left to right, which is the order a
+# group shows its windows in. yabai's query is not tree-ordered, so sort by
+# position instead -- same answer for every layout where the two could differ
+# visibly.
 #
 # Usage: focus-index.sh <1-based index>
 

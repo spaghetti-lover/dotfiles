@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# AeroSpace's `close-all-windows-but-current` (Ctrl+Alt+Backspace), and the
-# `backspace` key of service mode.
+# Close all windows but the focused one (Ctrl+Alt+Backspace, and the
+# `backspace` key of service mode).
 #
 # yabai closes one window at a time, so this collects the ids first: closing
 # while iterating a live query would drop windows as the list shifts underneath.
