@@ -2,13 +2,10 @@ onboarding = false
 
 [theme]
 name = "gruvbox"
-
 auto_switch = false
+
 [ui.toast]
 delivery = "system"
-
-[ui]
-show_agent_labels_on_pane_borders = true
 
 [ui.sound]
 enabled = true
