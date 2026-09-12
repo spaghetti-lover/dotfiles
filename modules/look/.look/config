@@ -82,8 +82,12 @@ alias_brow=Safari|Arc|Google Chrome|Chrome|Firefox|Brave
 localized_app_names=false
 clipboard_history_limit=10
 
-# Added by look update
+# Added by look updatvscode
 query_retention_seconds=5
 pomo_sessions=focus:30:Deep%20Work,break:5:Short%20Break,focus:30:Review,break:5:Short%20Break,focus:30:Wrap%20Up,break:15:Long%20Break
 pomo_timer_style=modern
 
+# Preferred Tools
+text_editor=nvim
+code_editor=nvim
+terminal=ghostty
