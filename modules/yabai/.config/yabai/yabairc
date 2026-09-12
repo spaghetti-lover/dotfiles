@@ -139,6 +139,16 @@ yabai -m signal --add label=display_added event=display_added \
 yabai -m signal --add label=display_removed event=display_removed \
   action="/Users/ducannh/dotfiles/modules/yabai/bin/setup-spaces.sh"
 
+# Ghostty uses macOS native tabs, and the window manager API reports every tab
+# as its own window -- so opening or closing a tab leaves the bsp tree holding a
+# window that is not really there. Ghostty documents this as a macOS limitation
+# with nothing they can fix; the community workaround is to re-apply the space
+# layout on both edges, which rebuilds the tree from what is actually on screen.
+yabai -m signal --add label=ghostty_tab_created app='^Ghostty$' \
+  event=window_created   action='yabai -m space --layout bsp'
+yabai -m signal --add label=ghostty_tab_destroyed app='^Ghostty$' \
+  event=window_destroyed action='yabai -m space --layout bsp'
+
 # ---------------------------------------------------------------- spaces
 # Last, and backgrounded: `space --create` costs about 0.3s each and there may be
 # nine of them on a fresh machine, which would otherwise block yabai's startup
