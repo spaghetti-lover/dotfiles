@@ -89,7 +89,7 @@ gpup() {
   git push --set-upstream origin "$branch"
 }
 opg() {
-  local base="$HOME/Documents/git"
+  local base="$HOME/Projects"
   local dir
   dir=$(find "$base" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -exec test -d {} \; -print | fzf)
   if [[ -n "$dir" ]]; then
@@ -106,14 +106,14 @@ op() {
 # quick session
 qss() {
   local dotfiles_dir="$HOME/dotfiles"
-  local git_base="$HOME/Documents/git"
+  local git_base="$HOME/Projects"
 
   if ! tmux has-session -t setting 2>/dev/null; then
     tmux new-session -d -s setting -c "$dotfiles_dir"
   fi
 
   local dir
-  local base="$HOME/Documents/git"
+  local base="$HOME/Projects"
 
   dir=$(find "$base" -mindepth 1 -maxdepth 1 -type d ! -name '.*' | fzf)
 
