@@ -11,7 +11,15 @@
 after-login-command = []
 
 # A pin does not survive a restart of AeroSpace; drop the stale window id.
-after-startup-command = ['exec-and-forget /Users/ducannh/dotfiles/modules/aerospace/bin/aerospace-pin.sh clear']
+#
+# The second entry is the other half of `make wm-yabai`: AeroSpace has
+# start-at-login above and comes back after a reboot whatever we do, so it asks
+# modules/yabai/bin/wm.sh whether it is still the chosen manager and quits again
+# if it is not. A no-op unless yabai is the choice.
+after-startup-command = [
+  'exec-and-forget /Users/ducannh/dotfiles/modules/aerospace/bin/aerospace-pin.sh clear',
+  'exec-and-forget /Users/ducannh/dotfiles/modules/yabai/bin/wm.sh guard-aerospace',
+]
 
 # Omarchy's Super+O. AeroSpace has no sticky windows, so the pinned window is
 # dragged onto each workspace as we arrive. See modules/aerospace/bin/aerospace-pin.sh.

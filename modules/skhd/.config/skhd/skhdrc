@@ -163,11 +163,15 @@ cmd - o : /Users/ducannh/dotfiles/modules/yabai/bin/window-pop.sh
 # togglesplit exactly -- it flips the split of the focused node, leaving the
 # rest of the tree alone. (AeroSpace had to re-orient the workspace root
 # instead, because of its split-opposite rule.)
+<<<<<<< HEAD
 #
 # Through a script, not a bare `--toggle split`: every new window here arrives
 # zoomed, and the flip underneath a zoomed window is invisible. See the header
 # of split-toggle.sh for the measurements.
 cmd - j : /Users/ducannh/dotfiles/modules/yabai/bin/split-toggle.sh
+=======
+cmd - j : /opt/homebrew/bin/yabai -m window --toggle split
+>>>>>>> yabai-sidebyside
 
 # Per-workspace layout, remembered across restarts: bsp <-> stack, where stack
 # makes the whole space one pile with a single window showing. Omarchy's
@@ -229,6 +233,7 @@ ctrl + alt - backspace : /Users/ducannh/dotfiles/modules/yabai/bin/close-others.
 # --------------------------------------------------------------- launching apps
 # Lifted verbatim from aerospace.toml's exec-and-forget payloads, so both window
 # managers launch things identically and the ghostty config files in
+<<<<<<< HEAD
 # modules/ghostty are shared rather than duplicated. cmd-return and cmd-ctrl-t
 # are the two exceptions -- AeroSpace has no counterpart for either.
 
@@ -237,6 +242,9 @@ ctrl + alt - backspace : /Users/ducannh/dotfiles/modules/yabai/bin/close-others.
 # and Safari's omnibox cmd-enter (open the typed URL in a new tab) and no menu
 # command anywhere, so macos-app-shortcuts.sh needs no entry for it.
 cmd - return          : open -na Ghostty
+=======
+# modules/ghostty are shared rather than duplicated.
+>>>>>>> yabai-sidebyside
 cmd + alt - return    : open -na Ghostty --args -e /opt/homebrew/bin/tmux new-session -A -s main
 cmd + shift - return  : open -na "Google Chrome"
 cmd + shift + alt - b : open -na "Google Chrome" --args --incognito
@@ -253,6 +261,7 @@ alt - g               : open -a Discord
 # Desktop; macos-app-shortcuts.sh puts both back on ctrl-shift-d.
 cmd + shift - d       : open -na Ghostty --args -e /opt/homebrew/bin/lazydocker
 
+<<<<<<< HEAD
 # Omarchy's Super+Ctrl+T, floated and centred the way Omarchy floats it. The
 # org.omarchy.btop title is what puts it in the TUI float namespace shared by
 # yabairc's tui_float rule and modules/yabai/bin/on-window-created.sh; through a
@@ -260,6 +269,11 @@ cmd + shift - d       : open -na Ghostty --args -e /opt/homebrew/bin/lazydocker
 # maps. Under AeroSpace it is still an ordinary tiled window -- see
 # docs/keybindings.md#btop-and-the-herdr-keybindings.
 cmd + ctrl - t        : open -na Ghostty --args --config-file=/Users/ducannh/.config/ghostty/btop.conf
+=======
+# Omarchy's Super+Ctrl+T. Omarchy floats and centres btop; that does not port --
+# see docs/keybindings.md#btop-and-the-herdr-keybindings.
+cmd + ctrl - t        : open -na Ghostty --args -e /opt/homebrew/bin/btop
+>>>>>>> yabai-sidebyside
 
 # Omarchy's Disk Usage, which has no hotkey there. Through a config file rather
 # than `ghostty -e` -- see docs/keybindings.md#disk-usage.

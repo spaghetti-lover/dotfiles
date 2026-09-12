@@ -12,7 +12,8 @@ STOW        := stow -d modules -t "$(HOME)" $(STOW_IGNORE)
 
 .PHONY: install stow unstow restow stow-check \
         brew-install brew-check brew-update brew-clean \
-        macos-shortcuts macos-shortcuts-list macos-shortcuts-reset help
+        macos-shortcuts macos-shortcuts-list macos-shortcuts-reset \
+        wm-yabai wm-aerospace wm-status yabai-sa yabai-spaces help
 
 install: ## Full setup: brew bundle, stow every module, run install hooks
 	@bash install/bootstrap.sh
@@ -51,8 +52,27 @@ brew-clean: ## Remove packages not in the Brewfile
 	@echo "Removing packages not in Brewfile..."
 	brew bundle cleanup --force --file=$(BREWFILE)
 
+# ------------------------------------------------------ window managers
+# AeroSpace and yabai+skhd both grab cmd globally, so exactly one runs at a
+# time. The choice is remembered in ~/.config/dotfiles/wm and enforced at each
+# manager's startup -- see modules/yabai/bin/wm.sh.
+wm-yabai: ## Switch to yabai + skhd (quits AeroSpace)
+	@bash modules/yabai/bin/wm.sh yabai
+
+wm-aerospace: ## Switch back to AeroSpace (stops yabai + skhd)
+	@bash modules/yabai/bin/wm.sh aerospace
+
+wm-status: ## Show which window manager is configured and running
+	@bash modules/yabai/bin/wm.sh status
+
+yabai-sa: ## (Re)authorise yabai's scripting addition -- rerun after every brew upgrade
+	@bash modules/yabai/bin/load-sa.sh
+
+yabai-spaces: ## Re-provision and re-label ws1..ws9 + scratch on the main display
+	@bash modules/yabai/bin/setup-spaces.sh
+
 # ---------------------------------------------------------------- macOS
-macos-shortcuts: ## Restore macOS menu commands AeroSpace took over (ctrl-F, ctrl-T, ...)
+macos-shortcuts: ## Restore macOS menu commands the window manager took over (ctrl-O, ctrl-S, ...)
 	@bash modules/aerospace/bin/macos-app-shortcuts.sh
 
 macos-shortcuts-list: ## Show which menu shortcuts are currently overridden

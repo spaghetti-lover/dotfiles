@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 #
+<<<<<<< HEAD
 # Everything that happens to a new window. Driven by two signals in
 # .config/yabai/yabairc, and it does one of two things:
+=======
+# Everything that happens to a new window. Driven by the window_created signal
+# in .config/yabai/yabairc, and it does one of two things:
+>>>>>>> yabai-sidebyside
 #
 #   1. A TUI in the float namespace gets Hyprland's `float + center + size` --
 #      the one thing AeroSpace could not do, since it floats a window but has no
@@ -11,6 +16,7 @@
 #      edge to edge rather than as a tile you then have to enlarge. Its place in
 #      the tree is unchanged -- only the drawn frame covers the space.
 #
+<<<<<<< HEAD
 # Branch 2 belongs to the window_created signal alone; branch 1 is reachable
 # from window_title_changed too. The reason is that the tui_float rule, which is
 # what is supposed to keep these windows unmanaged, **intermittently declines a
@@ -33,12 +39,16 @@
 # window is not recognisable as a float until after window_created has been and
 # gone. It never runs branch 2 -- an ordinary terminal retitles itself on every
 # command, and zooming it each time would be unusable.
+=======
+# Usage: on-window-created.sh <window-id> [float-width] [float-height]
+>>>>>>> yabai-sidebyside
 
 set -uo pipefail
 
 YABAI=/opt/homebrew/bin/yabai
 JQ=/opt/homebrew/bin/jq
 
+<<<<<<< HEAD
 late=false
 if [[ ${1:-} == --late ]]; then
   late=true
@@ -46,11 +56,15 @@ if [[ ${1:-} == --late ]]; then
 fi
 
 id=${1:?usage: on-window-created.sh [--late] <window-id> [float-w] [float-h]}
+=======
+id=${1:?usage: on-window-created.sh <window-id> [float-w] [float-h]}
+>>>>>>> yabai-sidebyside
 w=${2:-875}
 h=${3:-600}
 
 # Mirrors the class regex in omarchy default/hypr/apps/system.lua:6-12. On macOS
 # every Ghostty window shares one bundle id, so the window title carries the
+<<<<<<< HEAD
 # identity an app-id carries under Hyprland.
 #
 # MUST stay byte-identical to the title= of the tui_float rule in
@@ -69,6 +83,12 @@ FLOAT_TITLE='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About|Herdr
 lock="${TMPDIR:-/tmp}/yabai-owc-${id}.lock"
 mkdir "$lock" 2>/dev/null || exit 0
 trap 'rmdir "$lock" 2>/dev/null' EXIT
+=======
+# identity an app-id carries under Hyprland. Keep in sync with the tui_float
+# rule in yabairc -- the rule decides what is unmanaged, this decides what is
+# placed, and a window in one set but not the other lands somewhere silly.
+FLOAT_TITLE='^(org\.omarchy\.(btop|terminal|bash)|Omarchy|About|TUI\.float)'
+>>>>>>> yabai-sidebyside
 
 win=$("$YABAI" -m query --windows --window "$id" 2>/dev/null) || exit 0
 [[ -n $win ]] || exit 0
@@ -77,6 +97,7 @@ app=$(printf '%s' "$win" | "$JQ" -r '.app')
 title=$(printf '%s' "$win" | "$JQ" -r '.title')
 display=$(printf '%s' "$win" | "$JQ" -r '.display')
 
+<<<<<<< HEAD
 floating=$(printf '%s' "$win" | "$JQ" -r '."is-floating"')
 
 # Per-float sizes. Omarchy gives every member of its floating-window tag the same
@@ -113,10 +134,19 @@ if [[ $app != Ghostty ]] || ! printf '%s' "$title" | grep -Eq "$FLOAT_TITLE"; th
   # the newest window is the one filling the space -- the same behaviour
   # AeroSpace got by unfullscreening on the next window.
   [[ $floating == false ]] || exit 0
+=======
+if [[ $app != Ghostty ]] || ! printf '%s' "$title" | grep -Eq "$FLOAT_TITLE"; then
+  # Not a float. yabai un-zooms the previously zoomed window when a new one is
+  # created, so the newest window is the one filling the space -- the same
+  # behaviour AeroSpace got by unfullscreening on the next window.
+  managed=$(printf '%s' "$win" | "$JQ" -r '."is-floating"')
+  [[ $managed == false ]] || exit 0
+>>>>>>> yabai-sidebyside
   "$YABAI" -m window "$id" --toggle zoom-fullscreen 2>/dev/null
   exit 0
 fi
 
+<<<<<<< HEAD
 # A float whose title arrived after the rule was evaluated is still managed, so
 # the rule never declined it. Float it here instead -- `--resize abs` refuses to
 # touch a managed window, so this has to come before any measuring.
@@ -124,6 +154,8 @@ if [[ $floating == false ]]; then
   "$YABAI" -m window "$id" --toggle float 2>/dev/null || exit 0
 fi
 
+=======
+>>>>>>> yabai-sidebyside
 # ---------------------------------------------------------------- usable area
 # yabai's display frame is the whole panel; centring in it would sit the window
 # half a menu bar too high. yabai has no query for the usable rect, but --grid
@@ -165,6 +197,7 @@ fi
 x=$(( ux + (uw - w) / 2 ))
 y=$(( uy + (uh - h) / 2 ))
 
+<<<<<<< HEAD
 # Ghostty can announce a title more than once. Placing an already-placed window
 # is invisible, but it would also drag one the user had moved back to the middle
 # every time, so a window that is already where this would put it is left alone.
@@ -179,5 +212,7 @@ if [[ $cx == "$x" && $cy == "$y" && $cw == "$w" && $ch == "$h" ]]; then
   exit 0
 fi
 
+=======
+>>>>>>> yabai-sidebyside
 "$YABAI" -m window "$id" --resize "abs:${w}:${h}"
 "$YABAI" -m window "$id" --move "abs:${x}:${y}"
