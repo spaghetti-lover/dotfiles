@@ -27,8 +27,7 @@ _Note_: Some tools I also recommend: lazydocker, bat, fzf, autocompletion, ... (
 
 ## Window manager
 
-yabai + skhd, with real window groups, real sticky windows and mouse
-drag/resize. skhd grabs `cmd` combinations globally, so no other window
+yabai + skhd, with real window groups and real sticky windows. skhd grabs `cmd` combinations globally, so no other window
 manager may run alongside it.
 
 ## Install
