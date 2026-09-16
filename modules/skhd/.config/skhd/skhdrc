@@ -56,22 +56,22 @@ ctrl + alt + shift - tab : /opt/homebrew/bin/yabai -m display --focus prev || /o
 
 # --------------------------------------------------------------------- resize
 # 100px -- the default step
-cmd - 0x1B                : /opt/homebrew/bin/yabai -m window --resize right:-100:0 || /opt/homebrew/bin/yabai -m window --resize left:100:0
-cmd - 0x18                : /opt/homebrew/bin/yabai -m window --resize right:100:0 || /opt/homebrew/bin/yabai -m window --resize left:-100:0
-cmd + shift - 0x1B        : /opt/homebrew/bin/yabai -m window --resize bottom:0:-100 || /opt/homebrew/bin/yabai -m window --resize top:0:100
-cmd + shift - 0x18        : /opt/homebrew/bin/yabai -m window --resize bottom:0:100 || /opt/homebrew/bin/yabai -m window --resize top:0:-100
+cmd - 0x1B                : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh h -100
+cmd - 0x18                : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh h 100
+cmd + shift - 0x1B        : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh v -100
+cmd + shift - 0x18        : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh v 100
 
 # 25px -- "a little"
-cmd + alt - 0x1B          : /opt/homebrew/bin/yabai -m window --resize right:-25:0 || /opt/homebrew/bin/yabai -m window --resize left:25:0
-cmd + alt - 0x18          : /opt/homebrew/bin/yabai -m window --resize right:25:0 || /opt/homebrew/bin/yabai -m window --resize left:-25:0
-cmd + shift + alt - 0x1B  : /opt/homebrew/bin/yabai -m window --resize bottom:0:-25 || /opt/homebrew/bin/yabai -m window --resize top:0:25
-cmd + shift + alt - 0x18  : /opt/homebrew/bin/yabai -m window --resize bottom:0:25 || /opt/homebrew/bin/yabai -m window --resize top:0:-25
+cmd + alt - 0x1B          : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh h -25
+cmd + alt - 0x18          : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh h 25
+cmd + shift + alt - 0x1B  : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh v -25
+cmd + shift + alt - 0x18  : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh v 25
 
 # 300px -- "a lot"
-cmd + ctrl - 0x1B         : /opt/homebrew/bin/yabai -m window --resize right:-300:0 || /opt/homebrew/bin/yabai -m window --resize left:300:0
-cmd + ctrl - 0x18         : /opt/homebrew/bin/yabai -m window --resize right:300:0 || /opt/homebrew/bin/yabai -m window --resize left:-300:0
-cmd + ctrl + shift - 0x1B : /opt/homebrew/bin/yabai -m window --resize bottom:0:-300 || /opt/homebrew/bin/yabai -m window --resize top:0:300
-cmd + ctrl + shift - 0x18 : /opt/homebrew/bin/yabai -m window --resize bottom:0:300 || /opt/homebrew/bin/yabai -m window --resize top:0:-300
+cmd + ctrl - 0x1B         : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh h -300
+cmd + ctrl - 0x18         : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh h 300
+cmd + ctrl + shift - 0x1B : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh v -300
+cmd + ctrl + shift - 0x18 : /Users/ducannh/dotfiles/modules/yabai/bin/resize.sh v 300
 
 # ----------------------------------------------------------------- workspaces
 # Labels, not Mission Control indices: indices are global across displays and
