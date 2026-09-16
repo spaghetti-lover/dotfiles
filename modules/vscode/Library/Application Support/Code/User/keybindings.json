@@ -2,11 +2,16 @@
   {
     "key": "n",
     "command": "explorer.newFile",
-    "when": "filesExplorerFocus"
+    "when": "filesExplorerFocus && !inputFocus",
   },
   {
     "key": "shift+n",
     "command": "explorer.newFolder",
-    "when": "filesExplorerFocus"
-  }
+    "when": "filesExplorerFocus && !inputFocus",
+  },
+  {
+    "key": "r",
+    "command": "renameFile",
+    "when": "filesExplorerFocus && !inputFocus",
+  },
 ]
