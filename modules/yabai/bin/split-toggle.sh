@@ -23,6 +23,13 @@ set -uo pipefail
 
 YABAI=/opt/homebrew/bin/yabai
 JQ=/opt/homebrew/bin/jq
+BIN=$(dirname "$0")
+
+space=$("$YABAI" -m query --spaces --space 2>/dev/null)
+if [[ -n $space ]] && [[ $(printf '%s' "$space" | "$JQ" -r '.type') == stack ]]; then
+  "$BIN/layout-memo.sh" set bsp
+  exec "$BIN/focus.sh" next
+fi
 
 win=$("$YABAI" -m query --windows --window 2>/dev/null) || exit 0
 [[ -n $win ]] || exit 0

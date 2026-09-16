@@ -12,7 +12,7 @@
 #
 # Bound to ⌘⌥L, not ⌘L: ⌘L stays Open Location.
 #
-# Usage: layout-memo.sh toggle|restore
+# Usage: layout-memo.sh toggle|restore|set bsp|stack
 
 set -uo pipefail
 
@@ -22,16 +22,29 @@ STATE="${XDG_STATE_HOME:-$HOME/.local/state}/yabai/layout"
 
 mkdir -p "$STATE"
 
+# Unlabelled spaces still change, they just are not remembered -- there is no
+# stable key to remember them under.
+apply() {
+  local new=$1 label
+  label=$(printf '%s' "$space" | "$JQ" -r '.label // empty')
+  "$YABAI" -m space --layout "$new" 2>/dev/null || return 0
+  [[ -n $label ]] && printf '%s' "$new" > "$STATE/$label"
+  return 0
+}
+
 case "${1:-toggle}" in
   toggle)
     space=$("$YABAI" -m query --spaces --space 2>/dev/null) || exit 0
-    label=$(printf '%s' "$space" | "$JQ" -r '.label // empty')
     current=$(printf '%s' "$space" | "$JQ" -r '.type')
-    if [[ $current == stack ]]; then new=bsp; else new=stack; fi
-    "$YABAI" -m space --layout "$new" || exit 0
-    # Unlabelled spaces still toggle, they just are not remembered -- there is
-    # no stable key to remember them under.
-    [[ -n $label ]] && printf '%s' "$new" > "$STATE/$label"
+    if [[ $current == stack ]]; then apply bsp; else apply stack; fi
+    ;;
+  set)
+    case "${2:-}" in
+      bsp|stack) ;;
+      *) echo "usage: $0 set bsp|stack" >&2; exit 64 ;;
+    esac
+    space=$("$YABAI" -m query --spaces --space 2>/dev/null) || exit 0
+    apply "$2"
     ;;
   restore)
     # Called from yabairc AFTER setup-spaces.sh, since the labels have to exist.
@@ -42,7 +55,7 @@ case "${1:-toggle}" in
     done
     ;;
   *)
-    echo "usage: $0 [toggle|restore]" >&2
+    echo "usage: $0 [toggle|restore|set bsp|stack]" >&2
     exit 64
     ;;
 esac

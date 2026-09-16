@@ -32,10 +32,10 @@
 # ---------------------------------------------------------------------- focus
 # Super + Arrow = move focus, as in Omarchy. This takes the browser's Back /
 # Forward (cmd-left / cmd-right).
-cmd - left  : /opt/homebrew/bin/yabai -m window --focus west
-cmd - down  : /opt/homebrew/bin/yabai -m window --focus south
-cmd - up    : /opt/homebrew/bin/yabai -m window --focus north
-cmd - right : /opt/homebrew/bin/yabai -m window --focus east
+cmd - left  : /Users/ducannh/dotfiles/modules/yabai/bin/focus.sh west
+cmd - down  : /Users/ducannh/dotfiles/modules/yabai/bin/focus.sh south
+cmd - up    : /Users/ducannh/dotfiles/modules/yabai/bin/focus.sh north
+cmd - right : /Users/ducannh/dotfiles/modules/yabai/bin/focus.sh east
 
 # NB: no cmd-hjkl focus aliases -- Omarchy is arrow-based for focus, and
 # cmd-j is its window-position toggle (see below).
@@ -47,10 +47,8 @@ cmd + shift - up    : /opt/homebrew/bin/yabai -m window --swap north
 cmd + shift - right : /opt/homebrew/bin/yabai -m window --swap east
 
 # Alt + Tab = cycle windows   /   Ctrl + Alt + Tab = cycle monitors
-# `|| --focus first` wraps: yabai's next/prev fail at the end of the list
-# rather than wrapping.
-alt - tab                : /opt/homebrew/bin/yabai -m window --focus next || /opt/homebrew/bin/yabai -m window --focus first
-alt + shift - tab        : /opt/homebrew/bin/yabai -m window --focus prev || /opt/homebrew/bin/yabai -m window --focus last
+alt - tab                : /Users/ducannh/dotfiles/modules/yabai/bin/focus.sh next
+alt + shift - tab        : /Users/ducannh/dotfiles/modules/yabai/bin/focus.sh prev
 ctrl + alt - tab         : /opt/homebrew/bin/yabai -m display --focus next || /opt/homebrew/bin/yabai -m display --focus first
 ctrl + alt + shift - tab : /opt/homebrew/bin/yabai -m display --focus prev || /opt/homebrew/bin/yabai -m display --focus last
 
@@ -163,11 +161,10 @@ cmd + alt - l : /Users/ducannh/dotfiles/modules/yabai/bin/layout-memo.sh toggle
 # Omarchy's plain Super+F (zoom-fullscreen) is deliberately NOT bound, so that
 # cmd-f stays Find in every app. The other two modes keep Omarchy's own keys.
 #
-# windowed-fullscreen rather than native-fullscreen for the alt slot: macOS
-# native fullscreen creates a fullscreen Space, which fights yabai's own space
-# model. Neither of these needs the scripting addition.
+# Neither of these needs the scripting addition, and neither uses macOS native
+# fullscreen, which creates a fullscreen Space and fights yabai's space model.
 cmd + ctrl - f : /opt/homebrew/bin/yabai -m window --toggle zoom-parent
-cmd + alt - f  : /opt/homebrew/bin/yabai -m window --toggle windowed-fullscreen
+cmd + alt - f  : /Users/ducannh/dotfiles/modules/yabai/bin/fullscreen-space.sh
 
 # ------------------------------------------------------------------- grouping
 # Omarchy's window groups. Real stacks: one window visible, stack-index on each
