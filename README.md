@@ -100,6 +100,9 @@ The bindings themselves are in `modules/skhd/.config/skhd/skhdrc`.
 ⌘1…⌘9 are workspace switches, so browser tabs move to ⌥1…⌥9, handled by skhd in browsers only
 (`modules/skhd/bin/browser-tab.sh`). macOS will ask once to let skhd control your browser.
 
+In Google Chrome, Karabiner-Elements maps Control to Command so Windows/Linux-style
+shortcuts such as Ctrl+C, Ctrl+L, Ctrl+T, and Ctrl+W work. Control is unchanged in other apps.
+
 ### Backup pkgs by brew
 
 ```shell
