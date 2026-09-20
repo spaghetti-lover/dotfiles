@@ -211,10 +211,6 @@ cmd + alt - return    : open -na Ghostty --args -e /opt/homebrew/bin/tmux new-se
 cmd + shift - return  : open -na "Google Chrome"
 cmd + shift + alt - b : open -na "Google Chrome" --args --incognito
 
-# Omarchy's Super+Shift+N. Costs Chrome's New Incognito Window -- already moved
-# to cmd-shift-alt-b above -- and Finder's New Folder, which is given up.
-cmd + shift - n       : open -na Ghostty --args -e /opt/homebrew/bin/nvim
-
 # Moved off cmd-shift so Discord does not take an app's own cmd-shift-g
 # (find-previous). Omarchy has no Discord key at all, so nothing is lost.
 alt - g               : open -a Discord
