@@ -15,6 +15,47 @@ return {
       { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (cwd)", remap = true },
     },
     opts = {
+      window = {
+        mappings = {
+          ["i"] = function(state)
+            if vim.fn.executable("pngpaste") ~= 1 then
+              vim.notify("pngpaste is required; install it with: brew install pngpaste", vim.log.levels.ERROR)
+              return
+            end
+
+            local node = state.tree:get_node()
+            if not node then
+              return
+            end
+
+            local directory = node:get_id()
+            if node.type ~= "directory" then
+              directory = vim.fn.fnamemodify(directory, ":h")
+            end
+
+            vim.ui.input({ prompt = "Image name: ", default = "image.png" }, function(name)
+              if not name or name == "" then
+                return
+              end
+
+              if not name:lower():match("%.png$") then
+                name = name .. ".png"
+              end
+
+              local output = directory .. "/" .. name
+              vim.fn.system({ "pngpaste", output })
+
+              if vim.v.shell_error ~= 0 then
+                vim.notify("Could not paste an image from the clipboard", vim.log.levels.ERROR)
+                return
+              end
+
+              vim.notify("Saved image: " .. output)
+              require("neo-tree.sources.manager").refresh("filesystem")
+            end)
+          end,
+        },
+      },
       filesystem = {
         -- LazyVim defaults to false, which lets the tree stay pinned to the
         -- first project it opened even after :cd elsewhere.
