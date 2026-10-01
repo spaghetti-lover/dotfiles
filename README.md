@@ -149,6 +149,18 @@ To make `docker compose ...` work (not just the standalone `docker-compose`), ad
 default beyond neo-tree, so a fresh clone has no Go or TypeScript LSP until you pick the `lang.*`
 extras you want. `ai.supermaven` and `ai.copilot` live there too.
 
+`gai` opens an incoming call tree; `gao` opens an outgoing call tree. Both use
+[meow.yarn.nvim](https://github.com/retran/meow.yarn.nvim) with a code preview and your
+current theme. The tree initially shows only direct callers or callees. Select a node and press `l`
+to fetch deeper callers or callees; use `h` to collapse it or Tab to toggle it.
+`zO` / `zC` expand / collapse already-fetched branches, not the entire project.
+Press Enter to jump to the selected call site or definition and close the tree;
+`gal` reopens the previous hierarchy root. Inside the tree, `K` / `J` start a new
+incoming / outgoing tree from the selected node, Backspace returns to the previous root,
+and `q` closes the view and restores your original source window, cursor, and scroll position.
+These shortcuts work with Go's `gopls` and Python's Pyright.
+Call trees show static code relationships, not the execution order of a running program.
+
 How to launch it: ⌘⇧N, or `nvim` in any shell.
 
 For local models, [ollama](https://ollama.com/); the open-webui compose file is in
