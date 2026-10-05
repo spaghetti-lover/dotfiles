@@ -91,3 +91,6 @@ pomo_timer_style=modern
 text_editor=nvim
 code_editor=nvim
 terminal=ghostty
+
+# Added by look update
+launcher_hotkey=cmd+space
