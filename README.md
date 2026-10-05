@@ -145,9 +145,41 @@ To make `docker compose ...` work (not just the standalone `docker-compose`), ad
 ## Nvim
 
 [LazyVim](https://www.lazyvim.org/), with Omarchy's overlays on top. `:Lazy sync` updates plugins;
-`:LazyExtras` is where language support and AI completion get switched on — nothing is enabled by
-default beyond neo-tree, so a fresh clone has no Go or TypeScript LSP until you pick the `lang.*`
-extras you want. `ai.supermaven` and `ai.copilot` live there too.
+`:LazyExtras` is where language support and AI completion get switched on. Go, Python, DAP debugging,
+Neotest, neo-tree, and project support are enabled in the dotfiles. Add other `lang.*` extras
+for their language servers and debugger/test adapters. `ai.supermaven` and `ai.copilot` live there too.
+
+The debug UI follows Gruvbox and the transparent editor background. Variables and watches sit
+on the left; the REPL and program output sit below. LazyVim opens this UI when a session starts
+and closes it when the program exits. Variable values appear at the end of source lines.
+
+In a Go project, open a source file, set a breakpoint with `<leader>db`, and press `<leader>dc`.
+Choose **Debug Package** to build the whole package, or use a project `.vscode/launch.json`
+for a particular entry point, arguments, and environment. `<leader>dc` saves modified buffers
+before launching; continuing an existing session does not save or rebuild the program.
+
+| Key | Debug action |
+| --- | --- |
+| `<leader>db` / `<leader>dB` | Toggle breakpoint / conditional breakpoint |
+| `<leader>dc` / `<leader>dC` | Run or continue / run to cursor |
+| `<leader>dO` / `<leader>di` / `<leader>do` | Step over / into / out |
+| `<leader>du` / `<leader>de` | Toggle debug UI / evaluate cursor or visual selection |
+| `<leader>dt` | Terminate debug session |
+| `<leader>td` | Save modified buffers and debug the nearest test |
+| `<leader>tr` / `<leader>tt` | Run nearest test / tests in the file |
+| `<leader>ts` / `<leader>to` / `<leader>tO` | Test summary / output / output panel |
+| `gd` / `gr` / `gai` / `gao` | Definition / references / incoming calls / outgoing calls |
+
+`<leader>` is Space. For test debugging, put the cursor inside a Go test, set a breakpoint,
+and press `<leader>td`; then use the same debug controls. Test output stays closed during runs;
+open it with `<leader>to`. In the debug panels, Enter expands a value, `e` edits it, and `w`
+adds a watch. Code navigation uses the language server and does not start a debugger.
+
+Mason installs `gopls`, Delve, and the Go formatting tools; Go itself must be on `PATH`.
+For Python, Mason installs Pyright, Ruff, and `debugpy`. The same debug and test shortcuts
+work in Python files. Neotest detects pytest or unittest in the project's Python environment;
+install your test dependencies there. An activated virtual environment or a project `.venv`
+is detected automatically; use `<leader>cv` to select another environment.
 
 `gai` opens an incoming call tree; `gao` opens an outgoing call tree. Both use
 [meow.yarn.nvim](https://github.com/retran/meow.yarn.nvim) with a code preview and your
@@ -160,6 +192,8 @@ incoming / outgoing tree from the selected node, Backspace returns to the previo
 and `q` closes the view and restores your original source window, cursor, and scroll position.
 These shortcuts work with Go's `gopls` and Python's Pyright.
 Call trees show static code relationships, not the execution order of a running program.
+
+Apply only the Neovim module with `stow -R -d modules -t "$HOME" nvim`, then restart Neovim.
 
 How to launch it: ⌘⇧N, or `nvim` in any shell.
 
