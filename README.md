@@ -94,14 +94,25 @@ For more information about GNU stow: [link](https://www.gnu.org/software/stow/)
 ## Keybindings
 
 Window management, terminal and tmux follow an
-[Omarchy](https://omarchy.org/manual/navigation)-style keyboard layer, with **⌘ as Super**.
-The bindings themselves are in `modules/skhd/.config/skhd/skhdrc`.
+[Omarchy](https://omarchy.org/manual/navigation)-style keyboard layer, with **⌘ as Super**
+and **Control as Ctrl**. Global bindings live in `modules/skhd/.config/skhd/skhdrc`;
+Karabiner handles physical ⌘ shortcuts that overlap app shortcuts.
 
 ⌘1…⌘9 are workspace switches, so browser tabs move to ⌥1…⌥9, handled by skhd in browsers only
 (`modules/skhd/bin/browser-tab.sh`). macOS will ask once to let skhd control your browser.
 
-In Google Chrome, Karabiner-Elements maps Control to Command so Windows/Linux-style
-shortcuts such as Ctrl+C, Ctrl+L, Ctrl+T, and Ctrl+W work. Control is unchanged in other apps.
+In macOS GUI apps, Karabiner maps Ctrl+T/L/W/N/R/F/S/O/P/A/Z and Ctrl+Shift+T
+to the corresponding ⌘ app shortcuts. ⌘T/F/L/S/O/W/Q run Omarchy window and
+workspace actions instead of the macOS app actions. Copy, cut and paste remain
+⌘C/X/V, matching Omarchy's Super+C/X/V; Ctrl+C remains an interrupt in terminals.
+In Chrome, Ctrl+Alt+N opens Split View and Ctrl+Shift+A opens Tab Search, using
+the requested chords. Chrome's native Ctrl+Tab and Ctrl+Shift+Tab already switch tabs.
+TigerVNC and terminal apps receive unmodified Control, and TigerVNC receives
+unmodified ⌘ as Linux Super. VS Code has its own context-aware Ctrl shortcuts
+so its integrated terminal also receives raw Control (Ctrl+R already opens
+Recent natively). Other GUI apps with embedded terminals use the GUI mappings.
+After editing the Karabiner rules in `modules/karabiner/share/karabiner.json`,
+run `./modules/karabiner/install.sh` to update Karabiner's app-owned config.
 
 ### Backup pkgs by brew
 

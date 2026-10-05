@@ -14,4 +14,16 @@
     "command": "renameFile",
     "when": "filesExplorerFocus && !inputFocus",
   },
+  // Match the Linux app shortcuts while leaving Ctrl intact in the terminal.
+  { "key": "ctrl+t", "command": "workbench.action.showAllSymbols", "when": "!terminalFocus" },
+  { "key": "ctrl+l", "command": "expandLineSelection", "when": "editorTextFocus && !terminalFocus" },
+  { "key": "ctrl+w", "command": "workbench.action.closeActiveEditor", "when": "!terminalFocus" },
+  { "key": "ctrl+n", "command": "workbench.action.files.newUntitledFile", "when": "!terminalFocus" },
+  { "key": "ctrl+f", "command": "actions.find", "when": "!terminalFocus" },
+  { "key": "ctrl+s", "command": "workbench.action.files.save", "when": "!terminalFocus" },
+  { "key": "ctrl+o", "command": "workbench.action.files.openFile", "when": "!terminalFocus" },
+  { "key": "ctrl+p", "command": "workbench.action.quickOpen", "when": "!terminalFocus" },
+  { "key": "ctrl+a", "command": "editor.action.selectAll", "when": "editorTextFocus && !terminalFocus" },
+  { "key": "ctrl+z", "command": "undo", "when": "!terminalFocus" },
+  { "key": "ctrl+shift+t", "command": "workbench.action.reopenClosedEditor", "when": "!terminalFocus" },
 ]

@@ -17,6 +17,11 @@ bindings that used to live in Karabiner-Elements. The TUI launchers
 point at the ghostty config files in `../ghostty`, which is also what places
 them: the title each config sets is what `../yabai`'s `tui_float` rule matches.
 
-**skhd grabs `cmd` globally**, so the macOS menu commands it displaces (Save,
-Open, Find, Print, ...) stay displaced. Rebind by hand in System Settings >
-Keyboard > Keyboard Shortcuts if you miss one.
+**skhd handles the remaining global `cmd` bindings.** Karabiner handles the
+physical `cmd` chords that overlap translated Ctrl app shortcuts, so Ctrl+S,
+Ctrl+O and Ctrl+F can still reach Save, Open and Find. TigerVNC is excluded
+from both layers, allowing ⌘ to reach Omarchy as Super.
+
+The active `~/.config/skhd` directory is stowed as a symlink to this repo's
+`skhd` directory, so edits here are already live on disk. Run `skhd --reload`
+after editing; do not replace `~/.config/skhd/skhdrc` with another symlink.

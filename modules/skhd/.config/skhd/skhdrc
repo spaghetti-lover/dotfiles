@@ -4,10 +4,8 @@
 # Modifier map:  Super -> cmd,  Alt -> alt,  Ctrl -> ctrl,  Shift -> shift
 # Every binding below mirrors https://omarchy.org/manual/hotkeys
 #
-# skhd grabs cmd-* globally, so the macOS menu commands it displaces (Open,
-# Save, Print, Zoom, ...) stay displaced. See README.md.
-#
-# NOTHING here binds cmd-f: Find stays native. See the fullscreen block below.
+# Karabiner owns the physical cmd chords that overlap Ctrl-to-Command app
+# shortcuts. skhd owns the remaining global Omarchy chords. See README.md.
 #
 # Punctuation keys are written as kVK keycodes (0x1B minus, 0x18 equal, 0x32
 # grave, 0x29 semicolon) rather than literals: the keycodes are stable, the
@@ -21,6 +19,12 @@
 # and not others. `space --focus` and `window --space` stopped needing it in
 # yabai 7.1.19 and 7.1.25, so cmd-1..9 and cmd-shift-1..9 work regardless;
 # sticky (cmd-o) does not.
+
+# Let Super and Ctrl reach the remote Omarchy session unchanged.
+.blacklist [
+    "tigervnc"
+    "vncviewer"
+]
 
 # ---------------------------------------------------------------------- modes
 # Declared up front: skhd resolves a mode name when it parses the binding that
@@ -85,6 +89,10 @@ cmd - 7 : /opt/homebrew/bin/yabai -m space --focus ws7
 cmd - 8 : /opt/homebrew/bin/yabai -m space --focus ws8
 cmd - 9 : /opt/homebrew/bin/yabai -m space --focus ws9
 
+cmd - tab              : /opt/homebrew/bin/yabai -m space --focus next || /opt/homebrew/bin/yabai -m space --focus first
+cmd + shift - tab      : /opt/homebrew/bin/yabai -m space --focus prev || /opt/homebrew/bin/yabai -m space --focus last
+cmd + ctrl - tab       : /opt/homebrew/bin/yabai -m space --focus recent
+
 
 # Super + Shift + N = move window to workspace and follow it. One command, not
 # two: `--space X --focus` moves and follows atomically.
@@ -119,11 +127,10 @@ cmd + shift + alt - 9 : /opt/homebrew/bin/yabai -m window --space ws9
 # analogue but needs the scripting addition. A labelled space works on any
 # machine, which matters while the addition's status on macOS 26.6 is unsettled.
 #
-# Omarchy binds both Super+Grave and Super+S, so both are here. cmd-s costs Save
-# everywhere. Sending a window there is cmd-shift-backtick / cmd-alt-s:
+# Omarchy binds both Super+Grave and Super+S. Karabiner owns cmd-s so Ctrl+S
+# can reach an app's Save action. Sending a window there is cmd-shift-backtick / cmd-alt-s:
 # cmd-shift-s is the Google Maps launcher, not a scratchpad key.
-cmd - 0x32         : /opt/homebrew/bin/yabai -m query --spaces --space | /opt/homebrew/bin/jq -e '.label == "scratch"' >/dev/null && /opt/homebrew/bin/yabai -m space --focus recent || /opt/homebrew/bin/yabai -m space --focus scratch
-cmd - s            : /opt/homebrew/bin/yabai -m query --spaces --space | /opt/homebrew/bin/jq -e '.label == "scratch"' >/dev/null && /opt/homebrew/bin/yabai -m space --focus recent || /opt/homebrew/bin/yabai -m space --focus scratch
+cmd - 0x32         : /Users/ducannh/dotfiles/modules/yabai/bin/scratch-toggle.sh
 cmd + shift - 0x32 : /opt/homebrew/bin/yabai -m window --space scratch
 cmd + alt - s      : /opt/homebrew/bin/yabai -m window --space scratch
 
@@ -134,13 +141,11 @@ cmd + shift + alt - up    : /opt/homebrew/bin/yabai -m space --display north
 cmd + shift + alt - right : /opt/homebrew/bin/yabai -m space --display east
 
 # ------------------------------------------------------- layout / window state
-# On alt, not cmd: cmd-t is the browser's New Tab.
-alt - t : /opt/homebrew/bin/yabai -m window --toggle float
+# Karabiner owns cmd-t, cmd-o and cmd-l so Ctrl+T/O/L can invoke app actions.
 
 # Omarchy's Super+O: pop this window out of the tiling tree and have it follow
 # you from workspace to workspace. Press again to put it back. A real sticky
 # window, so there is no limit of one.
-cmd - o : /Users/ducannh/dotfiles/modules/yabai/bin/window-pop.sh
 
 # Toggle window position: side by side <-> stacked. This is Hyprland's
 # togglesplit exactly -- it flips the split of the focused node, leaving the
@@ -154,12 +159,10 @@ cmd - j : /Users/ducannh/dotfiles/modules/yabai/bin/split-toggle.sh
 # makes the whole space one pile with a single window showing. Omarchy's
 # Super+L, which flips dwindle <-> scrolling.
 #
-# On cmd-alt-l, not cmd-l: cmd-l stays Open Location.
-cmd + alt - l : /Users/ducannh/dotfiles/modules/yabai/bin/layout-memo.sh toggle
 
 # ---------------------------------------------------------------- fullscreen
-# Omarchy's plain Super+F (zoom-fullscreen) is deliberately NOT bound, so that
-# cmd-f stays Find in every app. The other two modes keep Omarchy's own keys.
+# Karabiner owns cmd-f so Ctrl+F can reach an app's Find action. The other two
+# modes remain in skhd.
 #
 # Neither of these needs the scripting addition, and neither uses macOS native
 # fullscreen, which creates a fullscreen Space and fights yabai's space model.
@@ -199,9 +202,8 @@ cmd + alt - 7 : /Users/ducannh/dotfiles/modules/yabai/bin/focus-index.sh 7
 cmd + alt - 8 : /Users/ducannh/dotfiles/modules/yabai/bin/focus-index.sh 8
 cmd + alt - 9 : /Users/ducannh/dotfiles/modules/yabai/bin/focus-index.sh 9
 
-# Omarchy's killactive is deliberately NOT bound. cmd-q stays macOS's own Quit,
-# which is worth more here than close-one-window. Close a window with cmd-w, or
-# use service mode's backspace to close all windows but the focused one.
+# Karabiner owns cmd-w/cmd-q as Omarchy's close-window commands; Ctrl+W can
+# still reach an app's Close Tab/Editor action. This key closes other windows.
 ctrl + alt - backspace : /Users/ducannh/dotfiles/modules/yabai/bin/close-others.sh
 
 # --------------------------------------------------------------- launching apps
