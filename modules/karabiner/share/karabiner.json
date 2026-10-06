@@ -4,6 +4,67 @@
       "complex_modifications": {
         "rules": [
           {
+            "description": "Use Control as Command for Chrome clicks, keep keyboard chords",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": {
+                  "key_code": "left_control",
+                  "modifiers": {
+                    "optional": ["any"]
+                  }
+                },
+                "to": [
+                  { "key_code": "left_command" }
+                ],
+                "to_if_other_key_pressed": [
+                  {
+                    "other_keys": [
+                      { "any": "key_code", "modifiers": { "optional": ["any"] } }
+                    ],
+                    "to": [
+                      { "key_code": "left_control" }
+                    ]
+                  }
+                ],
+                "conditions": [
+                  {
+                    "type": "frontmost_application_if",
+                    "bundle_identifiers": ["^com\\.google\\.Chrome$"]
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": {
+                  "key_code": "right_control",
+                  "modifiers": {
+                    "optional": ["any"]
+                  }
+                },
+                "to": [
+                  { "key_code": "right_command" }
+                ],
+                "to_if_other_key_pressed": [
+                  {
+                    "other_keys": [
+                      { "any": "key_code", "modifiers": { "optional": ["any"] } }
+                    ],
+                    "to": [
+                      { "key_code": "right_control" }
+                    ]
+                  }
+                ],
+                "conditions": [
+                  {
+                    "type": "frontmost_application_if",
+                    "bundle_identifiers": ["^com\\.google\\.Chrome$"]
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "description": "Omarchy Super window shortcuts (Command stays Super)",
             "manipulators": [
               {

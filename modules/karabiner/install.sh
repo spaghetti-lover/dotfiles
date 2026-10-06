@@ -18,6 +18,7 @@ if [[ -f "$config_path" ]]; then
           + ((.complex_modifications.rules // []) | map(select(
               (.description // "") as $description
               | $description != "Use Control as Command in Google Chrome"
+                and $description != "Use Control as Command for Chrome clicks, keep keyboard chords"
                 and $description != "Omarchy Super window shortcuts (Command stays Super)"
                 and $description != "Linux Chrome tab shortcuts on Control"
                 and $description != "Linux app shortcuts on Control in macOS GUI apps"

@@ -107,6 +107,9 @@ workspace actions instead of the macOS app actions. Copy, cut and paste remain
 ⌘C/X/V, matching Omarchy's Super+C/X/V; Ctrl+C remains an interrupt in terminals.
 In Chrome, Ctrl+Alt+N opens Split View and Ctrl+Shift+A opens Tab Search, using
 the requested chords. Chrome's native Ctrl+Tab and Ctrl+Shift+Tab already switch tabs.
+In Chrome, Ctrl+click opens a link in a background tab. Karabiner presents Control
+as Command during a click, then keeps Control for keyboard chords, including
+Ctrl+Space for input switching and Ctrl+Tab for tab navigation.
 TigerVNC and terminal apps receive unmodified Control, and TigerVNC receives
 unmodified ⌘ as Linux Super. VS Code has its own context-aware Ctrl shortcuts
 so its integrated terminal also receives raw Control (Ctrl+R already opens
