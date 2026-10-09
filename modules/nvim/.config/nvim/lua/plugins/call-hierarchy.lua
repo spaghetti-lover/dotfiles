@@ -20,7 +20,6 @@ return {
     config = function(_, opts)
       require("meow.yarn").setup(opts)
 
-      -- Restore the origin when the loading popup or final tree closes.
       local Hierarchy = require("meow.yarn.hierarchy")
       local new = Hierarchy.new
       Hierarchy.new = function(self, ...)

@@ -1,39 +1,28 @@
 #!/usr/bin/env bash
-#
-# Full machine setup. Idempotent -- safe to re-run at any time.
-#
-#   1. install everything in install/Brewfile
-#   2. symlink every module in modules/ into $HOME
-#   3. run each module's install.sh, if it has one
-#
-# Usage: make install   (or: bash install/bootstrap.sh)
-
 set -euo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$repo_root"
-
-step() { printf '\n\033[36m==> %s\033[0m\n' "$1"; }
-
-step "Installing packages from install/Brewfile"
-if command -v brew >/dev/null 2>&1; then
-  brew bundle install --file=install/Brewfile
-else
-  echo "brew not found -- install Homebrew first: https://brew.sh" >&2
-  exit 1
-fi
-
-step "Stowing modules into $HOME"
-make stow
-
-step "Running module install hooks"
-ran_any=false
-for hook in modules/*/install.sh; do
-  [[ -x "$hook" ]] || continue
-  ran_any=true
-  echo "--> $hook"
-  "$hook"
-done
-$ran_any || echo "(no module defines an install.sh yet)"
-
-step "Done"
+case "$(uname -s)" in
+  Darwin)
+    command -v brew >/dev/null || {
+      echo "Install Homebrew first: https://brew.sh" >&2
+      exit 1
+    }
+    brew bundle install --file=install/Brewfile
+    bash install/link.sh --apply
+    for hook in modules/*/install.sh; do
+      bash "$hook"
+    done
+    ;;
+  Linux)
+    command -v omarchy >/dev/null || {
+      echo "Linux setup requires Omarchy" >&2
+      exit 1
+    }
+    bash install/link.sh --apply
+    ;;
+  *)
+    echo "Unsupported OS" >&2
+    exit 1
+    ;;
+esac

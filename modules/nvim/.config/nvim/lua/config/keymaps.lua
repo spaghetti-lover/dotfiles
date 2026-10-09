@@ -1,3 +1,9 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+local function find_all_files()
+  Snacks.picker.files({
+    hidden = true,
+    ignored = true,
+  })
+end
+
+vim.keymap.set("n", "<leader><space>", find_all_files, { desc = "Find Files (including hidden/ignored)" })
+vim.keymap.set("n", "<leader>ff", find_all_files, { desc = "Find Files (including hidden/ignored)" })

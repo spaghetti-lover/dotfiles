@@ -1,62 +1,42 @@
-# Every directory under modules/ is a stow package. Adding a tool means adding
-# a directory -- nothing in here needs to change.
-MODULES     := $(notdir $(wildcard modules/*))
-BREWFILE    := install/Brewfile
+.DEFAULT_GOAL := help
 
-# A module's payload sits at its root; bin/, share/ and its own docs are for
-# the repo, not for $HOME. Note this matches basenames at any depth, so a
-# module that genuinely needs to stow a ~/bin wants its own
-# .stow-local-ignore rather than a weaker flag here.
-STOW_IGNORE := --ignore='^(bin|share|install\.sh|README\.md)$$'
-STOW        := stow -d modules -t "$(HOME)" $(STOW_IGNORE)
+.PHONY: install stow stow-check unstow test brew-install brew-check yabai-sa yabai-spaces help
 
-.PHONY: install stow unstow restow stow-check \
-        brew-install brew-check brew-update brew-clean \
-        yabai-sa yabai-spaces help
-
-install: ## Full setup: brew bundle, stow every module, run install hooks
+install:
 	@bash install/bootstrap.sh
 
-# ----------------------------------------------------------------- stow
-stow: ## Symlink every module into $HOME
-	@$(STOW) -R $(MODULES)
-	@echo "stowed: $(MODULES)"
+stow:
+	@bash install/link.sh --apply
 
-unstow: ## Remove every module's symlinks from $HOME
-	@$(STOW) -D $(MODULES)
-	@echo "unstowed: $(MODULES)"
+stow-check:
+	@bash install/link.sh --dry-run
 
-restow: unstow stow ## Unstow then stow (clears links left by renamed files)
+unstow:
+	@bash install/link.sh --unlink
 
-stow-check: ## Dry run: show what stow would do, change nothing
-	@$(STOW) -n -v -R $(MODULES)
+test:
+	python3 -m unittest discover -s tests
 
-# ----------------------------------------------------------------- brew
-brew-install: ## Install packages from the Brewfile (refreshes the lock file)
-	@echo "Installing packages from Brewfile..."
-	brew bundle install --file=$(BREWFILE)
+brew-install:
+	brew bundle install --file=install/Brewfile
 
-brew-check: ## Check installed packages against the Brewfile
-	@echo "Checking packages against Brewfile..."
-	brew bundle check --file=$(BREWFILE) || true
+brew-check:
+	brew bundle check --file=install/Brewfile
 
-# Warning: this overwrites the Brewfile with whatever is installed right now.
-# Run it on a fully set-up machine, never on a fresh one.
-brew-update: ## Rewrite the Brewfile from what is installed now
-	@echo "Updating Brewfile..."
-	brew bundle dump --force --file=$(BREWFILE)
-	@echo "Brewfile updated at $(BREWFILE)"
-
-brew-clean: ## Remove packages not in the Brewfile
-	@echo "Removing packages not in Brewfile..."
-	brew bundle cleanup --force --file=$(BREWFILE)
-
-# ------------------------------------------------------ window manager
-yabai-sa: ## (Re)authorise yabai's scripting addition -- rerun after every brew upgrade
+yabai-sa:
 	@bash modules/yabai/bin/load-sa.sh
 
-yabai-spaces: ## Re-provision and re-label ws1..ws9 + scratch on the main display
+yabai-spaces:
 	@bash modules/yabai/bin/setup-spaces.sh
 
-help: ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-22s\033[0m %s\n", $$1, $$2}'
+help:
+	@printf '%s\n' \
+	  'make install       Set up macOS (Homebrew required) or Omarchy' \
+	  'make stow-check    Preview links and backups' \
+	  'make stow          Link configs, backing up conflicts' \
+	  'make unstow        Remove managed links; backups stay available' \
+	  'make test          Test linking and backups in temporary homes' \
+	  'make brew-install  Install macOS packages' \
+	  'make brew-check    Check macOS packages' \
+	  'make yabai-sa      Authorize the macOS scripting addition' \
+	  'make yabai-spaces  Restore macOS workspace labels'

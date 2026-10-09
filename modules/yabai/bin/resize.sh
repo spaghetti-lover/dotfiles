@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-#
-# Usage: resize.sh <h|v> <delta>
 
 set -uo pipefail
 

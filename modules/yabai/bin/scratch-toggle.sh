@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Toggle the labelled scratch space, the macOS counterpart of Omarchy's scratchpad.
 set -euo pipefail
 
 yabai=/opt/homebrew/bin/yabai

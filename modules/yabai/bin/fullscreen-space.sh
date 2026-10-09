@@ -21,7 +21,7 @@ if [[ -n $win ]]; then
   if [[ $zoom_fullscreen == true ]]; then
     "$YABAI" -m window --toggle zoom-fullscreen 2>/dev/null
     zoom_parent=$("$YABAI" -m query --windows --window 2>/dev/null |
-                    "$JQ" -r '."has-parent-zoom"')
+      "$JQ" -r '."has-parent-zoom"')
   fi
   [[ $zoom_parent == true ]] && "$YABAI" -m window --toggle zoom-parent 2>/dev/null
 fi

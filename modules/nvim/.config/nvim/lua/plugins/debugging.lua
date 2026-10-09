@@ -5,7 +5,7 @@ return {
   },
   {
     "jay-babu/mason-nvim-dap.nvim",
-    -- Mason owns debugpy installation; avoid racing its in-progress install.
+    -- Mason installs debugpy; avoid a second installer racing it.
     opts = { automatic_installation = { exclude = { "python" } } },
   },
   {

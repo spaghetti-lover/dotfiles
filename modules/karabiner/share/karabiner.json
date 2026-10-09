@@ -136,7 +136,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "/Users/ducannh/dotfiles/modules/yabai/bin/layout-memo.sh toggle"
+                    "shell_command": "\"$HOME/dotfiles/modules/yabai/bin/layout-memo.sh\" toggle"
                   }
                 ],
                 "conditions": [
@@ -163,7 +163,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "/Users/ducannh/dotfiles/modules/yabai/bin/scratch-toggle.sh"
+                    "shell_command": "\"$HOME/dotfiles/modules/yabai/bin/scratch-toggle.sh\""
                   }
                 ],
                 "conditions": [
@@ -190,7 +190,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "/Users/ducannh/dotfiles/modules/yabai/bin/window-pop.sh"
+                    "shell_command": "\"$HOME/dotfiles/modules/yabai/bin/window-pop.sh\""
                   }
                 ],
                 "conditions": [

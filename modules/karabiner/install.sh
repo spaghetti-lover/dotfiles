@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Karabiner rewrites karabiner.json itself, so merge our rules into its live file.
 set -euo pipefail
 
+# Karabiner rewrites its config, so merge rules instead of linking it.
 rules_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/share/karabiner.json"
 config_path="${XDG_CONFIG_HOME:-$HOME/.config}/karabiner/karabiner.json"
 mkdir -p "$(dirname "$config_path")"
@@ -26,7 +26,7 @@ if [[ -f "$config_path" ]]; then
         )
       else . end
     )
-  ' "$config_path" > "$temp_path"
+  ' "$config_path" >"$temp_path"
 else
   cp "$rules_path" "$temp_path"
 fi

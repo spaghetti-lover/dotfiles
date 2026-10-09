@@ -1,0 +1,11 @@
+modules/zsh/.zshrc|.zshrc
+modules/zsh/.config/zsh|.config/zsh
+modules/ghostty-macos/.config/ghostty/platform.conf|.config/ghostty/platform.conf
+modules/ghostty/.config/ghostty/btop.conf|.config/ghostty/btop.conf
+modules/ghostty/.config/ghostty/disk-usage.conf|.config/ghostty/disk-usage.conf
+modules/look/.look/config|.look/config
+modules/look/.look/super-actions.toml|.look/super-actions.toml
+modules/skhd/.config/skhd|.config/skhd
+modules/yabai/.config/yabai|.config/yabai
+modules/vscode/Library/Application Support/Code/User/settings.json|Library/Application Support/Code/User/settings.json
+modules/vscode/Library/Application Support/Code/User/keybindings.json|Library/Application Support/Code/User/keybindings.json
