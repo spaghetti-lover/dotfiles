@@ -43,6 +43,8 @@ new_tab = "prefix+c"
 rename_tab = "prefix+r"
 close_tab = "prefix+k"
 switch_tab = ["prefix+1..9", "alt+1..9"]
+switch_workspace = "prefix+shift+1..9"
+focus_agent = "prefix+alt+1..9"
 previous_tab = ["prefix+p", "alt+left"]
 next_tab = ["prefix+n", "alt+right"]
 
@@ -74,5 +76,19 @@ tab_bar_right = [{ type = "zoom" }, { type = "hostname" }]
 window_title = "{hostname}: {workspace}"
 
 show_agent_labels_on_pane_borders = true
+
+[ui.sidebar.agents]
+# Filled by the local plugin in modules/herdr/agent-numbers.
+rows = [
+  ["state_icon", "$shortcut", "workspace", "tab"],
+  ["agent"],
+]
+
+[ui.sidebar.spaces]
+rows = [
+  ["state_icon", "$shortcut", "workspace"],
+  ["branch", "git_status"],
+]
+
 [ui.toast]
 delivery = "system"

@@ -20,6 +20,7 @@ case "$(uname -s)" in
       exit 1
     }
     bash install/link.sh --apply
+    bash modules/herdr/install.sh
     ;;
   *)
     echo "Unsupported OS" >&2
