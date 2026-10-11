@@ -11,17 +11,15 @@ trap 'rm -f "$temp_path"' EXIT
 
 if [[ -f "$config_path" ]]; then
   /opt/homebrew/bin/jq --slurpfile managed "$rules_path" '
-    .profiles |= map(
+    ($managed[0].profiles[0].complex_modifications.rules) as $managed_rules
+    | ($managed_rules | map(.description)) as $managed_descriptions
+    | .profiles |= map(
       if .selected == true then
         .complex_modifications.rules = (
-          $managed[0].profiles[0].complex_modifications.rules
+          $managed_rules
           + ((.complex_modifications.rules // []) | map(select(
               (.description // "") as $description
-              | $description != "Use Control as Command in Google Chrome"
-                and $description != "Use Control as Command for Chrome clicks, keep keyboard chords"
-                and $description != "Omarchy Super window shortcuts (Command stays Super)"
-                and $description != "Linux Chrome tab shortcuts on Control"
-                and $description != "Linux app shortcuts on Control in macOS GUI apps"
+              | ($managed_descriptions | index($description)) == null
             )))
         )
       else . end
