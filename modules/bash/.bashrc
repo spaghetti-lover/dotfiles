@@ -14,3 +14,5 @@ if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 [[ -r "$HOME/.pandora_env/activate" ]] && source "$HOME/.pandora_env/activate"
+
+[[ -r "$HOME/.config/bash/gitlab.bash" ]] && source "$HOME/.config/bash/gitlab.bash"
