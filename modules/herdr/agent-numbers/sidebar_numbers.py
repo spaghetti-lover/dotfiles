@@ -15,13 +15,23 @@ def herdr(*args):
     ).stdout
 
 
-def set_number(resource, resource_id, position, tokens):
-    number = str(position) if 1 <= position <= 9 else None
-    if tokens.get("shortcut") == number:
+def index_label(position):
+    if position < 1:
+        return None
+    if position <= 9:
+        return str(position)
+    if position <= 35:
+        return f"M-{chr(ord('a') + position - 10)}"
+    return None
+
+
+def set_label(resource, resource_id, position, tokens):
+    label = index_label(position)
+    if tokens.get("shortcut") == label:
         return
     change = (
-        ["--token", f"shortcut={number}"]
-        if number else ["--clear-token", "shortcut"]
+        ["--token", f"shortcut={label}"]
+        if label else ["--clear-token", "shortcut"]
     )
     herdr(
         resource, "report-metadata", resource_id,
@@ -37,11 +47,11 @@ def main():
         fcntl.flock(lock, fcntl.LOCK_EX)
         agents = json.loads(herdr("agent", "list"))["result"]["agents"]
         for position, agent in enumerate(agents, start=1):
-            set_number("pane", agent["pane_id"], position, agent.get("tokens") or {})
+            set_label("pane", agent["pane_id"], position, agent.get("tokens") or {})
 
         spaces = json.loads(herdr("workspace", "list"))["result"]["workspaces"]
         for space in spaces:
-            set_number(
+            set_label(
                 "workspace", space["workspace_id"], space["number"],
                 space.get("tokens") or {},
             )

@@ -57,6 +57,320 @@ close_workspace = "prefix+shift+k"
 previous_workspace = ["prefix+shift+p", "alt+up"]
 next_workspace = ["prefix+shift+n", "alt+down"]
 
+# M-letter sidebar labels continue the indexed Agent and Space shortcuts.
+
+[[keys.command]]
+key = "prefix+alt+a"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent a'
+description = "Focus agent M-a"
+
+[[keys.command]]
+key = "prefix+alt+b"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent b'
+description = "Focus agent M-b"
+
+[[keys.command]]
+key = "prefix+alt+c"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent c'
+description = "Focus agent M-c"
+
+[[keys.command]]
+key = "prefix+alt+d"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent d'
+description = "Focus agent M-d"
+
+[[keys.command]]
+key = "prefix+alt+e"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent e'
+description = "Focus agent M-e"
+
+[[keys.command]]
+key = "prefix+alt+f"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent f'
+description = "Focus agent M-f"
+
+[[keys.command]]
+key = "prefix+alt+g"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent g'
+description = "Focus agent M-g"
+
+[[keys.command]]
+key = "prefix+alt+h"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent h'
+description = "Focus agent M-h"
+
+[[keys.command]]
+key = "prefix+alt+i"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent i'
+description = "Focus agent M-i"
+
+[[keys.command]]
+key = "prefix+alt+j"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent j'
+description = "Focus agent M-j"
+
+[[keys.command]]
+key = "prefix+alt+k"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent k'
+description = "Focus agent M-k"
+
+[[keys.command]]
+key = "prefix+alt+l"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent l'
+description = "Focus agent M-l"
+
+[[keys.command]]
+key = "prefix+alt+m"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent m'
+description = "Focus agent M-m"
+
+[[keys.command]]
+key = "prefix+alt+n"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent n'
+description = "Focus agent M-n"
+
+[[keys.command]]
+key = "prefix+alt+o"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent o'
+description = "Focus agent M-o"
+
+[[keys.command]]
+key = "prefix+alt+p"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent p'
+description = "Focus agent M-p"
+
+[[keys.command]]
+key = "prefix+alt+q"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent q'
+description = "Focus agent M-q"
+
+[[keys.command]]
+key = "prefix+alt+r"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent r'
+description = "Focus agent M-r"
+
+[[keys.command]]
+key = "prefix+alt+s"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent s'
+description = "Focus agent M-s"
+
+[[keys.command]]
+key = "prefix+alt+t"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent t'
+description = "Focus agent M-t"
+
+[[keys.command]]
+key = "prefix+alt+u"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent u'
+description = "Focus agent M-u"
+
+[[keys.command]]
+key = "prefix+alt+v"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent v'
+description = "Focus agent M-v"
+
+[[keys.command]]
+key = "prefix+alt+w"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent w'
+description = "Focus agent M-w"
+
+[[keys.command]]
+key = "prefix+alt+x"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent x'
+description = "Focus agent M-x"
+
+[[keys.command]]
+key = "prefix+alt+y"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent y'
+description = "Focus agent M-y"
+
+[[keys.command]]
+key = "prefix+alt+z"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" agent z'
+description = "Focus agent M-z"
+
+[[keys.command]]
+key = "prefix+alt+shift+a"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace a'
+description = "Focus space M-a"
+
+[[keys.command]]
+key = "prefix+alt+shift+b"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace b'
+description = "Focus space M-b"
+
+[[keys.command]]
+key = "prefix+alt+shift+c"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace c'
+description = "Focus space M-c"
+
+[[keys.command]]
+key = "prefix+alt+shift+d"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace d'
+description = "Focus space M-d"
+
+[[keys.command]]
+key = "prefix+alt+shift+e"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace e'
+description = "Focus space M-e"
+
+[[keys.command]]
+key = "prefix+alt+shift+f"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace f'
+description = "Focus space M-f"
+
+[[keys.command]]
+key = "prefix+alt+shift+g"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace g'
+description = "Focus space M-g"
+
+[[keys.command]]
+key = "prefix+alt+shift+h"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace h'
+description = "Focus space M-h"
+
+[[keys.command]]
+key = "prefix+alt+shift+i"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace i'
+description = "Focus space M-i"
+
+[[keys.command]]
+key = "prefix+alt+shift+j"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace j'
+description = "Focus space M-j"
+
+[[keys.command]]
+key = "prefix+alt+shift+k"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace k'
+description = "Focus space M-k"
+
+[[keys.command]]
+key = "prefix+alt+shift+l"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace l'
+description = "Focus space M-l"
+
+[[keys.command]]
+key = "prefix+alt+shift+m"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace m'
+description = "Focus space M-m"
+
+[[keys.command]]
+key = "prefix+alt+shift+n"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace n'
+description = "Focus space M-n"
+
+[[keys.command]]
+key = "prefix+alt+shift+o"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace o'
+description = "Focus space M-o"
+
+[[keys.command]]
+key = "prefix+alt+shift+p"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace p'
+description = "Focus space M-p"
+
+[[keys.command]]
+key = "prefix+alt+shift+q"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace q'
+description = "Focus space M-q"
+
+[[keys.command]]
+key = "prefix+alt+shift+r"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace r'
+description = "Focus space M-r"
+
+[[keys.command]]
+key = "prefix+alt+shift+s"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace s'
+description = "Focus space M-s"
+
+[[keys.command]]
+key = "prefix+alt+shift+t"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace t'
+description = "Focus space M-t"
+
+[[keys.command]]
+key = "prefix+alt+shift+u"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace u'
+description = "Focus space M-u"
+
+[[keys.command]]
+key = "prefix+alt+shift+v"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace v'
+description = "Focus space M-v"
+
+[[keys.command]]
+key = "prefix+alt+shift+w"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace w'
+description = "Focus space M-w"
+
+[[keys.command]]
+key = "prefix+alt+shift+x"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace x'
+description = "Focus space M-x"
+
+[[keys.command]]
+key = "prefix+alt+shift+y"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace y'
+description = "Focus space M-y"
+
+[[keys.command]]
+key = "prefix+alt+shift+z"
+type = "shell"
+command = 'python3 "$HOME/dotfiles/modules/herdr/agent-numbers/jump.py" workspace z'
+description = "Focus space M-z"
+
 [ui]
 accent = "blue"
 
