@@ -11,7 +11,10 @@
                 "from": { "key_code": "left_control", "modifiers": { "optional": ["any"] } },
                 "to": [{ "key_code": "left_command" }],
                 "to_if_other_key_pressed": [{
-                  "other_keys": [{ "key_code": "spacebar", "modifiers": { "optional": ["any"] } }],
+                  "other_keys": [
+                    { "key_code": "spacebar", "modifiers": { "optional": ["any"] } },
+                    { "key_code": "s", "modifiers": { "optional": ["control", "command", "caps_lock"] } }
+                  ],
                   "to": [{ "key_code": "left_control" }]
                 }],
                 "conditions": [{
@@ -24,7 +27,10 @@
                 "from": { "key_code": "right_control", "modifiers": { "optional": ["any"] } },
                 "to": [{ "key_code": "right_command" }],
                 "to_if_other_key_pressed": [{
-                  "other_keys": [{ "key_code": "spacebar", "modifiers": { "optional": ["any"] } }],
+                  "other_keys": [
+                    { "key_code": "spacebar", "modifiers": { "optional": ["any"] } },
+                    { "key_code": "s", "modifiers": { "optional": ["control", "command", "caps_lock"] } }
+                  ],
                   "to": [{ "key_code": "right_control" }]
                 }],
                 "conditions": [{
@@ -115,8 +121,7 @@
                   {
                     "type": "frontmost_application_unless",
                     "bundle_identifiers": [
-                      "^com\\.tigervnc\\.tigervnc$",
-                      "^com\\.google\\.Chrome$"
+                      "^com\\.tigervnc\\.tigervnc$"
                     ]
                   }
                 ]
