@@ -30,6 +30,12 @@ display=$(printf '%s' "$win" | "$JQ" -r '.display')
 
 floating=$(printf '%s' "$win" | "$JQ" -r '."is-floating"')
 
+if [[ $app == Ghostty && $title == TUI.fullscreen ]]; then
+  [[ $(printf '%s' "$win" | "$JQ" -r '."has-fullscreen-zoom"') == true ]] ||
+    "$YABAI" -m window "$id" --toggle zoom-fullscreen 2>/dev/null
+  exit 0
+fi
+
 case $title in
   org.omarchy.btop)
     w=1359

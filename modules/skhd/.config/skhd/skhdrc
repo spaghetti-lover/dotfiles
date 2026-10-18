@@ -122,7 +122,7 @@ cmd + ctrl - t        : open -na Ghostty --args --config-file="$HOME/.config/gho
 
 cmd + ctrl - u        : open -na Ghostty --args --config-file="$HOME/.config/ghostty/disk-usage.conf"
 
-cmd + ctrl - y        : open -na Ghostty --args --working-directory="$HOME" --window-save-state=never -e /bin/zsh -lic 'FZF_DEFAULT_COMMAND="fd --hidden" exec yazi'
+cmd + ctrl - y        : open -na Ghostty --args --config-file="$HOME/.config/ghostty/yazi.conf"
 
 cmd + ctrl - e        : /opt/homebrew/bin/skhd -k "cmd + ctrl - space"
 

@@ -48,7 +48,7 @@ yabai -m signal --add label=new_window event=window_created \
 
 yabai -m signal --add label=tui_float_late event=window_title_changed \
   app='^Ghostty$' \
-  title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.float|Omarchy|About)$' \
+  title='^(org\.omarchy\.(btop|terminal|bash)|TUI\.(float|fullscreen)|Omarchy|About)$' \
   action="\"$HOME/dotfiles/modules/yabai/bin/on-window-created.sh\" --late \$YABAI_WINDOW_ID"
 
 yabai -m signal --add label=display_added event=display_added \
