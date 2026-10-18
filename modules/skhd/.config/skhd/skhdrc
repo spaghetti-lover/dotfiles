@@ -122,6 +122,8 @@ cmd + ctrl - t        : open -na Ghostty --args --config-file="$HOME/.config/gho
 
 cmd + ctrl - u        : open -na Ghostty --args --config-file="$HOME/.config/ghostty/disk-usage.conf"
 
+cmd + ctrl - y        : open -na Ghostty --args --working-directory="$HOME" --window-save-state=never -e /bin/zsh -lic 'FZF_DEFAULT_COMMAND="fd --hidden" exec yazi'
+
 cmd + ctrl - e        : /opt/homebrew/bin/skhd -k "cmd + ctrl - space"
 
 cmd + ctrl - return   : open -na Ghostty --args -e /opt/homebrew/bin/herdr
@@ -130,7 +132,6 @@ cmd + shift - c       : open -a "Google Calendar"
 cmd + shift - s       : open -a "Google Maps"
 
 cmd + shift - e       : open -a Mail
-cmd + shift - y       : open -na "Google Chrome" --args --app=https://youtube.com
 cmd + shift - x       : open -na "Google Chrome" --args --app=https://x.com
 
 cmd + ctrl - a : open "x-apple.systempreferences:com.apple.Sound-Settings.extension"

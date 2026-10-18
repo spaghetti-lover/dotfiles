@@ -1,0 +1,27 @@
+# Use terminal colors to follow Ghostty's Gruvbox / active Omarchy palette.
+[mgr]
+cwd = { fg = "blue" }
+border_style = { fg = "darkgray" }
+
+[indicator]
+parent = { fg = "black", bg = "blue", bold = true }
+current = { fg = "black", bg = "blue", bold = true }
+padding = { open = "", close = "" }
+
+[tabs]
+active = { fg = "black", bg = "blue", bold = true }
+inactive = { fg = "darkgray" }
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+[mode]
+normal_main = { fg = "black", bg = "blue", bold = true }
+normal_alt = { fg = "blue" }
+select_main = { fg = "black", bg = "yellow", bold = true }
+select_alt = { fg = "yellow" }
+unset_main = { fg = "black", bg = "red", bold = true }
+unset_alt = { fg = "red" }
+
+[status]
+sep_left = { open = "", close = "" }
+sep_right = { open = "", close = "" }
