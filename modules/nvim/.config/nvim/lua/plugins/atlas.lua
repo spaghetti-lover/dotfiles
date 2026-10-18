@@ -25,6 +25,45 @@ local function create_issue()
   })
 end
 
+local function gitlab_token()
+  if vim.env.GITLAB_TOKEN and vim.env.GITLAB_TOKEN ~= "" then
+    return vim.env.GITLAB_TOKEN
+  end
+  if vim.fn.executable("glab") == 0 then
+    return nil
+  end
+
+  local result = vim.system(
+    { "glab", "config", "get", "token", "--host", "gitlab-eng.dytechlab.com" },
+    { text = true }
+  ):wait(5000)
+  if result.code == 0 then
+    local token = vim.trim(result.stdout or "")
+    if token ~= "" then
+      return token
+    end
+  end
+end
+
+local function use_gitlab_ca_bundle()
+  if vim.env.CURL_CA_BUNDLE and vim.env.CURL_CA_BUNDLE ~= "" then
+    return
+  end
+
+  -- The Bash setup writes a bundle containing both system roots and the internal CA.
+  local cache_homes = { vim.fn.expand("~/.cache") }
+  if vim.env.XDG_CACHE_HOME and vim.env.XDG_CACHE_HOME ~= "" then
+    table.insert(cache_homes, 1, vim.env.XDG_CACHE_HOME)
+  end
+  for _, cache_home in ipairs(cache_homes) do
+    local bundle = cache_home .. "/dotfiles/gitlab-ca-bundle.pem"
+    if vim.fn.filereadable(bundle) == 1 then
+      vim.env.CURL_CA_BUNDLE = bundle
+      return
+    end
+  end
+end
+
 return {
   {
     "emrearmagan/atlas.nvim",
@@ -60,6 +99,8 @@ return {
       { "<leader>gal", "<cmd>Atlas logs<cr>", desc = "Atlas logs" },
     },
     config = function(_, opts)
+      use_gitlab_ca_bundle()
+      opts.providers.gitlab.token = gitlab_token()
       require("atlas").setup(opts)
 
       local theme = require("config.atlas_theme")
@@ -74,8 +115,7 @@ return {
       providers = {
         github = {},
         gitlab = {
-          base_url = vim.env.GITLAB_URL,
-          token = vim.env.GITLAB_TOKEN,
+          base_url = vim.env.GITLAB_URL or "https://gitlab-eng.dytechlab.com",
         },
       },
       pulls = {
