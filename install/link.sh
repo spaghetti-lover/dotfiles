@@ -5,24 +5,27 @@ mode="${1:---dry-run}"
 case "$mode" in
   --dry-run | --apply | --unlink) ;;
   *)
-    echo "Usage: $0 [--dry-run|--apply|--unlink]" >&2
+    echo "Usage: $0 [--dry-run|--apply|--unlink] [module...]" >&2
     exit 2
     ;;
 esac
+shift $(($# ? 1 : 0))
 
-case "$(uname -s)" in
-  Darwin) platform=macos ;;
-  Linux) platform=omarchy ;;
-  *)
-    echo "Unsupported OS" >&2
-    exit 1
-    ;;
-esac
-
-repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+select_modules "$@"
 backup=""
 
-links() { cat "$repo/install/links/common" "$repo/install/links/$platform"; }
+# Rows of `repo source|home destination`; a link without `|` keeps its path.
+links() {
+  local module entry
+  echo ".|dotfiles"
+  for module in "${modules[@]}"; do
+    while IFS= read -r entry; do
+      [[ "$entry" == *"|"* ]] || entry="$entry|$entry"
+      echo "modules/$module/$entry"
+    done < <(module_entries "$module" link)
+  done
+}
 
 # Expand old Stow directory links before editing their children.
 unfold_parents() {
@@ -92,7 +95,11 @@ while IFS='|' read -r source destination; do
     continue
   fi
 
-  if [[ -e "$destination" || -L "$destination" ]]; then
+  # A link into this repo is ours from an older layout; replace it without a backup.
+  if [[ -L "$destination" && "$(readlink "$destination")" == "$repo"/* ]]; then
+    echo "relink: $destination"
+    [[ "$mode" == --apply ]] && rm "$destination"
+  elif [[ -e "$destination" || -L "$destination" ]]; then
     echo "backup: $destination"
     if [[ "$mode" == --apply ]]; then
       if [[ -z "$backup" ]]; then

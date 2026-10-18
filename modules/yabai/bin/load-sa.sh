@@ -3,7 +3,7 @@
 set -euo pipefail
 
 yabai=$(command -v yabai) || {
-  echo "yabai not found -- brew bundle install --file=install/Brewfile" >&2
+  echo "yabai not found -- make install MODULES=yabai" >&2
   exit 1
 }
 

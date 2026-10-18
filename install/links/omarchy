@@ -1,8 +1,0 @@
-modules/bash/.bashrc|.bashrc
-modules/bash/.config/bash/functions/ga.bash|.config/bash/functions/ga.bash
-modules/bash/.config/bash/gitlab.bash|.config/bash/gitlab.bash
-modules/bash/.config/bash/gitlab-eng-ca.pem|.config/bash/gitlab-eng-ca.pem
-modules/tmux/.tmux.conf|.config/tmux/tmux.conf
-modules/ghostty-omarchy/.config/ghostty/platform.conf|.config/ghostty/platform.conf
-modules/vscode/Library/Application Support/Code/User/settings.json|.config/Code/User/settings.json
-modules/vscode/Library/Application Support/Code/User/keybindings.json|.config/Code/User/keybindings.json

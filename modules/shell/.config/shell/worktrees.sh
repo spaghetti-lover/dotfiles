@@ -1,3 +1,7 @@
+# Oh My Zsh's git plugin defines these as aliases.
+unalias ga gd 2>/dev/null
+
+# Create a worktree and branch, carrying over uncommitted changes.
 ga() {
   if [[ -z "$1" ]]; then
     echo "Usage: ga [branch name]"
@@ -27,4 +31,21 @@ ga() {
 
   mise trust "$wt_path"
   cd "$wt_path"
+}
+
+# Remove the current worktree and its branch.
+gd() {
+  gum confirm "Remove worktree and branch?" || return
+
+  local cwd="$PWD" worktree root branch
+
+  worktree="$(basename "$cwd")"
+  root="${worktree%%--*}"
+  branch="${worktree#*--}"
+
+  [[ "$root" == "$worktree" ]] && return
+
+  cd "../$root"
+  git worktree remove "$cwd" --force || return 1
+  git branch -D "$branch"
 }

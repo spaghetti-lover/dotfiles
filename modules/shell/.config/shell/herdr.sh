@@ -1,4 +1,4 @@
-_herdr_ratio() { printf "%.4f" $(( 1.0 * $1 / $2 )); }
+_herdr_ratio() { awk -v a="$1" -v b="$2" 'BEGIN { printf "%.4f", a / b }'; }
 
 _herdr_split() {
   herdr pane split "$1" --direction "$2" --ratio "$3" --cwd "$4" --no-focus |
@@ -78,8 +78,6 @@ hdlm() {
   [[ -z $1 ]] && { echo "Usage: hdlm <c|cx|cy|other_ai> [<second_ai>]"; return 1; }
   [[ -z $HERDR_PANE_ID ]] && { echo "You must start herdr to use hdlm."; return 1; }
 
-  setopt local_options null_glob
-
   local ai="$1" ai2="$2"
   local base_dir="$PWD"
   local first=true
@@ -88,12 +86,13 @@ hdlm() {
   herdr workspace rename "$HERDR_WORKSPACE_ID" "$(basename "$base_dir")" >/dev/null
 
   for dir in "$base_dir"/*/; do
+    [[ -d $dir ]] || continue
     dirpath="${dir%/}"
-    cmd="hdl ${(q)ai}"
-    [[ -n $ai2 ]] && cmd+=" ${(q)ai2}"
+    cmd="hdl $(printf '%q' "$ai")"
+    [[ -n $ai2 ]] && cmd+=" $(printf '%q' "$ai2")"
 
     if $first; then
-      herdr pane run "$HERDR_PANE_ID" "cd ${(q)dirpath} && $cmd" >/dev/null
+      herdr pane run "$HERDR_PANE_ID" "cd $(printf '%q' "$dirpath") && $cmd" >/dev/null
       first=false
     else
       pane_id=$(herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd "$dirpath" --no-focus |
@@ -110,21 +109,24 @@ hsl() {
   local count="$1" cmd="$2"
   local current_dir="$PWD"
   local -a columns panes
-  local cols=1 k index rows j last pane
+  local cols=1 k col index=0 rows j last pane
 
   herdr tab rename "$HERDR_TAB_ID" "$(basename "$current_dir")" >/dev/null
 
   while (( cols * cols < count )); do ((cols++)); done
 
-  columns=("$HERDR_PANE_ID")
+  last="$HERDR_PANE_ID"
+  columns=("$last")
   for (( k = 1; k < cols; k++ )); do
-    columns+=("$(_herdr_split "${columns[-1]}" right "$(_herdr_ratio 1 $((cols - k + 1)))" "$current_dir")")
+    last=$(_herdr_split "$last" right "$(_herdr_ratio 1 $((cols - k + 1)))" "$current_dir")
+    columns+=("$last")
   done
 
-  for (( index = 1; index <= cols; index++ )); do
+  for col in "${columns[@]}"; do
+    index=$(( index + 1 ))
     rows=$(( count / cols ))
     (( index <= count % cols )) && (( rows++ ))
-    last="${columns[index]}"
+    last="$col"
     panes+=("$last")
     for (( j = 1; j < rows; j++ )); do
       last=$(_herdr_split "$last" down "$(_herdr_ratio 1 $((rows - j + 1)))" "$current_dir")

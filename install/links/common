@@ -1,7 +1,0 @@
-modules/nvim/.config/nvim|.config/nvim
-modules/tmux/.tmux.conf|.tmux.conf
-modules/ghostty/.config/ghostty/config|.config/ghostty/config
-modules/ghostty/.config/ghostty/omarchy-theme.conf|.config/ghostty/omarchy-theme.conf
-modules/herdr/.config/herdr/config.toml|.config/herdr/config.toml
-modules/yazi/.config/yazi|.config/yazi
-.|dotfiles

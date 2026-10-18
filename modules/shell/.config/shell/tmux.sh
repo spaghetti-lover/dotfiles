@@ -76,8 +76,6 @@ tdlm() {
   [[ -z $1 ]] && { echo "Usage: tdlm <c|cx|cy|other_ai> [<second_ai>]"; return 1; }
   [[ -z $TMUX ]] && { echo "You must start tmux to use tdlm."; return 1; }
 
-  setopt local_options null_glob
-
   local ai="$1" ai2="$2"
   local base_dir="$PWD"
   local first=true
@@ -106,20 +104,20 @@ tsl() {
   local count="$1" cmd="$2"
   local current_dir="$PWD"
   local -a panes
-  local new_pane pane
+  local last="$TMUX_PANE" pane
 
   tmux rename-window -t "$TMUX_PANE" "$(basename "$current_dir")"
   panes+=("$TMUX_PANE")
 
   while (( ${#panes[@]} < count )); do
-    new_pane=$(tmux split-window -h -t "${panes[-1]}" -c "$current_dir" -P -F '#{pane_id}')
-    panes+=("$new_pane")
-    tmux select-layout -t "${panes[1]}" tiled
+    last=$(tmux split-window -h -t "$last" -c "$current_dir" -P -F '#{pane_id}')
+    panes+=("$last")
+    tmux select-layout -t "$TMUX_PANE" tiled
   done
 
   for pane in "${panes[@]}"; do
     tmux send-keys -t "$pane" "$cmd" C-m
   done
 
-  tmux select-pane -t "${panes[1]}"
+  tmux select-pane -t "$TMUX_PANE"
 }

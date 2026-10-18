@@ -1,8 +1,3 @@
-gpup() {
-  branch=$(git rev-parse --abbrev-ref HEAD)
-  git push --set-upstream origin "$branch"
-}
-
 unalias gst 2>/dev/null
 zmodload -F zsh/stat b:zstat
 zmodload zsh/datetime

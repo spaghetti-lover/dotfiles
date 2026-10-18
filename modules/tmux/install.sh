@@ -6,4 +6,6 @@ if [[ ! -d "$plugin_manager" ]]; then
   git clone https://github.com/tmux-plugins/tpm "$plugin_manager"
 fi
 
-echo 'Tmux plugins: reload with prefix + q, then install with prefix + I.'
+"$plugin_manager/bin/install_plugins"
+
+echo 'Tmux plugins installed; reload a running server with prefix + q.'

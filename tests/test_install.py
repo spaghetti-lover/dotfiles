@@ -27,9 +27,12 @@ class InstallerTest(unittest.TestCase):
         uname.write_text(f"#!/bin/sh\nprintf '%s\\n' '{name}'\n")
         uname.chmod(0o755)
 
-    def run_link(self, mode, success=True):
+    def run_link(self, mode, *modules, success=True):
+        return self.run_script("link.sh", mode, *modules, success=success)
+
+    def run_script(self, script, *args, success=True):
         result = subprocess.run(
-            ["bash", str(self.repo / "install/link.sh"), mode],
+            ["bash", str(self.repo / "install" / script), *args],
             env={**os.environ, "HOME": str(self.home), "PATH": f"{self.bin}:{os.environ['PATH']}"},
             text=True, capture_output=True,
         )
@@ -39,11 +42,35 @@ class InstallerTest(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
         return result
 
-    def assert_links(self, platform):
-        for manifest in ("common", platform):
-            for row in (self.repo / "install/links" / manifest).read_text().splitlines():
-                source, destination = row.split("|")
-                self.assertEqual((self.home / destination).resolve(), (self.repo / source).resolve())
+    def manifest(self, module, platform):
+        """Entries of a module.conf that apply on platform, as (kind, value) pairs."""
+        entries = []
+        for line in (self.repo / "modules" / module / "module.conf").read_text().splitlines():
+            if not line.strip() or line.lstrip().startswith("#"):
+                continue
+            key, value = line.split(maxsplit=1)
+            kind, _, scope = key.partition("@")
+            if scope in ("", platform):
+                entries.append((kind, value.strip()))
+        return entries
+
+    def expected_links(self, platform, modules=None):
+        links = {"dotfiles": "."}
+        for conf in sorted((self.repo / "modules").glob("*/module.conf")):
+            module = conf.parent.name
+            entries = self.manifest(module, platform)
+            allowed = [p for kind, value in entries if kind == "platforms" for p in value.split()]
+            if (modules and module not in modules) or (allowed and platform not in allowed):
+                continue
+            for kind, value in entries:
+                if kind == "link":
+                    source, _, destination = value.partition("|")
+                    links[destination or source] = f"modules/{module}/{source}"
+        return links
+
+    def assert_links(self, platform, modules=None):
+        for destination, source in self.expected_links(platform, modules).items():
+            self.assertEqual((self.home / destination).resolve(), (self.repo / source).resolve())
 
     def test_preview_does_not_write(self):
         bashrc = self.home / ".bashrc"
@@ -88,6 +115,50 @@ class InstallerTest(unittest.TestCase):
         (self.repo / "modules/bash/.bashrc").unlink()
         self.run_link("--apply", success=False)
         self.assertEqual(list(self.home.iterdir()), [])
+
+    def test_invalid_manifest_entry_fails_before_any_changes(self):
+        with (self.repo / "modules/yazi/module.conf").open("a") as conf:
+            conf.write("lnk .config/typo\n")
+        self.run_link("--apply", success=False)
+        self.run_link("--apply", "nope", success=False)
+        self.assertEqual(list(self.home.iterdir()), [])
+
+    def test_named_modules_link_only_themselves(self):
+        self.run_link("--apply", "yazi", "tmux")
+        self.assert_links("omarchy", {"yazi", "tmux"})
+        self.assertFalse((self.home / ".bashrc").exists())
+        result = self.run_link("--apply", "zsh")
+        self.assertIn("skip: zsh", result.stderr)
+        self.assertFalse((self.home / ".zshrc").exists())
+
+    def test_stale_repo_link_is_replaced_without_backup(self):
+        platform_conf = self.home / ".config/ghostty/platform.conf"
+        platform_conf.parent.mkdir(parents=True)
+        platform_conf.symlink_to(self.repo / "modules/ghostty-omarchy/platform.conf")
+        self.run_link("--apply", "ghostty")
+        self.assert_links("omarchy", {"ghostty"})
+        self.assertFalse((self.home / ".local/state/dotfiles-backups").exists())
+
+    def test_brewfile_follows_platform(self):
+        for system, platform in (("Linux", "omarchy"), ("Darwin", "macos")):
+            with self.subTest(system=system):
+                self.platform(system)
+                lines = self.run_script("packages.sh", "--print").stdout.splitlines()
+                self.assertEqual(len(lines), len(set(lines)))
+                kinds = [line.split()[0] for line in lines]
+                self.assertEqual(kinds, sorted(kinds, key=["tap", "brew", "cask", "go", "cargo"].index))
+                expected = set()
+                for conf in (self.repo / "modules").glob("*/module.conf"):
+                    entries = self.manifest(conf.parent.name, platform)
+                    allowed = [p for kind, value in entries if kind == "platforms" for p in value.split()]
+                    if allowed and platform not in allowed:
+                        continue
+                    for kind, value in entries:
+                        if kind in ("tap", "brew", "go", "cargo") or (kind == "cask" and platform == "macos"):
+                            expected.add(f'{kind} "{value}"')
+                self.assertEqual(set(lines), expected)
+        self.assertIn('cask "ghostty"', lines)
+        self.assertIn('brew "asmvik/formulae/yabai"', lines)
 
     def test_unlink_keeps_files_and_foreign_links(self):
         self.run_link("--apply")

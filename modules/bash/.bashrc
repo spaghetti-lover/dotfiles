@@ -5,14 +5,14 @@
 
 source "$OMARCHY_PATH/default/bash/rc"
 
-[[ -r "$HOME/.config/bash/functions/ga.bash" ]] && source "$HOME/.config/bash/functions/ga.bash"
-
-alias lzg='lazygit'
-
 [[ -r "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
 if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 [[ -r "$HOME/.pandora_env/activate" ]] && source "$HOME/.pandora_env/activate"
 
-[[ -r "$HOME/.config/bash/gitlab.bash" ]] && source "$HOME/.config/bash/gitlab.bash"
+# Shared with macOS zsh: env, aliases and functions.
+for config in "$HOME/.config/shell/"*.sh; do
+  [[ -r "$config" ]] && source "$config"
+done
+unset config
