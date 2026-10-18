@@ -1,4 +1,4 @@
-# Atlas reads these values from Neovim's inherited environment.
+# GitLab host, token and CA bundle for glab, curl and Git HTTPS.
 _dotfiles_gitlab_env() {
   local host=gitlab-eng.dytechlab.com
   local ca="$HOME/.config/shell/gitlab-eng-ca.pem"

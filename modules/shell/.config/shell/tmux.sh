@@ -46,7 +46,7 @@ tdh() {
   fi
 
   tmux send-keys -t "$ai_pane" "$ai" C-m
-  tmux send-keys -t "$diff_pane" "hunk diff --watch" C-m
+  tmux send-keys -t "$diff_pane" "tuicr -w" C-m
   tmux select-pane -t "$ai_pane"
 }
 
@@ -66,7 +66,7 @@ tds() {
   opencode_pane=$(tmux split-window -h -p 50 -t "$terminal_pane" -c "$current_dir" -P -F '#{pane_id}')
 
   tmux send-keys -t "$editor_pane" "$EDITOR ." C-m
-  tmux send-keys -t "$diff_pane" "hunk diff --watch" C-m
+  tmux send-keys -t "$diff_pane" "tuicr -w" C-m
   tmux send-keys -t "$opencode_pane" "opencode" C-m
 
   tmux select-pane -t "$editor_pane"

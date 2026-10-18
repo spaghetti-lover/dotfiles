@@ -50,7 +50,7 @@ hdh() {
   fi
 
   herdr pane run "$ai_pane" "$ai" >/dev/null
-  herdr pane run "$diff_pane" "hunk diff --watch" >/dev/null
+  herdr pane run "$diff_pane" "tuicr -w" >/dev/null
   herdr pane focus --pane "$diff_pane" --direction right >/dev/null
 }
 
@@ -70,7 +70,7 @@ hds() {
   opencode_pane=$(_herdr_split "$terminal_pane" right 0.5 "$current_dir")
 
   herdr pane run "$editor_pane" "$EDITOR ." >/dev/null
-  herdr pane run "$diff_pane" "hunk diff --watch" >/dev/null
+  herdr pane run "$diff_pane" "tuicr -w" >/dev/null
   herdr pane run "$opencode_pane" "opencode" >/dev/null
 }
 
