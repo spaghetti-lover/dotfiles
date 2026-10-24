@@ -21,10 +21,30 @@ alt + shift - tab        : "$HOME/dotfiles/modules/yabai/bin/focus.sh" prev
 ctrl + alt - tab         : /opt/homebrew/bin/yabai -m display --focus next || /opt/homebrew/bin/yabai -m display --focus first
 ctrl + alt + shift - tab : /opt/homebrew/bin/yabai -m display --focus prev || /opt/homebrew/bin/yabai -m display --focus last
 
-cmd - 0x1B                : "$HOME/dotfiles/modules/yabai/bin/resize.sh" h -100
-cmd - 0x18                : "$HOME/dotfiles/modules/yabai/bin/resize.sh" h 100
-cmd + shift - 0x1B        : "$HOME/dotfiles/modules/yabai/bin/resize.sh" v -100
-cmd + shift - 0x18        : "$HOME/dotfiles/modules/yabai/bin/resize.sh" v 100
+cmd - 0x1B [
+    "google chrome" ~
+    "brave browser" ~
+    "safari"        ~
+    *               : "$HOME/dotfiles/modules/yabai/bin/resize.sh" h -100
+]
+cmd - 0x18 [
+    "google chrome" ~
+    "brave browser" ~
+    "safari"        ~
+    *               : "$HOME/dotfiles/modules/yabai/bin/resize.sh" h 100
+]
+cmd + shift - 0x1B [
+    "google chrome" ~
+    "brave browser" ~
+    "safari"        ~
+    *               : "$HOME/dotfiles/modules/yabai/bin/resize.sh" v -100
+]
+cmd + shift - 0x18 [
+    "google chrome" ~
+    "brave browser" ~
+    "safari"        ~
+    *               : "$HOME/dotfiles/modules/yabai/bin/resize.sh" v 100
+]
 
 cmd + alt - 0x1B          : "$HOME/dotfiles/modules/yabai/bin/resize.sh" h -25
 cmd + alt - 0x18          : "$HOME/dotfiles/modules/yabai/bin/resize.sh" h 25
