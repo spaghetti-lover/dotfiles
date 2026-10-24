@@ -8,12 +8,32 @@
             "manipulators": [
               {
                 "type": "basic",
+                "from": { "key_code": "left_control", "modifiers": { "mandatory": ["command"], "optional": ["any"] } },
+                "to": [{ "key_code": "left_control" }],
+                "conditions": [{
+                  "type": "frontmost_application_if",
+                  "bundle_identifiers": ["^com\\.google\\.Chrome$"]
+                }]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "right_control", "modifiers": { "mandatory": ["command"], "optional": ["any"] } },
+                "to": [{ "key_code": "right_control" }],
+                "conditions": [{
+                  "type": "frontmost_application_if",
+                  "bundle_identifiers": ["^com\\.google\\.Chrome$"]
+                }]
+              },
+              {
+                "type": "basic",
                 "from": { "key_code": "left_control", "modifiers": { "optional": ["any"] } },
                 "to": [{ "key_code": "left_command" }],
                 "to_if_other_key_pressed": [{
                   "other_keys": [
                     { "key_code": "spacebar", "modifiers": { "optional": ["any"] } },
-                    { "key_code": "s", "modifiers": { "optional": ["control", "command", "caps_lock"] } }
+                    { "key_code": "s", "modifiers": { "optional": ["control", "command", "caps_lock"] } },
+                    { "key_code": "left_command", "modifiers": { "optional": ["any"] } },
+                    { "key_code": "right_command", "modifiers": { "optional": ["any"] } }
                   ],
                   "to": [{ "key_code": "left_control" }]
                 }],
@@ -29,7 +49,9 @@
                 "to_if_other_key_pressed": [{
                   "other_keys": [
                     { "key_code": "spacebar", "modifiers": { "optional": ["any"] } },
-                    { "key_code": "s", "modifiers": { "optional": ["control", "command", "caps_lock"] } }
+                    { "key_code": "s", "modifiers": { "optional": ["control", "command", "caps_lock"] } },
+                    { "key_code": "left_command", "modifiers": { "optional": ["any"] } },
+                    { "key_code": "right_command", "modifiers": { "optional": ["any"] } }
                   ],
                   "to": [{ "key_code": "right_control" }]
                 }],
