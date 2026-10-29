@@ -71,9 +71,10 @@ end
 
 local group = vim.api.nvim_create_augroup("jsonl_pretty", { clear = true })
 
-vim.api.nvim_create_autocmd("FileType", {
+-- Match on file name, not filetype: Snacks bigfile sets filetype "bigfile" for large files.
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   group = group,
-  pattern = "jsonl",
+  pattern = "*.jsonl",
   callback = function(ev)
     vim.keymap.set("n", "<leader>uj", function()
       toggle_pretty(ev.buf)
